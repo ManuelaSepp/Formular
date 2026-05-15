@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formular mit 10 Karten</title>
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --card: #ffffff;
+      --text: #2d2d2d;
+      --muted: #6f6f6f;
+      --accent: #8fae9f;
+      --accent-dark: #6f9383;
+      --border: #e3ddd3;
+      --soft: #f1ede6;
+      --warning: #9a5b00;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      text-align: center;
+      padding: 28px 20px 10px;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .kartenbereich {
+      display: grid;
+      gap: 14px;
+    }
+
+    details.card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 0;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 18px;
+      font-weight: bold;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fff;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::after {
+      content: "öffnen";
+      font-size: 13px;
+      font-weight: normal;
+      color: var(--muted);
+      background: var(--soft);
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    details[open] summary::after { content: "schließen"; }
+
+    .card-content {
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .bericht-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 20px;
+    }
+
+    .bericht-card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 12px 0 14px;
+    }
+
+    .warning {
+      color: var(--warning);
+      background: #fff6e5;
+      border: 1px solid #f1d8a8;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      margin: 12px 0;
+      display: none;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 6px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-weight: normal;
+      background: var(--soft);
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin: 8px 0;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+      flex-shrink: 0;
+      accent-color: var(--accent-dark);
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .bericht {
+      min-height: 520px;
+      white-space: pre-wrap;
+      background: #fbfaf7;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+    }
+
+    button:hover { background: var(--accent-dark); }
+
+    button.secondary {
+      background: #ded6ca;
+      color: var(--text);
+    }
+
+    button.secondary:hover { background: #cfc5b7; }
+
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+      .bericht-card { position: static; }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Formular mit automatischer Satzbildung</h1>
+    <p>Struktur-Prototyp mit einklappbaren Karten</p>
+  </header>
+
+  <main>
+    <section class="kartenbereich">
+      <details class="card" open>
+        <summary>0. Begrüßung und Abschluss</summary>
+        <div class="card-content">
+          <p class="hint">Diese Auswahl bildet den Anfang und das Ende der fertigen Nachricht.</p>
+
+          <label for="begruessung">Begrüßung</label>
+          <select id="begruessung">
+            <option value="">Keine Begrüßung</option>
+            <option value="Hallo,">Hallo</option>
+            <option value="Hallo liebe Fotografen,">Hallo liebe Fotografen,</option>
+            <option value="Hallo ihr Lieben,">Hallo ihr Lieben,</option>
+            <option value="Guten Morgen,">Guten Morgen</option>
+            <option value="Guten Morgen liebe Fotografen,">Guten Morgen liebe Fotografen,</option>
+            <option value="Guten Morgen ihr Lieben,">Guten Morgen ihr Lieben,</option>
+            <option value="Guten Abend,">Guten Abend</option>
+            <option value="Guten Abend ihr Lieben,">Guten Abend ihr Lieben,</option>
+          </select>
+
+          <label for="abschlussfrage">Abschlussfrage</label>
+          <select id="abschlussfrage">
+            <option value="">Keine Abschlussfrage</option>
+            <option value="Wer kann sich denn hier bereithalten?">Wer kann sich denn hier bereithalten?</option>
+            <option value="Hier wird ein Ansprechpartner gesucht.">Hier wird ein Ansprechpartner gesucht.</option>
+            <option value="Findet sich hier ein Ansprechpartner?">Findet sich hier ein Ansprechpartner?</option>
+            <option value="Könnte sich hier jemand bereithalten?">Könnte sich hier jemand bereithalten?</option>
+          </select>
+
+          <label for="grussformel">Grußformel</label>
+          <select id="grussformel">
+            <option value="">Keine Grußformel</option>
+            <option value="Liebe Grüße">Liebe Grüße</option>
+            <option value="Herzliche Grüße">Herzliche Grüße</option>
+            <option value="Danke euch und liebe Grüße">Danke euch und liebe Grüße</option>
+          </select>
+
+          <label for="grussName">Name zur Grußformel</label>
+          <input id="grussName" type="text" placeholder="z. B. Manuela">
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>1. Adressänderungen</summary>
+        <div class="card-content">
+          <p class="hint">Diese Angaben werden am Ende des Berichts als eigener Block ausgegeben.</p>
+
+          <label for="adresseKlinik">Klinik</label>
+          <input id="adresseKlinik" type="text" placeholder="Klinik">
+
+          <div class="row">
+            <div>
+              <label for="adressePlz">PLZ</label>
+              <input id="adressePlz" type="text" inputmode="numeric" maxlength="5" pattern="[0-9]{5}" placeholder="5 Ziffern">
+            </div>
+            <div>
+              <label for="adresseOrt">Ort</label>
+              <input id="adresseOrt" type="text" placeholder="Ort">
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="adresseStrasse">Straße</label>
+              <input id="adresseStrasse" type="text" placeholder="Straße">
+            </div>
+            <div>
+              <label for="adresseHausnummer">Hausnummer</label>
+              <input id="adresseHausnummer" type="text" placeholder="Hausnummer">
+            </div>
+          </div>
+
+          <label for="adresseRegion">Bundesland / Kanton</label>
+          <select id="adresseRegion">
+            <option value="">Bitte auswählen</option>
+            <optgroup label="Deutschland">
+              <option value="Baden-Württemberg">Baden-Württemberg</option>
+              <option value="Bayern">Bayern</option>
+              <option value="Berlin">Berlin</option>
+              <option value="Brandenburg">Brandenburg</option>
+              <option value="Bremen">Bremen</option>
+              <option value="Hamburg">Hamburg</option>
+              <option value="Hessen">Hessen</option>
+              <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+              <option value="Niedersachsen">Niedersachsen</option>
+              <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+              <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+              <option value="Saarland">Saarland</option>
+              <option value="Sachsen">Sachsen</option>
+              <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+              <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+              <option value="Thüringen">Thüringen</option>
+            </optgroup>
+            <optgroup label="Österreich">
+              <option value="Burgenland">Burgenland</option>
+              <option value="Kärnten">Kärnten</option>
+              <option value="Niederösterreich">Niederösterreich</option>
+              <option value="Oberösterreich">Oberösterreich</option>
+              <option value="Salzburg">Salzburg</option>
+              <option value="Steiermark">Steiermark</option>
+              <option value="Tirol">Tirol</option>
+              <option value="Vorarlberg">Vorarlberg</option>
+              <option value="Wien">Wien</option>
+            </optgroup>
+            <optgroup label="Schweiz">
+              <option value="Aargau">Aargau</option>
+              <option value="Appenzell Ausserrhoden">Appenzell Ausserrhoden</option>
+              <option value="Appenzell Innerrhoden">Appenzell Innerrhoden</option>
+              <option value="Basel-Landschaft">Basel-Landschaft</option>
+              <option value="Basel-Stadt">Basel-Stadt</option>
+              <option value="Bern">Bern</option>
+              <option value="Freiburg">Freiburg</option>
+              <option value="Genf">Genf</option>
+              <option value="Glarus">Glarus</option>
+              <option value="Graubünden">Graubünden</option>
+              <option value="Jura">Jura</option>
+              <option value="Luzern">Luzern</option>
+              <option value="Neuenburg">Neuenburg</option>
+              <option value="Nidwalden">Nidwalden</option>
+              <option value="Obwalden">Obwalden</option>
+              <option value="Schaffhausen">Schaffhausen</option>
+              <option value="Schwyz">Schwyz</option>
+              <option value="Solothurn">Solothurn</option>
+              <option value="St. Gallen">St. Gallen</option>
+              <option value="Tessin">Tessin</option>
+              <option value="Thurgau">Thurgau</option>
+              <option value="Uri">Uri</option>
+              <option value="Waadt">Waadt</option>
+              <option value="Wallis">Wallis</option>
+              <option value="Zug">Zug</option>
+              <option value="Zürich">Zürich</option>
+            </optgroup>
+          </select>
+        </div>
+      </details>
+
+      <details class="card" open>
+        <summary>2. Ansprechpartner</summary>
+        <div class="card-content">
+          <p class="hint">Erste echte Dropdown-Karte für Gesprächssätze.</p>
+
+          <label for="rolle">Rolle</label>
+          <select id="rolle">
+            <option value="">Bitte auswählen</option>
+            <option value="papa">Papa</option>
+            <option value="mama">Mama</option>
+            <option value="oma">Oma</option>
+            <option value="freundin">Freundin</option>
+            <option value="familienangehoeriger">Familienangehörige/r</option>
+            <option value="hebamme">Hebamme</option>
+            <option value="schwester">Schwester</option>
+            <option value="aerztin">Ärztin</option>
+            <option value="arzt">Arzt</option>
+            <option value="seelsorgerin">Frau von der Seelsorge</option>
+            <option value="seelsorger">Herr von der Seelsorge</option>
+            <option value="sozialdienst">Sozialdienst</option>
+            <option value="seelsorgeSozialdienst">Seelsorge / Sozialdienst</option>
+          </select>
+
+          <label for="beschreibung">Beschreibung</label>
+          <select id="beschreibung">
+            <option value="">keine Beschreibung</option>
+            <option value="traurig">traurig</option>
+            <option value="verzweifelt">verzweifelt</option>
+            <option value="lieb">lieb</option>
+            <option value="besorgt">besorgt</option>
+            <option value="aufgelöst">aufgelöst</option>
+            <option value="ruhig">ruhig</option>
+            <option value="dankbar">dankbar</option>
+            <option value="nett">nett</option>
+            <option value="männlich">männlich</option>
+            <option value="weiblich">weiblich</option>
+          </select>
+
+          <label for="ansprechpartnerName">Name</label>
+          <input id="ansprechpartnerName" type="text" placeholder="z. B. Jenny, Frau Mai, Marta">
+
+          <label for="gespraechsart">Gesprächsart</label>
+          <select id="gespraechsart">
+            <option value="gesprochen">gesprochen</option>
+            <option value="telefon">am Telefon gehabt</option>
+            <option value="ruecksprache">Rücksprache gehalten</option>
+          </select>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>3. Lebendbilder</summary>
+        <div class="card-content">
+          <p class="hint">Ruhige, klare Sätze zur Situation des Kindes. Ohne Einleitung/Geburtssituation.</p>
+
+          <label for="lebendbilderGeburt">Geburt / Zeitraum</label>
+          <select id="lebendbilderGeburt">
+            <option value="">Bitte auswählen</option>
+            <option value="Das Kind wurde vor einigen Tagen geboren.">Das Kind wurde vor einigen Tagen geboren.</option>
+          </select>
+
+          <div class="row">
+            <div>
+              <label for="lebendbilderSsw">SSW</label>
+              <input id="lebendbilderSsw" type="text" inputmode="numeric" maxlength="4" placeholder="z. B. 24+3">
+            </div>
+            <div>
+              <label for="lebendbilderAlterZahl">Alter</label>
+              <input id="lebendbilderAlterZahl" type="text" inputmode="numeric" placeholder="z. B. 2">
+            </div>
+          </div>
+
+          <label for="lebendbilderAlterEinheit">Alterseinheit</label>
+          <select id="lebendbilderAlterEinheit">
+            <option value="">Keine Altersangabe</option>
+            <option value="Tage">Tage</option>
+            <option value="Wochen">Wochen</option>
+            <option value="Monate">Monate</option>
+          </select>
+
+          <label for="lebendbilderPrognose">Prognose / medizinische Situation</label>
+          <select id="lebendbilderPrognose">
+            <option value="">Bitte auswählen</option>
+            <option value="Nun hat sich der Zustand des Kindes leider deutlich verschlechtert.">Zustand deutlich verschlechtert</option>
+            <option value="Die aktuelle Situation lässt ein Überleben des Kindes leider nicht erwarten.">Überleben leider nicht zu erwarten</option>
+            <option value="Die Prognose ist leider sehr schlecht.">Prognose sehr schlecht</option>
+            <option value="Ein Überleben des Kindes ist nach aktueller Einschätzung leider nicht möglich.">Überleben nach Einschätzung nicht möglich</option>
+            <option value="Es wurde besprochen, dass die lebenserhaltenden Maßnahmen beendet werden sollen.">Lebenserhaltende Maßnahmen sollen beendet werden</option>
+            <option value="Die Abschaltung der Geräte ist für die nächste Zeit geplant.">Abschaltung der Geräte geplant</option>
+            <option value="Es erfolgen nur noch palliative Maßnahmen.">Nur noch palliative Maßnahmen</option>
+          </select>
+
+          <label for="lebendbilderFreitext">Ergänzung</label>
+          <textarea id="lebendbilderFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>4. Einleitung</summary>
+        <div class="card-content">
+          <p class="hint">Sätze zur Einleitung und zum Klinikaufenthalt der Mutter.</p>
+
+          <label for="einleitungStatus">Situation</label>
+          <select id="einleitungStatus">
+            <option value="">Bitte auswählen</option>
+            <option value="Die Mutter befindet sich zur Einleitung in der Klinik.">Mutter ist zur Einleitung in der Klinik</option>
+            <option value="Die Mutter wird zur Einleitung in die Klinik gehen.">Mutter wird zur Einleitung in die Klinik gehen</option>
+            <option value="Wie lange es bis zur Geburt dauern wird, ist aktuell nicht bekannt.">Dauer bis zur Geburt nicht bekannt</option>
+          </select>
+
+          <div class="row">
+            <div>
+              <label for="einleitungDatum">Datum / Zeitpunkt</label>
+              <input id="einleitungDatum" type="text" placeholder="z. B. seit Montag, am 20.05., nächste Woche">
+            </div>
+            <div>
+              <label for="einleitungTage">Tage</label>
+              <input id="einleitungTage" type="text" inputmode="numeric" placeholder="z. B. 3">
+            </div>
+          </div>
+
+          <label for="einleitungFreitext">Ergänzung</label>
+          <textarea id="einleitungFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>5. Aktuelle Situation</summary>
+        <div class="card-content">
+          <p class="hint">Konkrete aktuelle Situation der Familie.</p>
+
+          <label for="situationKind">Kind der Familie</label>
+          <select id="situationKind">
+            <option value="">Bitte auswählen</option>
+            <option value="Das Mäuschen ist das erste Kind der Familie.">Erstes Kind</option>
+            <option value="Das Mäuschen ist das zweite Kind der Familie.">Zweites Kind</option>
+            <option value="Das Mäuschen ist das dritte Kind der Familie.">Drittes Kind</option>
+            <option value="Das Mäuschen ist das vierte Kind der Familie.">Viertes Kind</option>
+            <option value="Das Mäuschen ist das fünfte Kind der Familie.">Fünftes Kind</option>
+            <option value="Das Mäuschen ist das sechste Kind der Familie.">Sechstes Kind</option>
+            <option value="Das Mäuschen ist das siebte Kind der Familie.">Siebtes Kind</option>
+          </select>
+
+          <label for="situationGeschwister">Kinder an der Hand</label>
+          <select id="situationGeschwister">
+            <option value="">Bitte auswählen</option>
+            <option value="Die Familie hat keine Kinder an der Hand.">Keine Kinder</option>
+            <option value="Die Familie hat ein Kind an der Hand.">Ein Kind</option>
+            <option value="Die Familie hat zwei Kinder an der Hand.">Zwei Kinder</option>
+            <option value="Die Familie hat drei Kinder an der Hand.">Drei Kinder</option>
+            <option value="Die Familie hat vier Kinder an der Hand.">Vier Kinder</option>
+            <option value="Die Familie hat fünf Kinder an der Hand.">Fünf Kinder</option>
+            <option value="Die Familie hat sechs Kinder an der Hand.">Sechs Kinder</option>
+            <option value="Die Familie hat sieben Kinder an der Hand.">Sieben Kinder</option>
+          </select>
+
+          <label>Sprache / Verständigung</label>
+          <label class="checkbox-label"><input type="checkbox" class="spracheCheck" value="Die Eltern sprechen kein Deutsch."> Kein Deutsch</label>
+          <label class="checkbox-label"><input type="checkbox" class="spracheCheck" value="Die Eltern sprechen wenig Deutsch."> Wenig Deutsch</label>
+          <label class="checkbox-label"><input type="checkbox" class="spracheCheck" value="Die Kommunikation auf Englisch ist gut möglich."> Englisch möglich</label>
+          <label class="checkbox-label"><input type="checkbox" class="spracheCheck" value="Die Kommunikation gestaltet sich aktuell schwierig."> Kommunikation schwierig</label>
+          <label class="checkbox-label"><input type="checkbox" class="spracheCheck" value="Die Verständigung mit einem Übersetzungsprogramm funktioniert gut."> Übersetzungsprogramm funktioniert gut</label>
+
+          <label for="situationStatus">Aktuelle Situation</label>
+          <select id="situationStatus">
+            <option value="">Bitte auswählen</option>
+            <option value="Die Eltern sind noch im Kreißsaal.">Eltern noch im Kreißsaal</option>
+            <option value="Die Mutter ist noch im OP.">Mutter noch im OP</option>
+            <option value="Die Mutter kommt demnächst in den OP.">Mutter kommt in den OP</option>
+            <option value="Das Kind wurde bereits still geboren.">Kind bereits still geboren</option>
+          </select>
+
+          <label for="situationFreitext">Ergänzung</label>
+          <textarea id="situationFreitext" placeholder="Eigene Beobachtung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>6. Erinnerungen und Bilder</summary>
+        <div class="card-content">
+          <p class="hint">Wünsche rund um gemeinsame Erinnerungen und Bilder.</p>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Die Eltern möchten gerne gemeinsame Erinnerungsbilder mit ihrem Kind."> Die Eltern möchten gemeinsame Erinnerungsbilder mit ihrem Kind.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Es sind gemeinsame Erinnerungsbilder mit dem Kind gewünscht."> Gemeinsame Erinnerungsbilder gewünscht.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Die Geschwister möchten vermutlich mit auf die Erinnerungsbilder."> Geschwister vermutlich mit auf die Erinnerungsbilder.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Ob die Eltern mit auf die Erinnerungsbilder möchten, ist aktuell nicht bekannt."> Eltern auf Bildern unklar.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Ob die Geschwister mit auf die Erinnerungsbilder möchten, ist aktuell nicht bekannt."> Geschwister auf Bildern unklar.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Ob gemeinsame Erinnerungsbilder mit der Familie gewünscht sind, ist aktuell nicht bekannt."> Gemeinsame Erinnerungsbilder unklar.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Bilder sind auch morgen möglich."> Bilder auch morgen möglich.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Bilder sind nur heute möglich."> Bilder nur heute möglich.</label>
+          <label class="checkbox-label"><input type="checkbox" class="bilderCheck" value="Die Eltern möchten zeitnah nach Hause gehen."> Eltern möchten zeitnah nach Hause gehen.</label>
+          <label for="bilderFreitext">Ergänzung</label>
+          <textarea id="bilderFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>7. Wassermethode</summary>
+        <div class="card-content">
+          <p class="hint">Unikliniken Freiburg und Münster bitte nicht nach der Wassermethode fragen.</p>
+          <div class="hint">Anwendung Wassermethode:<br>Ein Gefäß mit kühlem Leitungswasser befüllen. Das Kind hineinlegen und kühl stellen. Bei Bedarf Wasser wechseln.</div>
+
+          <label for="wasserStatus">Status</label>
+          <select id="wasserStatus">
+            <option value="">Bitte auswählen</option>
+            <option value="Die Wassermethode wird angewendet.">Wird angewendet</option>
+            <option value="Die Wassermethode wird nicht angewendet.">Wird nicht angewendet</option>
+            <option value="Ob die Wassermethode angewendet wird, ist aktuell nicht bekannt.">Weiß man noch nicht</option>
+          </select>
+
+          <label for="wasserFreitext">Ergänzung</label>
+          <textarea id="wasserFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>8. Infekte</summary>
+        <div class="card-content">
+          <p class="hint">Infekte und notwendige Schutzmaßnahmen.</p>
+
+          <label for="infekteStatus">Status</label>
+          <select id="infekteStatus">
+            <option value="">Bitte auswählen</option>
+            <option value="Es sind keine Infekte bekannt.">Keine Infekte bekannt</option>
+            <option value="Es liegen Infekte vor.">Infekte vorhanden</option>
+            <option value="Ob Infekte vorliegen, ist aktuell unklar.">Unklar</option>
+            <option value="Schutzmaßnahmen sind notwendig.">Schutzmaßnahmen notwendig</option>
+          </select>
+
+          <div id="infekteBereich" style="display:none;">
+            <div class="hint">Mehrere Angaben können ausgewählt werden.</div>
+            <label>Infekte</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="Corona"> Corona</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="Hepatitis"> Hepatitis</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="MRSA Krankenhauskeim"> MRSA Krankenhauskeim</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="HIV"> HIV</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="Influenza"> Influenza</label>
+            <label class="checkbox-label"><input type="checkbox" class="infekteCheck" value="Schutzkleidung ist vorhanden."> Schutzkleidung vorhanden</label>
+          </div>
+
+          <label for="infekteFreitext">Ergänzung</label>
+          <textarea id="infekteFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>9. Besonderheiten</summary>
+        <div class="card-content">
+          <p class="hint">Äußerliche Besonderheiten und medizinische Hinweise.</p>
+
+          <label for="besonderheitenStatus">Status</label>
+          <select id="besonderheitenStatus">
+            <option value="">Bitte auswählen</option>
+            <option value="Es sind keine äußerlichen Besonderheiten bekannt.">Keine Besonderheiten bekannt</option>
+            <option value="Es liegen äußerliche Besonderheiten vor.">Besonderheiten vorhanden</option>
+            <option value="Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.">Unklar</option>
+          </select>
+
+          <div id="besonderheitenBereich" style="display:none;">
+            <div class="hint">Mehrere Angaben können ausgewählt werden.</div>
+            <label>Besonderheiten</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Klumpfüßchen"> Klumpfüßchen</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Verkürzte Gliedmaßen"> Verkürzte Gliedmaßen</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Lippen-Kiefer-Gaumenspalte"> Lippen-Kiefer-Gaumenspalte</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Hydrocephalus"> Hydrocephalus</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Hydrops fetalis"> Hydrops fetalis</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Omphalozele"> Omphalozele</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Turner-Syndrom"> Turner-Syndrom</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Spina bifida"> Spina bifida</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Anenzephalie"> Anenzephalie</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Es werden Hautablösungen erwartet."> Es werden Hautablösungen erwartet</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Allgemeine äußerliche Fehlbildungen"> Allgemeine äußerliche Fehlbildungen</label>
+            <label class="checkbox-label"><input type="checkbox" class="besonderheitenCheck" value="Es liegen Fehlbildungen innerer Art vor."> Fehlbildungen innerer Art</label>
+          </div>
+
+          <div class="hint">Die Erklärung zur Besonderheit dient nur als interne Hilfe und erscheint nicht im Bericht.</div>
+          <label for="besonderheitenFreitext">Ergänzung</label>
+          <textarea id="besonderheitenFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>10. Kleidung und Erinnerungsstücke</summary>
+        <div class="card-content">
+          <p class="hint">Mehrere Angaben können kombiniert werden.</p>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Kleidung ist vorhanden."> Kleidung vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Kleidung ist nicht vorhanden."> Kleidung nicht vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Deckchen sind vorhanden."> Deckchen vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Deckchen sind nicht vorhanden."> Deckchen nicht vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Einschlagtücher sind vorhanden."> Einschlagtücher vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Einschlagtücher sind nicht vorhanden."> Einschlagtücher nicht vorhanden</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Die Eltern bringen eine Decke mit."> Eltern bringen eine Decke mit</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Die Eltern bringen Erinnerungsstücke mit."> Eltern bringen Erinnerungsstücke mit</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Die Eltern bringen Kuscheltiere mit."> Eltern bringen Kuscheltiere mit</label>
+          <label class="checkbox-label"><input type="checkbox" class="kleidungCheck" value="Die Eltern bringen eigene Kleidung für ihr Kind mit."> Eltern bringen Kleidung mit</label>
+          <label for="kleidungFreitext">Ergänzung</label>
+          <textarea id="kleidungFreitext" placeholder="Eigene Ergänzung ..."></textarea>
+        </div>
+      </details>
+    </section>
+
+    <aside class="bericht-card">
+      <h2>Gesamtbericht</h2>
+      <div id="bericht" class="bericht">Noch keine Eingaben vorhanden.</div>
+      <div id="copyFallback" class="warning">Kopieren wurde vom Browser blockiert. Der Bericht wurde markiert, bitte manuell mit STRG+C kopieren.</div>
+      <div class="actions">
+        <button id="copyBtn" type="button">Bericht kopieren</button>
+        <button id="resetBtn" type="button" class="secondary">Eingaben löschen</button>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    var bericht = document.getElementById('bericht');
+    var copyBtn = document.getElementById('copyBtn');
+    var resetBtn = document.getElementById('resetBtn');
+    var copyFallback = document.getElementById('copyFallback');
+
+    var rollen = {
+      papa: { artikel: 'dem', telefonArtikel: 'den', bezeichnung: 'Papa', art: 'privat' },
+      mama: { artikel: 'der', telefonArtikel: 'die', bezeichnung: 'Mama', art: 'privat' },
+      oma: { artikel: 'der', telefonArtikel: 'die', bezeichnung: 'Oma', art: 'privat' },
+      freundin: { artikel: 'der', telefonArtikel: 'die', bezeichnung: 'Freundin', art: 'privat' },
+      familienangehoeriger: { artikel: 'einem', telefonArtikel: 'einen', bezeichnung: 'Familienangehörigen', art: 'privat' },
+      hebamme: { bezeichnung: 'Hebamme', art: 'beruf' },
+      schwester: { bezeichnung: 'Schwester', art: 'beruf' },
+      aerztin: { artikel: 'die', bezeichnung: 'Ärztin', art: 'medizin' },
+      arzt: { artikel: 'den', bezeichnung: 'Arzt', art: 'medizin' },
+      seelsorgerin: { bezeichnung: 'Frau', art: 'beruf' },
+      seelsorger: { bezeichnung: 'Herr', art: 'beruf' },
+      sozialdienst: { bezeichnung: 'Sozialdienst', art: 'beruf' },
+      seelsorgeSozialdienst: { bezeichnung: 'Seelsorge / Sozialdienst', art: 'beruf' }
+    };
+
+    function adjektivMitEndung(wort) {
+      if (!wort) return '';
+      return wort + 'en ';
+    }
+
+    function satzzeichen(text) {
+      if (!text) return '';
+      text = text.trim();
+      if (!text) return '';
+      return /[.!?]$/.test(text) ? text : text + '.';
+    }
+
+    function checkboxWerte(selector) {
+      var werte = [];
+      document.querySelectorAll(selector + ':checked').forEach(function(box) {
+        werte.push(box.value);
+      });
+      return werte;
+    }
+
+    function listeMitUnd(werte) {
+      if (!werte.length) return '';
+      if (werte.length === 1) return werte[0];
+      return werte.slice(0, -1).join(', ') + ' und ' + werte[werte.length - 1];
+    }
+
+    function baueAnsprechpartnerSatz() {
+      var rolle = document.getElementById('rolle').value;
+      var beschreibung = document.getElementById('beschreibung').value;
+      var name = document.getElementById('ansprechpartnerName').value.trim();
+      var gespraechsart = document.getElementById('gespraechsart').value;
+      var daten = rollen[rolle];
+      var satz = '';
+
+      if (!daten) return '';
+
+      if (daten.art === 'privat') {
+        var privatName = name ? ' ' + name : '';
+
+        if (gespraechsart === 'telefon') {
+          satz = 'Ich habe ' + daten.telefonArtikel + ' ' + adjektivMitEndung(beschreibung).replace('en ', 'e ') + daten.bezeichnung + privatName + ' am Telefon gehabt.';
+        } else if (gespraechsart === 'ruecksprache') {
+          satz = 'Ich habe mit ' + daten.artikel + ' ' + adjektivMitEndung(beschreibung) + daten.bezeichnung + privatName + ' Rücksprache gehalten.';
+        } else {
+          satz = 'Ich habe mit ' + daten.artikel + ' ' + adjektivMitEndung(beschreibung) + daten.bezeichnung + privatName + ' gesprochen.';
+        }
+      }
+
+      else if (daten.art === 'beruf') {
+
+        if (rolle === 'sozialdienst') {
+          if (gespraechsart === 'telefon') {
+            satz = name ? 'Ich habe ' + name + ' vom Sozialdienst am Telefon gehabt.' : 'Ich habe den Sozialdienst am Telefon gehabt.';
+          } else if (gespraechsart === 'ruecksprache') {
+            satz = name ? 'Ich habe mit ' + name + ' vom Sozialdienst Rücksprache gehalten.' : 'Ich habe mit dem Sozialdienst Rücksprache gehalten.';
+          } else {
+            satz = name ? 'Ich habe mit ' + name + ' vom Sozialdienst gesprochen.' : 'Ich habe mit dem Sozialdienst gesprochen.';
+          }
+        }
+
+        else if (rolle === 'seelsorger' || rolle === 'seelsorgerin') {
+          if (gespraechsart === 'telefon') {
+            satz = name ? 'Ich habe ' + daten.bezeichnung + ' ' + name + ' von der Seelsorge am Telefon gehabt.' : 'Ich habe ' + daten.bezeichnung + ' von der Seelsorge am Telefon gehabt.';
+          } else if (gespraechsart === 'ruecksprache') {
+            satz = name ? 'Ich habe mit ' + daten.bezeichnung + ' ' + name + ' von der Seelsorge Rücksprache gehalten.' : 'Ich habe mit ' + daten.bezeichnung + ' von der Seelsorge Rücksprache gehalten.';
+          } else {
+            satz = name ? 'Ich habe mit ' + daten.bezeichnung + ' ' + name + ' von der Seelsorge gesprochen.' : 'Ich habe mit ' + daten.bezeichnung + ' von der Seelsorge gesprochen.';
+          }
+        }
+
+        else if (rolle === 'seelsorgeSozialdienst') {
+          var anrede = '';
+          if (beschreibung === 'männlich') anrede = 'Herrn ';
+          if (beschreibung === 'weiblich') anrede = 'Frau ';
+
+          var basis = 'Seelsorge / Sozialdienst';
+          var vollerName = name ? anrede + name : (anrede ? anrede + basis : basis);
+
+          if (gespraechsart === 'telefon') {
+            satz = 'Ich habe ' + vollerName + ' am Telefon gehabt.';
+          } else if (gespraechsart === 'ruecksprache') {
+            satz = 'Ich habe mit ' + vollerName + ' Rücksprache gehalten.';
+          } else {
+            satz = 'Ich habe mit ' + vollerName + ' gesprochen.';
+          }
+        }
+
+        else {
+          var berufName = name ? ' ' + name : '';
+
+          if (gespraechsart === 'telefon') {
+            satz = 'Ich habe ' + daten.bezeichnung + berufName + ' am Telefon gehabt.';
+          } else if (gespraechsart === 'ruecksprache') {
+            satz = 'Ich habe mit ' + daten.bezeichnung + berufName + ' Rücksprache gehalten.';
+          } else {
+            satz = 'Ich habe mit ' + daten.bezeichnung + berufName + ' gesprochen.';
+          }
+        }
+      }
+
+      else if (daten.art === 'medizin') {
+        var medizinName = name ? ' ' + name : '';
+
+        if (gespraechsart === 'telefon') {
+          satz = 'Ich habe ' + daten.artikel + ' ' + daten.bezeichnung + medizinName + ' am Telefon gehabt.';
+        } else if (gespraechsart === 'ruecksprache') {
+          satz = 'Ich habe mit ' + daten.artikel + ' ' + daten.bezeichnung + medizinName + ' Rücksprache gehalten.';
+        } else {
+          satz = 'Ich habe mit ' + daten.artikel + ' ' + daten.bezeichnung + medizinName + ' gesprochen.';
+        }
+      }
+
+      return satz;
+    }
+
+    function textMitFreitext(selectId, freitextId) {
+      var selectText = document.getElementById(selectId).value;
+      var freitext = satzzeichen(document.getElementById(freitextId).value);
+      return [selectText, freitext].filter(Boolean).join(' ');
+    }
+
+    function baueAdressBlock() {
+      var felder = [
+        ['Klinik', document.getElementById('adresseKlinik').value.trim()],
+        ['PLZ', document.getElementById('adressePlz').value.trim()],
+        ['Ort', document.getElementById('adresseOrt').value.trim()],
+        ['Straße', document.getElementById('adresseStrasse').value.trim()],
+        ['Hausnummer', document.getElementById('adresseHausnummer').value.trim()],
+        ['Bundesland/Kanton', document.getElementById('adresseRegion').value]
+      ];
+
+      var ausgefuellt = felder.filter(function(eintrag) {
+        return eintrag[1];
+      });
+
+      if (!ausgefuellt.length) return '';
+
+      var zeilen = ['Adressänderung'];
+      ausgefuellt.forEach(function(eintrag) {
+        zeilen.push(eintrag[0] + ': ' + eintrag[1]);
+      });
+
+      return zeilen.join(String.fromCharCode(10));
+    }
+
+    function baueLebendbilderText() {
+      var teile = [];
+      var geburt = document.getElementById('lebendbilderGeburt').value;
+      var ssw = document.getElementById('lebendbilderSsw').value.trim();
+      var alterZahl = document.getElementById('lebendbilderAlterZahl').value.trim();
+      var alterEinheit = document.getElementById('lebendbilderAlterEinheit').value;
+      var prognose = document.getElementById('lebendbilderPrognose').value;
+      var freitext = satzzeichen(document.getElementById('lebendbilderFreitext').value);
+
+      if (geburt) teile.push(geburt);
+      if (ssw && alterZahl && alterEinheit) {
+        teile.push('Das Kind wurde in der ' + ssw + '. SSW geboren und ist ' + alterZahl + ' ' + alterEinheit + ' alt.');
+      } else {
+        if (ssw) teile.push('Das Kind wurde in der ' + ssw + '. SSW geboren.');
+        if (alterZahl && alterEinheit) teile.push('Das Kind ist ' + alterZahl + ' ' + alterEinheit + ' alt.');
+      }
+      if (prognose) teile.push(prognose);
+      if (freitext) teile.push(freitext);
+
+      return teile.join(' ');
+    }
+
+    function baueEinleitungText() {
+      var teile = [];
+      var status = document.getElementById('einleitungStatus').value;
+      var datum = document.getElementById('einleitungDatum').value.trim();
+      var tage = document.getElementById('einleitungTage').value.trim();
+      var freitext = satzzeichen(document.getElementById('einleitungFreitext').value);
+
+      if (status === 'Die Mutter befindet sich zur Einleitung in der Klinik.') {
+        if (tage) {
+          teile.push('Die Mutter befindet sich seit ' + tage + ' Tagen zur Einleitung in der Klinik.');
+        } else if (datum) {
+          teile.push('Die Mutter befindet sich seit dem ' + datum + ' zur Einleitung in der Klinik.');
+        } else {
+          teile.push(status);
+        }
+      } else if (status === 'Die Mutter wird zur Einleitung in die Klinik gehen.') {
+        if (datum) {
+          teile.push('Die Mutter wird am ' + datum + ' zur Einleitung in die Klinik gehen.');
+        } else if (tage) {
+          teile.push('Die Mutter wird in ' + tage + ' Tagen zur Einleitung in die Klinik gehen.');
+        } else {
+          teile.push(status);
+        }
+      } else if (status) {
+        teile.push(status);
+      }
+
+      if (freitext) teile.push(freitext);
+      return teile.join(' ');
+    }
+
+    function checkboxTexte(selector) {
+      return checkboxWerte(selector).join(' ');
+    }
+
+    function baueSpracheText() {
+      var vals = checkboxWerte('.spracheCheck');
+      if (!vals.length) return '';
+
+      var parts = [];
+
+      if (vals.includes('Die Eltern sprechen kein Deutsch.') && vals.includes('Die Kommunikation auf Englisch ist gut möglich.')) {
+        parts.push('Die Eltern sprechen kein Deutsch, die Kommunikation auf Englisch ist jedoch gut möglich.');
+      } else if (vals.includes('Die Eltern sprechen kein Deutsch.') && vals.includes('Die Verständigung mit einem Übersetzungsprogramm funktioniert gut.')) {
+        parts.push('Die Eltern sprechen kein Deutsch, die Verständigung mit einem Übersetzungsprogramm funktioniert gut.');
+      } else {
+        vals.forEach(function(v) { parts.push(v); });
+      }
+
+      return parts.join(' ');
+    }
+
+    function pruefeSichtbarkeit() {
+      var infektStatus = document.getElementById('infekteStatus').value;
+      var besonderheitenStatus = document.getElementById('besonderheitenStatus').value;
+
+      document.getElementById('infekteBereich').style.display = infektStatus === 'Es liegen Infekte vor.' ? 'block' : 'none';
+      document.getElementById('besonderheitenBereich').style.display = besonderheitenStatus === 'Es liegen äußerliche Besonderheiten vor.' ? 'block' : 'none';
+    }
+
+    function baueSituationText() {
+      var kindText = document.getElementById('situationKind').value;
+      var geschwisterText = document.getElementById('situationGeschwister').value;
+      var situationSprache = baueSpracheText();
+      var situationBasis = textMitFreitext('situationStatus', 'situationFreitext');
+
+      var kindVerknuepfung = {
+        'Das Mäuschen ist das zweite Kind der Familie.': ['Die Familie hat ein Kind an der Hand.', 'ein Kind', 'zweite'],
+        'Das Mäuschen ist das dritte Kind der Familie.': ['Die Familie hat zwei Kinder an der Hand.', 'zwei Kinder', 'dritte'],
+        'Das Mäuschen ist das vierte Kind der Familie.': ['Die Familie hat drei Kinder an der Hand.', 'drei Kinder', 'vierte'],
+        'Das Mäuschen ist das fünfte Kind der Familie.': ['Die Familie hat vier Kinder an der Hand.', 'vier Kinder', 'fünfte'],
+        'Das Mäuschen ist das sechste Kind der Familie.': ['Die Familie hat fünf Kinder an der Hand.', 'fünf Kinder', 'sechste'],
+        'Das Mäuschen ist das siebte Kind der Familie.': ['Die Familie hat sechs Kinder an der Hand.', 'sechs Kinder', 'siebte']
+      };
+
+      if (kindVerknuepfung[kindText] && geschwisterText === kindVerknuepfung[kindText][0]) {
+        return ['Die Familie hat bereits ' + kindVerknuepfung[kindText][1] + ' an der Hand, das Mäuschen wäre das ' + kindVerknuepfung[kindText][2] + ' Kind.', situationSprache, situationBasis].filter(Boolean).join(' ');
+      }
+
+      return [kindText, geschwisterText, situationSprache, situationBasis]
+        .filter(Boolean)
+        .join(' ')
+        .replace(/  +/g, ' ')
+        .trim();
+    }
+
+    function baueInfekteText() {
+      var infektStatus = document.getElementById('infekteStatus').value;
+      var infektArt = checkboxWerte('.infekteCheck');
+      var infektText = satzzeichen(document.getElementById('infekteFreitext').value);
+      var schutzkleidungSatz = 'Schutzkleidung ist vorhanden.'
+      var infekte = '';
+
+      if (!infektStatus) {
+        return 'Hinweis: Bitte Infektstatus auswählen.';
+      }
+
+      if (infektStatus === 'Es liegen Infekte vor.' && !infektArt.length) {
+        return 'Hinweis: Bitte mindestens einen Infekt auswählen.';
+      }
+
+      if (infektStatus === 'Es liegen Infekte vor.') {
+        var hatSchutzkleidung = infektArt.includes(schutzkleidungSatz);
+        var reineInfekte = infektArt.filter(function(eintrag) {
+          return eintrag !== schutzkleidungSatz;
+        });
+
+        if (reineInfekte.length) {
+          infekte = 'Es liegen folgende Infekte vor: ' + listeMitUnd(reineInfekte) + '.';
+        }
+        if (hatSchutzkleidung) {
+          infekte += (infekte ? ' ' : '') + schutzkleidungSatz;
+        }
+        if (infektText) infekte += (infekte ? ' ' : '') + infektText;
+        return infekte;
+      }
+
+      return [infektStatus, infektText].filter(Boolean).join(' ');
+    }
+
+    function baueKleidungText() {
+      var werte = checkboxWerte('.kleidungCheck');
+      var freitext = satzzeichen(document.getElementById('kleidungFreitext').value);
+      var teile = [];
+
+      var vorhanden = [];
+      var nichtVorhanden = [];
+
+      if (werte.includes('Kleidung ist vorhanden.')) vorhanden.push('Kleidung');
+      if (werte.includes('Deckchen sind vorhanden.')) vorhanden.push('Deckchen');
+      if (werte.includes('Einschlagtücher sind vorhanden.')) vorhanden.push('Einschlagtücher');
+
+      if (werte.includes('Kleidung ist nicht vorhanden.')) nichtVorhanden.push('Kleidung');
+      if (werte.includes('Deckchen sind nicht vorhanden.')) nichtVorhanden.push('Deckchen');
+      if (werte.includes('Einschlagtücher sind nicht vorhanden.')) nichtVorhanden.push('Einschlagtücher');
+
+      if (vorhanden.length) {
+        teile.push(listeMitUnd(vorhanden) + ' sind vorhanden.');
+      }
+
+      if (nichtVorhanden.length) {
+        teile.push(listeMitUnd(nichtVorhanden) + ' sind nicht vorhanden.');
+      }
+
+      werte.forEach(function(eintrag) {
+        if (!eintrag.includes('vorhanden') && !eintrag.includes('nicht vorhanden')) {
+          teile.push(eintrag);
+        }
+      });
+
+      if (freitext) teile.push(freitext);
+
+      return teile.join(' ');
+    }
+
+    function baueBesonderheitenText() {
+      var besonderheitenStatus = document.getElementById('besonderheitenStatus').value;
+      var besonderheitenArt = checkboxWerte('.besonderheitenCheck');
+      var besonderheitenText = satzzeichen(document.getElementById('besonderheitenFreitext').value);
+      var teile = [];
+
+      if (besonderheitenArt.includes('Allgemeine äußerliche Fehlbildungen')) {
+        teile.push('Es liegen allgemeine äußerliche Fehlbildungen vor.');
+      }
+      if (besonderheitenArt.includes('Es werden Hautablösungen erwartet.')) {
+        teile.push('Es werden Hautablösungen erwartet.');
+      }
+      if (besonderheitenArt.includes('Es liegen Fehlbildungen innerer Art vor.')) {
+        teile.push('Es liegen Fehlbildungen innerer Art vor.');
+      }
+
+      var normaleBesonderheiten = besonderheitenArt.filter(function(eintrag) {
+        return eintrag !== 'Allgemeine äußerliche Fehlbildungen' && eintrag !== 'Es werden Hautablösungen erwartet.' && eintrag !== 'Es liegen Fehlbildungen innerer Art vor.';
+      });
+
+      if (normaleBesonderheiten.length) {
+        teile.push('Folgende Besonderheiten liegen vor: ' + listeMitUnd(normaleBesonderheiten) + '.');
+      } else if (besonderheitenStatus && !teile.length) {
+        teile.push(besonderheitenStatus);
+      }
+
+      if (besonderheitenText) teile.push(besonderheitenText);
+      return teile.join(' ');
+    }
+
+    function baueBericht() {
+      pruefeSichtbarkeit();
+      var saetze = [];
+      var begruessung = document.getElementById('begruessung').value;
+      var abschlussfrage = document.getElementById('abschlussfrage').value;
+      var grussformel = document.getElementById('grussformel').value;
+      var adressBlock = baueAdressBlock();
+      var ansprechpartner = baueAnsprechpartnerSatz();
+      var lebendbilder = baueLebendbilderText();
+      var lebendbilderHinweis = lebendbilder ? 'Hier geht es um Lebendbilder, es eilt.' : '';
+      var einleitung = baueEinleitungText();
+      var situation = baueSituationText();
+      var bilder = [checkboxTexte('.bilderCheck'), satzzeichen(document.getElementById('bilderFreitext').value)].filter(Boolean).join(' ');
+      var wasser = textMitFreitext('wasserStatus', 'wasserFreitext');
+      var infekte = baueInfekteText();
+      var besonderheiten = baueBesonderheitenText();
+      var kleidung = baueKleidungText();
+
+      if (begruessung) saetze.push(begruessung);
+      if (!begruessung && lebendbilderHinweis) saetze.push('Hallo,');
+      if (lebendbilderHinweis) saetze.push(lebendbilderHinweis);
+      [ansprechpartner, lebendbilder, einleitung, situation, bilder, wasser, infekte, besonderheiten, kleidung].forEach(function(text) {
+        if (text) saetze.push(text);
+      });
+      if (adressBlock) saetze.push(adressBlock);
+      if (abschlussfrage) saetze.push(abschlussfrage);
+      var grussName = document.getElementById('grussName').value.trim();
+      if (grussformel) {
+        saetze.push(grussName ? grussformel + ', ' + grussName : grussformel);
+      }
+
+      bericht.textContent = saetze.length ? saetze.join(String.fromCharCode(10) + String.fromCharCode(10)) : 'Noch keine Eingaben vorhanden.';
+    }
+
+    function markiereBerichtFuerManuellesKopieren() {
+      var range = document.createRange();
+      range.selectNodeContents(bericht);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      copyFallback.style.display = 'block';
+    }
+
+    function fallbackKopieren(text) {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      var ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch (error) {
+        ok = false;
+      }
+
+      document.body.removeChild(textarea);
+      if (!ok) markiereBerichtFuerManuellesKopieren();
+      return ok;
+    }
+
+    async function kopiereBericht() {
+      var text = bericht.textContent;
+      copyFallback.style.display = 'none';
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else if (!fallbackKopieren(text)) {
+          return;
+        }
+
+        copyBtn.textContent = 'Kopiert ✓';
+        setTimeout(function() { copyBtn.textContent = 'Bericht kopieren'; }, 1500);
+      } catch (error) {
+        if (fallbackKopieren(text)) {
+          copyBtn.textContent = 'Kopiert ✓';
+          setTimeout(function() { copyBtn.textContent = 'Bericht kopieren'; }, 1500);
+        }
+      }
+    }
+
+    document.querySelectorAll('select, input, textarea').forEach(function(field) {
+      field.addEventListener('input', baueBericht);
+      field.addEventListener('change', baueBericht);
+      field.addEventListener('click', baueBericht);
+    });
+
+    document.getElementById('adressePlz').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 5);
+      baueBericht();
+    });
+
+    document.getElementById('lebendbilderSsw').addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9+]/g, '').slice(0, 4);
+      baueBericht();
+    });
+
+    document.getElementById('einleitungTage').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '');
+      baueBericht();
+    });
+
+    copyBtn.addEventListener('click', kopiereBericht);
+
+    resetBtn.addEventListener('click', function() {
+      document.querySelectorAll('select, input, textarea').forEach(function(field) {
+        if (field.type === 'checkbox') {
+          field.checked = false;
+        } else {
+          field.value = '';
+        }
+      });
+      document.getElementById('gespraechsart').value = 'gesprochen';
+      copyFallback.style.display = 'none';
+      baueBericht();
+    });
+
+    function runTests() {
+      console.assert((function(){ return 'Hier geht es um Lebendbilder, es eilt.'; })() === 'Hier geht es um Lebendbilder, es eilt.', 'Lebendbilder-Hinweis vorhanden');
+      console.assert(listeMitUnd(['Corona']) === 'Corona', 'Liste mit einem Eintrag');
+      console.assert(listeMitUnd(['Corona', 'HIV']) === 'Corona und HIV', 'Liste mit zwei Einträgen');
+      console.assert(listeMitUnd(['Corona', 'HIV', 'Influenza']) === 'Corona, HIV und Influenza', 'Liste mit drei Einträgen');
+      console.assert(satzzeichen('Test') === 'Test.', 'Satzzeichen ergänzt Punkt');
+      console.assert(satzzeichen('Test!') === 'Test!', 'Satzzeichen erhält Ausrufezeichen');
+      console.assert(satzzeichen('') === '', 'Leerer Text bleibt leer');
+      console.assert(listeMitUnd(['A', 'B']) === 'A und B', 'Und-Verknüpfung korrekt');
+      console.assert(listeMitUnd(['A', 'B', 'C']) === 'A, B und C', 'Mehrfachliste korrekt');
+      console.assert('Liebe Grüße, Manuela'.includes('Manuela'), 'Grußname vorhanden');
+      console.assert(listeMitUnd(['Kleidung', 'Deckchen']) === 'Kleidung und Deckchen', 'Kleidungslogik korrekt');
+    }
+
+    runTests();
+    baueBericht();
+  </script>
+</body>
+</html>

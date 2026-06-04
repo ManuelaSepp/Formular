@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>DSK Einsatzanforderung V15w Berichtlogik</title>
+<style>
+:root{
+  --bg:#eaf0f4;
+  --text:#111827;
+  --muted:#5f6f7a;
+  --line:#ccd5dc;
+  --field:#ffffff;
+  --panel:#dde6ee;
+  --green:#2f7d5b;
+  --green-soft:#e5f3ec;
+  --danger:#b91c1c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:30px;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+.wrap{max-width:1200px;margin:0 auto}
+h1{margin:0 0 8px;font-size:34px;font-weight:700}
+h2{margin:0 0 18px;font-size:23px;font-weight:700}
+p{margin:6px 0;color:var(--muted)}
+.step{
+  display:none;
+  padding:24px 0;
+  border-bottom:1px solid var(--line);
+}
+.step.open{display:block}
+.step.done h2::after{
+  content:" ✓";
+  color:var(--green);
+}
+.step.report-step{display:block !important;border-bottom:0;margin-top:28px}
+.grid2,.grid3{display:grid;gap:15px}
+.grid2{grid-template-columns:1fr 1fr}
+.grid3{grid-template-columns:1fr 1fr 1fr}
+input,select,textarea{
+  width:100%;
+  min-height:40px;
+  padding:10px;
+  border:1px solid #d3dbe2;
+  border-radius:5px;
+  background:var(--field);
+  font-size:14px;
+}
+textarea{min-height:120px;resize:vertical}
+label.option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+  line-height:1.35;
+}
+input[type="checkbox"],
+input[type="radio"]{
+  width:17px;
+  height:17px;
+  min-height:auto;
+  flex:0 0 17px;
+  padding:0;
+  margin:0;
+  appearance:none;
+  -webkit-appearance:none;
+  border:1px solid #8b98a5;
+  border-radius:50%;
+  background:#fff;
+}
+input[type="checkbox"]:checked,
+input[type="radio"]:checked{
+  background:#111827;
+  box-shadow:inset 0 0 0 4px #fff;
+}
+.nav{
+  display:flex;
+  gap:12px;
+  margin-top:22px;
+}
+button{
+  border:0;
+  border-radius:7px;
+  padding:11px 18px;
+  font-size:15px;
+  cursor:pointer;
+}
+.btn-next{background:var(--green);color:white}
+.btn-prev{background:#fff;color:#111827;border:1px solid #ccd5dc}
+.notice{
+  display:none;
+  margin-top:14px;
+  padding:12px 14px;
+  border-left:4px solid var(--danger);
+  background:#fff;
+  border-radius:5px;
+}
+.logic-note{font-size:13px;color:var(--muted);margin-top:8px}
+.logic-alert{
+  margin-top:12px;
+  padding:11px 13px;
+  border-left:4px solid var(--green);
+  background:var(--green-soft);
+  border-radius:5px;
+  font-size:14px;
+  line-height:1.35;
+}
+.hidden{display:none!important}
+.report{
+  background:var(--panel);
+  padding:20px;
+  border-radius:8px;
+  margin-top:24px;
+}
+.reportbox{
+  min-height:280px;
+  background:#fff;
+  border:1px solid #cbd5dc;
+  border-radius:5px;
+  padding:14px;
+  white-space:pre-wrap;
+  line-height:1.5;
+  font-size:15px;
+}
+
+.field-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.field-label{
+  font-size:13px;
+  line-height:1.25;
+  color:var(--muted);
+  font-weight:600;
+}
+.small-note-field{min-height:40px;}
+.lf-hint{
+  font-size:13px;
+  line-height:1.35;
+  color:var(--muted);
+  margin-top:7px;
+}
+.lf-hint strong{
+  color:var(--text);
+}
+
+
+.block-title{font-weight:700;margin:16px 0 8px}
+@media(max-width:900px){
+  body{padding:18px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+
+/* Admin-Modus wie gehabt: Strg + Shift + M
+   Alle Karten sichtbar, aber nicht automatisch geöffnet. */
+body.admin-mode .step{
+  display:block !important;
+}
+body.admin-mode .step:not(.admin-open):not(.report-step){
+  opacity:1;
+}
+body.admin-mode .step.report-step{
+  display:block !important;
+}
+body.admin-mode .step h2::after{
+  content:" · Admin";
+  color:#5f6f7a;
+  font-size:13px;
+  font-weight:600;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Fotograf anfordern</h1>
+<p>Leitfadenmodus mit Weiter-Buttons. Jeder Abschnitt wird nacheinander geöffnet.</p>
+<section class="step open" data-title="Einverständnis">
+<h2>Einverständnis vorhanden? *</h2>
+<label class="option"><input id="consent_yes" name="consent" type="radio" value="ja"/><span>Die Eltern sind mit den Bildern einverstanden.</span></label>
+<label class="option"><input name="consent" type="radio" value="nicht_informiert"/><span>Die Eltern sind nicht über eine Anforderung eines Fotografen informiert.</span></label>
+<label class="option"><input name="consent" type="radio" value="entscheidung"/><span>Die Eltern sind noch in der Entscheidungsphase.</span></label>
+<div class="notice" id="blockedNotice">Es kann aktuell keine Einsatzanforderung erstellt werden.</div>
+</section>
+<section class="step" data-title="Mitarbeiter">
+<h2>Welcher Mitarbeiter hat die Einsatzanforderung erstellt? *</h2>
+<div class="field-wrap" id="mitarbeiterWrapField"><label class="field-label" for="mitarbeiter">Mitarbeiter/in *</label><input id="mitarbeiter" placeholder="" required="required"/></div><div class="notice" id="mitarbeiterPflichtHinweis">Bitte Mitarbeiter/in eintragen.</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button></div>
+</section>
+<section class="step" data-title="Klinik">
+<h2>Angaben zur Klinik oder zum Ort der Geburt</h2>
+<div class="grid2">
+<div class="field-wrap" id="klinikModusWrapField"><label class="field-label" for="klinikModus">Klinik auswählen / manuell eingeben</label><select id="klinikModus">
+<option value=""></option>
+<option>Klinik auswählen</option>
+<option>Manuell eingeben</option>
+</select></div>
+<div class="field-wrap" id="klinikWrapField"><label class="field-label" for="klinik">Klinik suchen oder eingeben</label><input id="klinik" placeholder="Klinik suchen oder eingeben"/></div>
+<div class="field-wrap" id="plzWrapField"><label class="field-label" for="plz">PLZ</label><input id="plz" placeholder="PLZ"/></div>
+<div class="field-wrap" id="ortWrapField"><label class="field-label" for="ort">Ort / Stadt</label><input id="ort" placeholder="Ort / Stadt"/></div>
+<div class="field-wrap" id="strasseWrapField"><label class="field-label" for="strasse">Straße, HNr.</label><input id="strasse" placeholder="Straße, HNr."/></div>
+<div class="field-wrap" id="landWrapField"><label class="field-label" for="land">Land / Bundesland</label><input id="land" placeholder="Land / Bundesland"/></div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Ansprechpartner">
+<h2>Ansprechpartner/in vor Ort</h2>
+<div class="grid3">
+<div class="field-wrap" id="ansprechpartnerWrapField"><label class="field-label" for="ansprechpartner">Name Ansprechpartner/in</label><input id="ansprechpartner" placeholder="Name Ansprechpartner/in"/></div>
+<div class="field-wrap" id="funktionWrapField"><label class="field-label" for="funktion">Funktion</label><select id="funktion">
+<option value=""></option>
+<option>Mutter</option><option>Vater</option><option>Hebamme</option><option>Schwester</option>
+<option>Arzt</option><option>Ärztin</option><option>Pflege</option><option>Seelsorge</option><option>Sonstige</option>
+</select></div>
+<div class="field-wrap" id="gespraechWrapField"><label class="field-label" for="gespraech">Gesprächssituation</label><select id="gespraech">
+<option value=""></option>
+<option>traurig</option><option>gefasst</option><option>weint viel</option><option>ruhig</option><option>dankbar</option><option>überfordert</option><option>wechselnd</option><option>schwer einschätzbar</option><option>nicht gesprochen</option>
+</select></div>
+</div>
+<div class="grid2" style="margin-top:15px">
+<div class="field-wrap" id="telefonWrapField"><label class="field-label" for="telefon">Telefon / Mobil</label><input id="telefon" placeholder="Telefon / Mobil"/></div>
+<div class="field-wrap" id="emailWrapField"><label class="field-label" for="email">E-Mail</label><input id="email" placeholder="E-Mail"/></div><div class="field-wrap" id="ansprechpartnerErgaenzungWrapField"><label class="field-label" for="ansprechpartnerErgaenzung">Ergänzung</label><input class="small-note-field" id="ansprechpartnerErgaenzung" placeholder=""/></div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Sternenkind">
+<h2>Angaben zum Sternenkind</h2>
+<div class="grid3">
+<div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div>
+<div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes (optional)</label><input id="kindName" placeholder="Vorname des Kindes (optional)"/></div>
+<div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><option>Mädchen</option><option>Junge</option><option>Unbekannt</option></select></div>
+<div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge">
+<option value=""></option>
+<option>Zwillinge</option>
+<option>Drillinge</option>
+<option>Mehrlinge</option>
+</select></div>
+<div class="field-wrap hidden" id="mehrlingsstatusWrapField"><label class="field-label" for="mehrlingsstatus">Mehrlingsstatus</label><select id="mehrlingsstatus">
+<option value=""></option>
+</select></div>
+<div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation">
+<option value=""></option>
+<option>verstorben</option>
+<option>noch lebend</option>
+<option>Lebendbilder</option>
+<option>Einleitung</option>
+<option>Kaiserschnitt</option>
+</select></div>
+<div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" placeholder=""/></div>
+<div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
+<option value=""></option>
+<option>SSW</option>
+<option>Monat(e)</option>
+<option>Jahr(e)</option>
+</select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div>
+<div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div>
+<div id="wasserWrap">
+<div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
+<option value=""></option>
+</select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/></div><div class="field-wrap" id="wasserWrapField"><label class="field-label" for="wasser">Wassermethode</label><select id="wasser">
+<option value=""></option>
+<option>Ja</option>
+<option>Nein</option>
+<option>nicht möglich</option>
+</select><div class="lf-hint" id="wasserMethodeHinweise">
+<p><strong>Die Wassermethode wird bei bereits verstorbenen Kindern angewendet.</strong><br/>
+Sie dient dazu, die Haut zu stabilisieren und ein möglichst natürliches Erscheinungsbild für die Erinnerungsbilder zu erhalten.</p>
+<p><strong>Hinweis WM:</strong><br/>
+Anwendung Wassermethode<br/>
+Ein Gefäß mit kühlem Leitungswasser befüllen.<br/>
+Das Kind hineinlegen und kühl stellen.<br/>
+Bei Bedarf Wasser wechseln.<br/>
+Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
+<p><strong>Hinweis:</strong> In den Unikliniken Freiburg, Bonn, Münster, dem AKH Wien sowie dem Uniklinikum Linz bitte nicht nach der Wassermethode fragen.</p>
+</div></div>
+</div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Eltern/Familie">
+<h2>Eltern und Familie</h2>
+<div class="grid2">
+<div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option>1. Kind</option><option>2. Kind</option><option>3. Kind</option><option>4. Kind</option><option>5. Kind oder mehr</option></select></div>
+<div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option>keine Kinder an der Hand</option><option>1 Kind an der Hand</option><option>2 Kinder an der Hand</option><option>3 Kinder an der Hand</option><option>mehrere Kinder an der Hand</option></select></div>
+<div class="field-wrap" id="elternDabeiWrapField"><label class="field-label" for="elternDabei">Eltern bei den Bildern dabei?</label><select id="elternDabei"><option value=""></option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
+<div class="field-wrap" id="geschwisterDabeiWrapField"><label class="field-label" for="geschwisterDabei">Geschwister bei den Bildern dabei?</label><select id="geschwisterDabei"><option value=""></option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Bilder/Erinnerungen">
+<h2>Bilder und Erinnerungen</h2>
+<div class="grid2">
+<div class="field-wrap" id="kleidungWrapField"><label class="field-label" for="kleidung">Ist Kleidung vorhanden?</label><select id="kleidung"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
+<div class="field-wrap" id="deckchenWrapField"><label class="field-label" for="deckchen">Sind Deckchen vorhanden?</label><select id="deckchen"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
+<div class="field-wrap" id="erinnerungWrapField"><label class="field-label" for="erinnerung">Bringen die Eltern eigene Erinnerungsstücke mit?</label><select id="erinnerung"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Infekte/Besonderheiten">
+<h2>Infekte / Besonderheiten</h2>
+<div class="grid2">
+<div>
+<div class="field-wrap" id="infektStatusWrapField"><label class="field-label" for="infektStatus">Sind Infekte vorhanden?</label><select id="infektStatus">
+<option value=""></option>
+<option>Nein</option>
+<option>Ja</option>
+<option>Unklar</option>
+</select></div>
+<div class="hidden" id="infektListe">
+<div class="block-title">Infekte</div>
+<label class="option"><input class="infektCheck" type="checkbox" value="MRSA"/><span>MRSA</span></label>
+<label class="option"><input class="infektCheck" type="checkbox" value="Covid"/><span>Covid</span></label>
+<label class="option"><input class="infektCheck" type="checkbox" value="Norovirus"/><span>Norovirus</span></label>
+<label class="option"><input class="infektCheck" type="checkbox" value="Hepatitis"/><span>Hepatitis</span></label>
+<label class="option"><input class="infektCheck" type="checkbox" value="HIV"/><span>HIV</span></label>
+<label class="option"><input class="infektCheck" type="checkbox" value="Sonstiger Infekt"/><span>Sonstiger Infekt</span></label>
+</div>
+</div>
+<div>
+<div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind äußerliche Besonderheiten vorhanden?</label><select id="besonderheitStatus">
+<option value=""></option>
+<option>Nein</option>
+<option>Ja</option>
+<option>Unklar</option>
+</select></div>
+<div class="hidden" id="besonderheitenListe">
+<div class="block-title">Äußerliche Besonderheiten</div>
+<label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label>
+<label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label>
+<label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label>
+<label class="option"><input class="besonderheitCheck" type="checkbox" value="Herzfehler"/><span>Herzfehler</span></label>
+<label class="option"><input class="besonderheitCheck" type="checkbox" value="Sonstige Besonderheit"/><span>Sonstige Besonderheit</span></label>
+</div>
+</div>
+</div>
+<div class="field-wrap" id="medizinErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="medizinErgaenzung">Ergänzung</label><input id="medizinErgaenzung" placeholder=""/><div class="lf-hint">Wenn Infekte oder äußerliche Besonderheiten oben nicht aufgeführt sind, bitte hier ergänzen.</div></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step" data-title="Weitere Hinweise">
+<h2>Weitere Hinweise</h2>
+<div class="grid2">
+<div class="field-wrap" id="kommunikationWrapField"><label class="field-label" for="kommunikation">Kommunikation</label><select id="kommunikation"><option value=""></option><option>Deutsch gut möglich</option><option>Wenig Deutsch</option><option>Kein Deutsch</option><option>Englisch gut möglich</option><option>Sonstige Sprache</option></select></div>
+</div>
+<div class="field-wrap" id="hinweiseWrapField"><label class="field-label" for="hinweise">Weitere Hinweise</label><textarea id="hinweise" placeholder="Weitere Hinweise" style="margin-top:15px"></textarea></div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</section>
+<section class="step report-step" data-title="Bericht">
+<div class="report">
+<h2>Automatisch erzeugte Einsatzanforderung</h2>
+<div class="reportbox" id="report">Berichtsausgabe</div>
+</div>
+<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button></div>
+</section>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+
+const allSteps = Array.from(document.querySelectorAll(".step"));
+const consentStep = allSteps.find(step => step.dataset.title === "Einverständnis");
+const reportStep = allSteps.find(step => step.classList.contains("report-step") || step.dataset.title === "Bericht");
+const workSteps = allSteps.filter(step => step !== consentStep && step !== reportStep);
+
+let currentWorkIndex = -1;
+
+function val(id){
+  return ($(id)?.value || "").trim();
+}
+
+function checkedValues(cls){
+  return Array.from(document.querySelectorAll("." + cls + ":checked")).map(el => el.value);
+}
+
+function consentValue(){
+  return document.querySelector('input[name="consent"]:checked')?.value || "";
+}
+
+function stepHasInput(step){
+  return Array.from(step.querySelectorAll("input, select, textarea")).some(field => {
+    if(field.type === "radio" || field.type === "checkbox") return field.checked;
+    return (field.value || "").trim() !== "";
+  });
+}
+
+function setOpenStates(){
+  const admin = document.body.classList.contains("admin-mode");
+
+  allSteps.forEach(step => {
+    step.classList.remove("open");
+    step.classList.remove("done");
+  });
+
+  consentStep.classList.add("open");
+
+  if(reportStep){
+    reportStep.classList.add("open");
+  }
+
+  if(consentValue() !== "ja"){
+    return;
+  }
+
+  if(admin){
+    workSteps.forEach(step => step.classList.add("open"));
+  }else if(currentWorkIndex >= 0 && workSteps[currentWorkIndex]){
+    workSteps[currentWorkIndex].classList.add("open");
+  }
+
+  workSteps.forEach((step, index) => {
+    if(index !== currentWorkIndex && stepHasInput(step)){
+      step.classList.add("done");
+    }
+  });
+}
+
+function updateConsentFlow(){
+  const consent = consentValue();
+
+  if(consent === "ja"){
+    $("blockedNotice").style.display = "none";
+    currentWorkIndex = 0;
+  }else{
+    currentWorkIndex = -1;
+    $("blockedNotice").style.display = consent ? "block" : "none";
+  }
+
+  recalcAll();
+
+  if(consent === "ja" && workSteps[0]){
+    workSteps[0].scrollIntoView({behavior:"smooth", block:"start"});
+  }
+}
+
+
+
+
+function validateCurrentStep(){
+  if(workSteps[currentWorkIndex]?.dataset.title === "Mitarbeiter"){
+    const ok = val("mitarbeiter").trim().length >= 2;
+    const notice = $("mitarbeiterPflichtHinweis");
+    if(notice){
+      notice.style.display = ok ? "none" : "block";
+      notice.textContent = "Bitte mindestens 2 Buchstaben eingeben.";
+    }
+    return ok;
+  }
+  return true;
+}
+
+function nextStep(){
+  if(consentValue() !== "ja") return;
+
+  if(!validateCurrentStep()) return;
+
+  if(currentWorkIndex < 0){
+    currentWorkIndex = 0;
+  }else if(currentWorkIndex < workSteps.length - 1){
+    currentWorkIndex++;
+  }
+
+  recalcAll();
+
+  if(workSteps[currentWorkIndex]){
+    workSteps[currentWorkIndex].scrollIntoView({behavior:"smooth", block:"start"});
+  }
+}
+
+function prevStep(){
+  if(consentValue() !== "ja") return;
+
+  if(currentWorkIndex > 0){
+    currentWorkIndex--;
+  }
+
+  recalcAll();
+
+  if(workSteps[currentWorkIndex]){
+    workSteps[currentWorkIndex].scrollIntoView({behavior:"smooth", block:"start"});
+  }
+}
+
+function syncKinderHand(){
+  const kind = val("kindFamilie");
+  const hand = $("kinderHand");
+  const handWrap = $("kinderHandWrapField") || hand;
+  if(!hand || !handWrap) return;
+
+  const current = hand.value;
+
+  const allOptions = [
+    { value:"", text:"" },
+    { value:"keine Kinder an der Hand", text:"keine Kinder an der Hand" },
+    { value:"1 Kind an der Hand", text:"1 Kind an der Hand" },
+    { value:"2 Kinder an der Hand", text:"2 Kinder an der Hand" },
+    { value:"3 Kinder an der Hand", text:"3 Kinder an der Hand" },
+    { value:"mehrere Kinder an der Hand", text:"mehrere Kinder an der Hand" }
+  ];
+
+  const allowedByKind = {
+    "1. Kind": ["keine Kinder an der Hand"],
+    "2. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand"],
+    "3. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand"],
+    "4. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand", "3 Kinder an der Hand"],
+    "5. Kind oder mehr": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand", "3 Kinder an der Hand", "mehrere Kinder an der Hand"]
+  };
+
+  const allowed = allowedByKind[kind] || allOptions.map(option => option.value);
+
+  hand.innerHTML = "";
+  allOptions
+    .filter(option => allowed.includes(option.value))
+    .forEach(optionData => {
+      const option = document.createElement("option");
+      option.value = optionData.value;
+      option.textContent = optionData.text;
+      hand.appendChild(option);
+    });
+
+  if(kind === "1. Kind"){
+    hand.value = "keine Kinder an der Hand";
+    handWrap.classList.add("hidden");
+  }else{
+    handWrap.classList.remove("hidden");
+    hand.value = allowed.includes(current) ? current : "";
+  }
+
+  hand.disabled = false;
+}
+
+
+function getKindNameParts(){
+  const raw = val("kindName");
+  if(!raw) return [];
+
+  // Nur klare Trenner: &, +, und. Kein Leerzeichen und kein Bindestrich.
+  return raw
+    .split(/\s*(?:&|\+|\bund\b)\s*/i)
+    .map(part => part.trim())
+    .filter(Boolean);
+}
+
+function detectedKindCount(){
+  const parts = getKindNameParts();
+  if(parts.length >= 3) return 3;
+  if(parts.length === 2) return 2;
+  return 1;
+}
+
+function updateGeschlechtOptions(){
+  const geschlecht = $("geschlecht");
+  if(!geschlecht) return;
+
+  const current = geschlecht.value;
+  const count = detectedKindCount();
+
+  let mode = "einzelkind";
+  let options = ["", "Mädchen", "Junge", "Unbekannt"];
+
+  if(count === 2){
+    mode = "zwillinge";
+    options = ["", "MM", "JJ", "MJ", "JM", "Unbekannt"];
+  }else if(count >= 3){
+    mode = "drillinge";
+    options = ["", "MMM", "JJJ", "MMJ", "MJM", "JMM", "JJM", "JMJ", "MJJ", "Unbekannt"];
+  }
+
+  const uniqueOptions = [...new Set(options)];
+  const existingValues = Array.from(geschlecht.options).map(option => option.value).join("|");
+
+  if(geschlecht.dataset.mode === mode && existingValues === uniqueOptions.join("|")){
+    return;
+  }
+
+  geschlecht.innerHTML = "";
+  uniqueOptions.forEach(text => {
+    const option = document.createElement("option");
+    option.value = text;
+    option.textContent = text;
+    geschlecht.appendChild(option);
+  });
+
+  geschlecht.dataset.mode = mode;
+  geschlecht.value = uniqueOptions.includes(current) ? current : "";
+}
+
+function kindNameHasMehrlingsTrenner(){
+  const name = val("kindName").toLowerCase();
+  return name.includes("&") || name.includes("+") || /\bund\b/i.test(name);
+}
+
+function kindNameHasMehrlingsTrenner(){
+  return detectedKindCount() >= 2;
+}
+
+function updateMehrlingsSituationOptions(){
+  const art = val("mehrlinge");
+  const mehrlingeWrap = $("mehrlingeWrapField") || $("mehrlinge");
+  const statusWrap = $("mehrlingsstatusWrapField") || $("mehrlingsstatus");
+  const status = $("mehrlingsstatus");
+  if(!status) return;
+
+  const showMehrlinge = kindNameHasMehrlingsTrenner() || !!art;
+
+  if(mehrlingeWrap){
+    mehrlingeWrap.classList.toggle("hidden", !showMehrlinge);
+  }
+
+  const current = status.value;
+
+  const options = {
+    "": [""],
+    "Zwillinge": [
+      "",
+      "beide Kinder verstorben",
+      "ein Kind verstorben, ein Kind lebt",
+      "ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht",
+      "kritischer Zustand eines Kindes",
+      "kritischer Zustand beider Kinder",
+      "unklar"
+    ],
+    "Drillinge": [
+      "",
+      "drei Kinder verstorben",
+      "ein Kind verstorben, zwei Kinder leben",
+      "zwei Kinder verstorben, ein Kind lebt",
+      "kritischer Zustand eines Kindes",
+      "kritischer Zustand zweier Kinder",
+      "kritischer Zustand aller Kinder",
+      "unklar"
+    ],
+    "Mehrlinge": [
+      "",
+      "alle verstorben",
+      "mehrere verstorben, mehrere leben",
+      "unterschiedliche Situation",
+      "unklar"
+    ]
+  };
+
+  status.innerHTML = "";
+  (options[art] || options[""]).forEach(text => {
+    const option = document.createElement("option");
+    option.value = text;
+    option.textContent = text;
+    status.appendChild(option);
+  });
+
+  status.value = Array.from(status.options).some(o => o.value === current) ? current : "";
+
+  if(statusWrap){
+    statusWrap.classList.toggle("hidden", !art);
+  }
+}
+
+function updateGeschwisterBilderVisibility(){
+  const geschwister = $("geschwisterDabei");
+  const geschwisterWrap = $("geschwisterDabeiWrapField") || geschwister;
+  if(!geschwister || !geschwisterWrap) return;
+
+  const hand = val("kinderHand");
+  const eltern = val("elternDabei");
+
+  const hatGeschwister =
+    hand === "1 Kind an der Hand" ||
+    hand === "2 Kinder an der Hand" ||
+    hand === "3 Kinder an der Hand" ||
+    hand === "mehrere Kinder an der Hand";
+
+  const anzeigen = eltern === "Ja" && hatGeschwister;
+
+  if(!anzeigen){
+    geschwister.value = "";
+    geschwisterWrap.classList.add("hidden");
+  }else{
+    geschwisterWrap.classList.remove("hidden");
+  }
+
+  geschwister.disabled = !anzeigen;
+}
+
+function updateAktuellesAlterVisibility(){
+  const geburtWrap = $("alterKindWrapField");
+  const einheitWrap = $("alterEinheitWrapField");
+  const aktuellWrap = $("aktuellesAlterWrapField");
+  const geburtField = $("alterKind");
+  const einheitField = $("alterEinheit");
+  const aktuellField = $("aktuellesAlter");
+
+  const situation = val("aktuelleSituation");
+  const zeigeGeburtsalter = ["verstorben","noch lebend","Lebendbilder","Einleitung","Kaiserschnitt"].includes(situation);
+  const zeigeAktuell = ["noch lebend","Lebendbilder"].includes(situation);
+
+  if(geburtWrap) geburtWrap.classList.toggle("hidden", !zeigeGeburtsalter);
+  if(einheitWrap) einheitWrap.classList.toggle("hidden", !zeigeGeburtsalter);
+  if(aktuellWrap) aktuellWrap.classList.toggle("hidden", !zeigeAktuell);
+
+  if(!zeigeAktuell && aktuellField){ aktuellField.value = ""; }
+  return;
+
+  [geburtWrap, einheitWrap, aktuellWrap].forEach(wrap => {
+    if(wrap) wrap.classList.toggle("hidden", !anzeigen);
+  });
+
+  if(!anzeigen){
+    if(geburtField) geburtField.value = "";
+    if(einheitField) einheitField.value = "";
+    if(aktuellField) aktuellField.value = "";
+  }
+}
+
+function updateWasser(){
+  if(!$("wasser")) return;
+
+  const wasserField = $("wasserWrapField") || $("wasserWrap");
+  const situation = val("aktuelleSituation");
+  const anzeigen = situation === "verstorben";
+
+  if(anzeigen){
+    $("wasser").disabled = false;
+    if(wasserField) wasserField.classList.remove("hidden");
+  }else{
+    $("wasser").value = "";
+    $("wasser").disabled = true;
+    if(wasserField) wasserField.classList.add("hidden");
+  }
+}
+
+function updateInfektBesonderheiten(){
+  if($("infektListe")){
+    $("infektListe").classList.toggle("hidden", val("infektStatus") !== "Ja");
+  }
+  if($("besonderheitenListe")){
+    $("besonderheitenListe").classList.toggle("hidden", val("besonderheitStatus") !== "Ja");
+  }
+
+  if(val("infektStatus") !== "Ja"){
+    document.querySelectorAll(".infektCheck").forEach(cb => cb.checked = false);
+  }
+
+  if(val("besonderheitStatus") !== "Ja"){
+    document.querySelectorAll(".besonderheitCheck").forEach(cb => cb.checked = false);
+  }
+}
+
+
+function updateGeburtssituationRouting(){
+  const situation = val("aktuelleSituation");
+  const detail = $("ksElDetail");
+  const detailWrap = $("ksElDetailWrapField") || detail;
+  const zeit = $("ksElZeit");
+  const zeitWrap = $("ksElZeitWrapField") || zeit;
+
+  if(!detail || !detailWrap) return;
+
+  const label = detailWrap.querySelector(".field-label");
+  const zeitLabel = zeitWrap?.querySelector(".field-label");
+
+  const setDetailOptions = options => {
+    const current = detail.value;
+    detail.innerHTML = "";
+
+    options.forEach((text, index) => {
+      const option = document.createElement("option");
+      option.value = index === 0 ? "" : text;
+      option.textContent = index === 0 ? "" : text;
+      detail.appendChild(option);
+    });
+
+    detail.value = Array.from(detail.options).some(option => option.value === current) ? current : "";
+  };
+
+  if(situation === "Einleitung"){
+    if(label) label.textContent = "Details Einleitung";
+    if(zeitLabel) zeitLabel.textContent = "Seit wann / ab wann?";
+    detailWrap.classList.remove("hidden");
+    if(zeitWrap) zeitWrap.classList.remove("hidden");
+    setDetailOptions([
+      "Details Einleitung",
+      "Einleitung geplant",
+      "Einleitung läuft bereits",
+      "Geburt wird erwartet",
+      "Zeitpunkt noch unklar"
+    ]);
+  }else if(situation === "Kaiserschnitt"){
+    if(label) label.textContent = "Details Kaiserschnitt";
+    if(zeitLabel) zeitLabel.textContent = "Seit wann / ab wann?";
+    detailWrap.classList.remove("hidden");
+    if(zeitWrap) zeitWrap.classList.remove("hidden");
+    setDetailOptions([
+      "Details Kaiserschnitt",
+      "Kaiserschnitt geplant",
+      "Kaiserschnitt läuft bereits",
+      "Kaiserschnitt wurde durchgeführt",
+      "Zeitpunkt noch unklar"
+    ]);
+  }else{
+    if(label) label.textContent = "Details";
+    detail.value = "";
+    detailWrap.classList.add("hidden");
+    if(zeit){
+      zeit.value = "";
+    }
+    if(zeitWrap){
+      zeitWrap.classList.add("hidden");
+    }
+    setDetailOptions(["Details"]);
+  }
+}
+
+function recalcAll(){
+  updateMehrlingsSituationOptions();
+  updateGeschlechtOptions();
+  syncKinderHand();
+  updateGeschwisterBilderVisibility();
+  updateAktuellesAlterVisibility();
+  updateWasser();
+  updateGeburtssituationRouting();
+  updateInfektBesonderheiten();
+  updateReport();
+  setOpenStates();
+}
+
+
+function ordinalKindText(kind){
+  const map = {
+    "1. Kind": "erste Kind",
+    "2. Kind": "zweite Kind",
+    "3. Kind": "dritte Kind",
+    "4. Kind": "vierte Kind",
+    "5. Kind oder mehr": "fünfte Kind oder ein weiteres Kind"
+  };
+  return map[kind] || "";
+}
+
+function handText(hand){
+  const map = {
+    "keine Kinder an der Hand": "keine Kinder an der Hand",
+    "1 Kind an der Hand": "ein Kind an der Hand",
+    "2 Kinder an der Hand": "zwei Kinder an der Hand",
+    "3 Kinder an der Hand": "drei Kinder an der Hand",
+    "mehrere Kinder an der Hand": "mehrere Kinder an der Hand"
+  };
+  return map[hand] || hand;
+}
+
+function isMehrling(){
+  return !!val("mehrlinge");
+}
+
+function kindPluralText(){
+  const art = val("mehrlinge");
+  if(art === "Zwillinge") return "Die Zwillinge";
+  if(art === "Drillinge") return "Die Drillinge";
+  if(art === "Mehrlinge") return "Die Mehrlinge";
+  return "Das Kind";
+}
+
+function baueMehrlingssatz(){
+  const art = val("mehrlinge");
+  const status = val("mehrlingsstatus");
+
+  if(!art) return "";
+
+  if(art === "Zwillinge"){
+    if(status === "beide Kinder verstorben") return "Es geht um Zwillinge, beide Kinder sind verstorben.";
+    if(status === "ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch.";
+    if(status === "ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch, die Prognose ist jedoch sehr schlecht.";
+    if(status === "kritischer Zustand eines Kindes") return "Es geht um Zwillinge. Eines der Kinder befindet sich in kritischem Zustand.";
+    if(status === "kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide Kinder befinden sich in kritischem Zustand.";
+    if(status === "unklar") return "Es geht um Zwillinge, die genaue Situation ist aktuell noch unklar.";
+    return "Es geht um Zwillinge.";
+  }
+
+  if(art === "Drillinge"){
+    if(status === "drei Kinder verstorben") return "Es geht um Drillinge, alle drei Kinder sind verstorben.";
+    if(status === "ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge. Ein Kind ist bereits verstorben, zwei Kinder leben noch.";
+    if(status === "zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge. Zwei Kinder sind bereits verstorben, ein Kind lebt noch.";
+    if(status === "kritischer Zustand eines Kindes") return "Es geht um Drillinge. Eines der Kinder befindet sich in kritischem Zustand.";
+    if(status === "kritischer Zustand zweier Kinder") return "Es geht um Drillinge. Zwei der Kinder befinden sich in kritischem Zustand.";
+    if(status === "kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in kritischem Zustand.";
+    if(status === "unklar") return "Es geht um Drillinge, die genaue Situation ist aktuell noch unklar.";
+    return "Es geht um Drillinge.";
+  }
+
+  if(art === "Mehrlinge"){
+    if(status === "alle verstorben") return "Es geht um Mehrlinge, alle Kinder sind verstorben.";
+    if(status === "mehrere verstorben, mehrere leben") return "Es geht um Mehrlinge. Mehrere Kinder sind verstorben und mehrere Kinder leben.";
+    if(status === "unterschiedliche Situation") return "Es geht um Mehrlinge, die Situation der Kinder ist unterschiedlich.";
+    if(status === "unklar") return "Es geht um Mehrlinge, die genaue Situation ist aktuell noch unklar.";
+    return "Es geht um Mehrlinge.";
+  }
+
+  return "";
+}
+
+function baueFamiliensatz(){
+  const kind = val("kindFamilie");
+  const hand = val("kinderHand");
+
+  const kindText = ordinalKindText(kind);
+  const handSatz = hand ? "Die Eltern haben " + handText(hand) + "." : "";
+
+  if(!kindText && !handSatz) return "";
+
+  if(kindText && handSatz){
+    if(isMehrling()){
+      return "Für die Familie wären die Kinder das " + kindText.replace("Kind", "und weitere Kind") + ". " + handSatz;
+    }
+    return "Für die Familie wäre es das " + kindText + ". " + handSatz;
+  }
+
+  if(kindText){
+    if(isMehrling()) return "Für die Familie wären es weitere Kinder.";
+    return "Für die Familie wäre es das " + kindText + ".";
+  }
+
+  return handSatz;
+}
+
+function formatPersonName(name){
+  return (name || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function capitalise(text){
+  const t = (text || "").trim();
+  return t ? t.charAt(0).toUpperCase() + t.slice(1) : "";
+}
+
+function baueAnsprechpartnerText(){
+  const rolleLabel = val("funktion");
+  const beschreibung = val("gespraech");
+  let name = capitalise(val("ansprechpartner"));
+
+  const rolleMap = {
+    "Vater": "papa",
+    "Mutter": "mama",
+    "Hebamme": "hebamme",
+    "Schwester": "schwester",
+    "Arzt": "arzt",
+    "Ärztin": "aerztin",
+    "Pflege": "pflege",
+    "Seelsorge": "seelsorge",
+    "Sonstige": "sonstige"
+  };
+
+  const rolleId = rolleMap[rolleLabel] || "";
+
+  const adj = beschreibung && !["wechselnd", "schwer einschätzbar"].includes(beschreibung)
+    ? beschreibung
+    : "";
+
+  if(!rolleLabel && !name) return "";
+
+  const rollenGrammatik = {
+    papa:     { artikel: "dem", adjEndung: "en", nomen: "Papa" },
+    mama:     { artikel: "der", adjEndung: "en", nomen: "Mama" },
+    hebamme:  { artikel: "der", adjEndung: "en", nomen: "Hebamme" },
+    schwester:{ artikel: "", adjEndung: "en", nomen: "Schwester" },
+    arzt:     { artikel: "dem", adjEndung: "en", nomen: "Arzt" },
+    aerztin:  { artikel: "der", adjEndung: "en", nomen: "Ärztin" },
+    pflege:   { artikel: "jemandem aus der", adjEndung: "en", nomen: "Pflege" },
+    seelsorge:{ artikel: "jemandem von der", adjEndung: "en", nomen: "Seelsorge" }
+  };
+
+  if((rolleId === "arzt" || rolleId === "aerztin") && name && !/^Dr\./i.test(name)){
+    name = "Dr. " + name;
+  }
+
+  let person = "";
+
+  if(rolleId === "sonstige"){
+    person = name || "jemandem";
+  }else if(rollenGrammatik[rolleId]){
+    const r = rollenGrammatik[rolleId];
+
+    if(rolleId === "pflege" || rolleId === "seelsorge"){
+      person = r.artikel + " " + r.nomen;
+      if(name) person += " " + name;
+    }else{
+      person = r.artikel ? r.artikel + " " : "";
+      if(adj) person += adj + r.adjEndung + " ";
+      person += r.nomen;
+      if(name) person += " " + name;
+    }
+  }else if(rolleLabel){
+    person = rolleLabel;
+    if(name) person += " " + name;
+  }else{
+    person = name;
+  }
+
+  return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
+}
+
+
+function baueKsElDetailSatz(){
+  const detail = val("ksElDetail");
+  const zeit = val("ksElZeit");
+  const teile = [];
+
+  if(detail === "Einleitung geplant") teile.push("Die Einleitung ist geplant.");
+  if(detail === "Einleitung läuft bereits") teile.push("Die Einleitung läuft bereits.");
+  if(detail === "Geburt wird erwartet") teile.push("Die Geburt wird erwartet.");
+  if(detail === "Kaiserschnitt geplant") teile.push("Der Kaiserschnitt ist geplant.");
+  if(detail === "Kaiserschnitt läuft bereits") teile.push("Der Kaiserschnitt läuft bereits.");
+  if(detail === "Kaiserschnitt wurde durchgeführt") teile.push("Der Kaiserschnitt wurde bereits durchgeführt.");
+  if(detail === "Zeitpunkt noch unklar") teile.push("Der genaue Zeitpunkt ist noch unklar.");
+
+  if(zeit){
+    if(val("aktuelleSituation") === "Einleitung") teile.push("Zeitangabe zur Einleitung: " + zeit + ".");
+    else if(val("aktuelleSituation") === "Kaiserschnitt") teile.push("Zeitangabe zum Kaiserschnitt: " + zeit + ".");
+    else teile.push("Zeitangabe: " + zeit + ".");
+  }
+
+  return teile.join(" ");
+}
+
+function baueGeburtssituationSatz(){
+  const situation = val("aktuelleSituation");
+
+  if(situation === "verstorben") return "Das Kind ist bereits verstorben.";
+  if(situation === "noch lebend") return "Das Kind lebt aktuell noch.";
+  if(situation === "Lebendbilder") return "Es geht um Lebendbilder.";
+  if(situation === "Einleitung") return "Es handelt sich um eine Einleitungssituation.";
+  if(situation === "Kaiserschnitt") return "Es handelt sich um eine Kaiserschnittsituation.";
+  return "";
+}
+
+function baueAltersSatz(){
+  const alter = val("alterKind");
+  const einheit = val("alterEinheit");
+  const aktuell = val("aktuellesAlter");
+
+  const teile = [];
+  const kindText = kindPluralText();
+
+  if(alter && einheit){
+    if(einheit === "SSW") teile.push(kindText + " wurden in der " + alter + ". SSW geboren.");
+    else teile.push("Das Geburtsalter beträgt " + alter + " " + einheit + ".");
+  }
+
+  if(aktuell){
+    if(isMehrling()) teile.push("Das lebende Kind ist aktuell " + aktuell + ".");
+    else teile.push("Das Kind ist aktuell " + aktuell + ".");
+  }
+
+  return teile.join(" ");
+}
+
+function baueKleidungSatz(){
+  const kleidung = val("kleidung");
+  const deckchen = val("deckchen");
+  const erinnerung = val("erinnerung");
+
+  const teile = [];
+
+  if(kleidung === "Ja" && erinnerung === "Ja"){
+    teile.push("Kleidung ist vorhanden und die Eltern bringen eigene Erinnerungsstücke mit.");
+  }else{
+    if(kleidung === "Ja") teile.push("Kleidung ist vorhanden.");
+    if(erinnerung === "Ja") teile.push("Die Eltern bringen eigene Erinnerungsstücke mit.");
+  }
+
+  if(kleidung === "Nein") teile.push("Kleidung ist nicht vorhanden.");
+  if(deckchen === "Ja") teile.push("Deckchen sind vorhanden.");
+  if(deckchen === "Nein") teile.push("Es sind keine Einschlagtücher oder Deckchen vorhanden, bringt gerne etwas Schönes mit.");
+
+  return teile.join(" ");
+}
+
+function normalisiereAbsatz(text){
+  return (text || "").replace(/\s+/g, " ").replace(/\s+\./g, ".").trim();
+}
+
+function updateReport(){
+  if(consentValue() !== "ja"){
+    $("report").textContent = "Berichtsausgabe";
+    return;
+  }
+
+  const blocks = [];
+  const seen = new Set();
+
+  const add = text => {
+    const raw = (text || "").trim();
+    if(!raw) return;
+
+    const key = raw.replace(/\s+/g, " ").toLowerCase();
+    if(seen.has(key)) return;
+
+    seen.add(key);
+    blocks.push(raw);
+  };
+
+  const situationWert = val("aktuelleSituation");
+  const lebendbilder = situationWert === "Lebendbilder";
+
+  if(lebendbilder){
+    add("HIER GEHT ES UM LEBENDBILDER, ES EILT.");
+  }
+
+  add("Hallo ihr Lieben,");
+
+  const apBlock = [
+    baueAnsprechpartnerText(),
+    val("ansprechpartnerErgaenzung")
+  ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  add(apBlock);
+
+  const situation = [
+    baueMehrlingssatz(),
+    baueGeburtssituationSatz(),
+    baueKsElDetailSatz(),
+    baueAltersSatz()
+  ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  add(situation);
+
+  add(baueFamiliensatz());
+
+  const bilder = [];
+  if(val("elternDabei") === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
+  if(val("elternDabei") === "Nein") bilder.push("Die Eltern sind bei den Bildern nicht dabei.");
+  if(val("elternDabei") === "Unklar") bilder.push("Ob die Eltern bei den Bildern dabei sein möchten, ist aktuell nicht bekannt.");
+
+  if($("geschwisterDabei") && !$("geschwisterDabei").disabled){
+    if(val("geschwisterDabei") === "Ja") bilder.push("Die Geschwister werden bei den Bildern dabei sein.");
+    if(val("geschwisterDabei") === "Nein") bilder.push("Die Geschwister sind bei den Bildern nicht dabei.");
+    if(val("geschwisterDabei") === "Unklar") bilder.push("Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+  }
+  add(bilder.join(" "));
+
+  add(baueKleidungSatz());
+
+  if(situationWert === "verstorben"){
+    if(val("wasser") === "Ja") add("Die Wassermethode wird angewendet.");
+    if(val("wasser") === "Nein") add("Die Wassermethode wird nicht angewendet.");
+    if(val("wasser") === "nicht möglich") add("Die Wassermethode ist nicht möglich.");
+  }
+
+  const komm = val("kommunikation");
+  if(komm === "Deutsch gut möglich") add("Die Kommunikation auf Deutsch ist gut möglich.");
+  if(komm === "Wenig Deutsch") add("Die Eltern sprechen wenig Deutsch.");
+  if(komm === "Kein Deutsch") add("Die Eltern sprechen kein Deutsch.");
+  if(komm === "Englisch gut möglich") add("Die Kommunikation auf Englisch ist gut möglich.");
+  if(komm === "Sonstige Sprache") add("Es wurde eine sonstige Sprache angegeben.");
+
+  const besonderheiten = checkedValues("besonderheitCheck");
+  const medizinErgaenzung = val("medizinErgaenzung");
+
+  if(val("besonderheitStatus") === "Ja" && besonderheiten.length) add("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
+  else if(val("besonderheitStatus") === "Ja" && !besonderheiten.length) add("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+  else if(val("besonderheitStatus") === "Nein") add("Es sind keine äußerlichen Besonderheiten bekannt.");
+  else if(val("besonderheitStatus") === "Unklar") add("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+
+  const infekte = checkedValues("infektCheck");
+  if(val("infektStatus") === "Nein") add("Es sind keine Infekte bekannt.");
+  else if(val("infektStatus") === "Ja" && infekte.length) add("Infekte:\n- " + infekte.join("\n- "));
+  else if(val("infektStatus") === "Ja" && !infekte.length) add("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+  else if(val("infektStatus") === "Unklar") add("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
+
+  if(medizinErgaenzung) add(medizinErgaenzung);
+
+  if(val("hinweise")) add(val("hinweise"));
+
+  add("Vielen Dank und liebe Grüße");
+
+  const mitarbeiter = formatPersonName(val("mitarbeiter"));
+  if(mitarbeiter) add(mitarbeiter);
+
+  $("report").textContent = blocks.join("\n\n");
+}
+
+const mehrlingeField = $("mehrlinge");
+if(mehrlingeField){
+  mehrlingeField.addEventListener("change", () => {
+    updateMehrlingsSituationOptions();
+    updateGeschlechtOptions();
+    updateReport();
+  });
+}
+
+const handField = $("kinderHand");
+if(handField){
+  handField.addEventListener("change", () => {
+    handField.dataset.manual = "1";
+  });
+}
+
+document.addEventListener("change", event => {
+  if(event.target.name === "consent") updateConsentFlow();
+  else recalcAll();
+});
+
+document.addEventListener("input", event => {
+  if(event.target.id === "mitarbeiter"){
+    const notice = $("mitarbeiterPflichtHinweis");
+    const ok = val("mitarbeiter").trim().length >= 2;
+    if(notice){
+      notice.style.display = ok || !val("mitarbeiter") ? "none" : "block";
+      notice.textContent = "Bitte mindestens 2 Buchstaben eingeben.";
+    }
+  }
+  recalcAll();
+});
+
+document.addEventListener("keydown", event => {
+  const key = String(event.key || "").toLowerCase();
+
+  if(event.ctrlKey && event.shiftKey && key === "m"){
+    event.preventDefault();
+    document.body.classList.toggle("admin-mode");
+    setOpenStates();
+  }
+});
+
+recalcAll();
+
+
+document.addEventListener("keydown", function(event){
+  if(event.target && event.target.id === "mitarbeiter" && event.key === "Enter"){
+    event.preventDefault();
+    if(validateCurrentStep()){
+      nextStep();
+    }
+  }
+});
+
+</script>
+
+</body>
+</html>

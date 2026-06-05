@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>DSK Einsatzanforderung V15w Berichtlogik</title>
+<title>DSK Einsatzanforderung V16v Logikpaket Komplett</title>
 <style>
 :root{
   --bg:#eaf0f4;
@@ -175,6 +175,50 @@ body.admin-mode .step h2::after{
   font-size:13px;
   font-weight:600;
 }
+
+
+/* MASTER Sternenkind V1 */
+#sternenkindGrundBlock{
+  margin-top:15px;
+}
+#sternenkindDynamicGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:15px;
+  margin-top:15px;
+}
+@media(max-width:900px){
+  #sternenkindDynamicGrid{grid-template-columns:1fr;}
+}
+
+
+/* V16m: dezente Trennlinie vor dynamischen Aufplopp-Feldern */
+#sternenkindDynamicGrid{
+  border-top:1px dashed #b7bec7;
+  padding-top:15px;
+}
+
+
+/* V16x: Nur dynamische Eingabefelder leicht sandfarben markieren */
+#lebendbilderPrognose,
+#aktuellesAlter,
+#mehrlinge,
+#ksElDetail,
+#ksElZeit,
+#wasser{
+  background:#f8f4ea;
+  border-color:#e7dfd0;
+}
+#lebendbilderPrognose:focus,
+#aktuellesAlter:focus,
+#mehrlinge:focus,
+#ksElDetail:focus,
+#ksElZeit:focus,
+#wasser:focus{
+  outline:2px solid #efe4d2;
+  outline-offset:1px;
+}
+
 </style>
 </head>
 <body>
@@ -190,8 +234,8 @@ body.admin-mode .step h2::after{
 </section>
 <section class="step" data-title="Mitarbeiter">
 <h2>Welcher Mitarbeiter hat die Einsatzanforderung erstellt? *</h2>
-<div class="field-wrap" id="mitarbeiterWrapField"><label class="field-label" for="mitarbeiter">Mitarbeiter/in *</label><input id="mitarbeiter" placeholder="" required="required"/></div><div class="notice" id="mitarbeiterPflichtHinweis">Bitte Mitarbeiter/in eintragen.</div>
-<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button></div>
+<div class="field-wrap" id="mitarbeiterWrapField"><label class="field-label" for="mitarbeiter">Mitarbeiter/in *</label><input id="mitarbeiter" placeholder="" required="required"/><div class="lf-hint" id="mitarbeiterEnterHinweis">Zum Absenden Enter drücken.</div></div><div class="notice" id="mitarbeiterPflichtHinweis">Bitte Mitarbeiter/in eintragen.</div>
+<div class="nav"><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Klinik">
 <h2>Angaben zur Klinik oder zum Ort der Geburt</h2>
@@ -213,140 +257,91 @@ body.admin-mode .step h2::after{
 <h2>Ansprechpartner/in vor Ort</h2>
 <div class="grid3">
 <div class="field-wrap" id="ansprechpartnerWrapField"><label class="field-label" for="ansprechpartner">Name Ansprechpartner/in</label><input id="ansprechpartner" placeholder="Name Ansprechpartner/in"/></div>
-<div class="field-wrap" id="funktionWrapField"><label class="field-label" for="funktion">Funktion</label><select id="funktion">
-<option value=""></option>
-<option>Mutter</option><option>Vater</option><option>Hebamme</option><option>Schwester</option>
-<option>Arzt</option><option>Ärztin</option><option>Pflege</option><option>Seelsorge</option><option>Sonstige</option>
-</select></div>
-<div class="field-wrap" id="gespraechWrapField"><label class="field-label" for="gespraech">Gesprächssituation</label><select id="gespraech">
-<option value=""></option>
-<option>traurig</option><option>gefasst</option><option>weint viel</option><option>ruhig</option><option>dankbar</option><option>überfordert</option><option>wechselnd</option><option>schwer einschätzbar</option><option>nicht gesprochen</option>
-</select></div>
+<div class="field-wrap" id="funktionWrapField"><label class="field-label" for="funktion">Funktion</label><select id="funktion"><option value=""></option><option value="Papa">Papa</option><option value="Mama">Mama</option><option value="Oma">Oma</option><option value="Freundin">Freundin</option><option value="Familienangehörige/r">Familienangehörige/r</option><option value="Hebamme">Hebamme</option><option value="Schwester">Schwester</option><option value="Ärztin">Ärztin</option><option value="Arzt">Arzt</option><option value="Frau von der Seelsorge">Frau von der Seelsorge</option><option value="Herr von der Seelsorge">Herr von der Seelsorge</option><option value="Sozialdienst">Sozialdienst</option></select></div>
+<div class="field-wrap" id="gespraechWrapField"><label class="field-label" for="gespraech">Gesprächssituation</label><select id="gespraech"><option value=""></option><option value="aufgelöst">aufgelöst</option><option value="besorgt">besorgt</option><option value="dankbar">dankbar</option><option value="lieb">lieb</option><option value="nett">nett</option><option value="ruhig">ruhig</option><option value="traurig">traurig</option><option value="verzweifelt">verzweifelt</option></select></div>
 </div>
 <div class="grid2" style="margin-top:15px">
 <div class="field-wrap" id="telefonWrapField"><label class="field-label" for="telefon">Telefon / Mobil</label><input id="telefon" placeholder="Telefon / Mobil"/></div>
-<div class="field-wrap" id="emailWrapField"><label class="field-label" for="email">E-Mail</label><input id="email" placeholder="E-Mail"/></div><div class="field-wrap" id="ansprechpartnerErgaenzungWrapField"><label class="field-label" for="ansprechpartnerErgaenzung">Ergänzung</label><input class="small-note-field" id="ansprechpartnerErgaenzung" placeholder=""/></div>
+<div class="field-wrap" id="emailWrapField"><label class="field-label" for="email">E-Mail</label><input id="email" placeholder="E-Mail"/></div><div class="field-wrap" id="ansprechpartnerErgaenzungWrapField"><label class="field-label" for="ansprechpartnerErgaenzung">Weitere Informationen hier eintragen</label><input class="small-note-field" id="ansprechpartnerErgaenzung" placeholder=""/></div>
 </div>
 <div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Sternenkind">
 <h2>Angaben zum Sternenkind</h2>
-<div class="grid3">
-<div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div>
-<div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes (optional)</label><input id="kindName" placeholder="Vorname des Kindes (optional)"/></div>
-<div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><option>Mädchen</option><option>Junge</option><option>Unbekannt</option></select></div>
-<div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge">
-<option value=""></option>
-<option>Zwillinge</option>
-<option>Drillinge</option>
-<option>Mehrlinge</option>
-</select></div>
-<div class="field-wrap hidden" id="mehrlingsstatusWrapField"><label class="field-label" for="mehrlingsstatus">Mehrlingsstatus</label><select id="mehrlingsstatus">
-<option value=""></option>
-</select></div>
-<div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation">
-<option value=""></option>
-<option>verstorben</option>
-<option>noch lebend</option>
-<option>Lebendbilder</option>
-<option>Einleitung</option>
-<option>Kaiserschnitt</option>
-</select></div>
-<div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" placeholder=""/></div>
-<div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
+<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div><div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" placeholder=""/></div><div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
 <option value=""></option>
 <option>SSW</option>
 <option>Monat(e)</option>
 <option>Jahr(e)</option>
-</select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div>
-<div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div>
-<div id="wasserWrap">
-<div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
+</select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Es handelt sich um eine palliative Geburt.">Es handelt sich um eine palliative Geburt.</option><option value="versterben nicht absehbar">versterben nicht absehbar</option><option value="Zustand deutlich verschlechtert">Zustand deutlich verschlechtert</option><option value="Prognose sehr schlecht">Prognose sehr schlecht</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Abschaltung der Geräte geplant">Abschaltung der Geräte geplant</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge"><option value=""></option><optgroup label="Zwillinge"><option value="Zwillinge – beide Kinder verstorben">beide Kinder verstorben</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt">ein Kind verstorben, ein Kind lebt</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht">ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht</option><option value="Zwillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Zwillinge – kritischer Zustand beider Kinder">kritischer Zustand beider Kinder</option></optgroup><optgroup label="Drillinge"><option value="Drillinge – drei Kinder verstorben">drei Kinder verstorben</option><option value="Drillinge – ein Kind verstorben, zwei Kinder leben">ein Kind verstorben, zwei Kinder leben</option><option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei Kinder verstorben, ein Kind lebt</option><option value="Drillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Drillinge – kritischer Zustand zweier Kinder">kritischer Zustand zweier Kinder</option><option value="Drillinge – kritischer Zustand aller Kinder">kritischer Zustand aller Kinder</option></optgroup></select></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
 <option value=""></option>
-</select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/></div><div class="field-wrap" id="wasserWrapField"><label class="field-label" for="wasser">Wassermethode</label><select id="wasser">
-<option value=""></option>
-<option>Ja</option>
-<option>Nein</option>
-<option>nicht möglich</option>
-</select><div class="lf-hint" id="wasserMethodeHinweise">
-<p><strong>Die Wassermethode wird bei bereits verstorbenen Kindern angewendet.</strong><br/>
-Sie dient dazu, die Haut zu stabilisieren und ein möglichst natürliches Erscheinungsbild für die Erinnerungsbilder zu erhalten.</p>
-<p><strong>Hinweis WM:</strong><br/>
-Anwendung Wassermethode<br/>
+</select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/></div><div id="wasserWrap">
+<div class="field-wrap" id="wasserWrapField"><label class="field-label" for="wasser">Wassermethode</label><select id="wasser"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="nicht möglich">nicht möglich</option><option value="Unklar">Unklar</option><option value="Nach Geburt">Nach Geburt</option><option value="Nach Geburt unklar">Nach Geburt unklar</option></select><div class="lf-hint" id="wasserMethodeHinweise">
+<p><strong>Anwendung Wassermethode</strong><br/>
 Ein Gefäß mit kühlem Leitungswasser befüllen.<br/>
 Das Kind hineinlegen und kühl stellen.<br/>
 Bei Bedarf Wasser wechseln.<br/>
 Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <p><strong>Hinweis:</strong> In den Unikliniken Freiburg, Bonn, Münster, dem AKH Wien sowie dem Uniklinikum Linz bitte nicht nach der Wassermethode fragen.</p>
 </div></div>
-</div>
-</div>
-<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+</div></div>
+<div class="field-wrap" id="sternenkindErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="sternenkindErgaenzung">Weitere Informationen hier eintragen</label><input id="sternenkindErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Eltern/Familie">
 <h2>Eltern und Familie</h2>
 <div class="grid2">
-<div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option>1. Kind</option><option>2. Kind</option><option>3. Kind</option><option>4. Kind</option><option>5. Kind oder mehr</option></select></div>
-<div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option>keine Kinder an der Hand</option><option>1 Kind an der Hand</option><option>2 Kinder an der Hand</option><option>3 Kinder an der Hand</option><option>mehrere Kinder an der Hand</option></select></div>
-<div class="field-wrap" id="elternDabeiWrapField"><label class="field-label" for="elternDabei">Eltern bei den Bildern dabei?</label><select id="elternDabei"><option value=""></option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
-<div class="field-wrap" id="geschwisterDabeiWrapField"><label class="field-label" for="geschwisterDabei">Geschwister bei den Bildern dabei?</label><select id="geschwisterDabei"><option value=""></option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
+<div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option value="1. Kind">1. Kind</option><option value="2. Kind">2. Kind</option><option value="3. Kind">3. Kind</option><option value="4. Kind">4. Kind</option><option value="5. Kind">5. Kind</option></select></div>
+<div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option value="keine Kinder an der Hand">keine Kinder an der Hand</option><option value="1 Kind an der Hand">1 Kind an der Hand</option><option value="2 Kinder an der Hand">2 Kinder an der Hand</option><option value="3 Kinder an der Hand">3 Kinder an der Hand</option><option value="4 Kinder an der Hand">4 Kinder an der Hand</option></select></div>
+<div class="field-wrap" id="elternDabeiWrapField"><label class="field-label" for="elternDabei">Eltern bei den Bildern dabei?</label><select id="elternDabei"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option></select></div>
+<div class="field-wrap" id="geschwisterDabeiWrapField"><label class="field-label" for="geschwisterDabei">Geschwister bei den Bildern dabei?</label><select id="geschwisterDabei"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option></select></div>
 </div>
-<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wäre es das erste gemeinsame Kind."/><span>Für die Eltern wäre es das erste gemeinsame Kind.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="field-wrap" id="familieAktuelleLageWrapField" style="margin-top:15px"><label class="field-label" for="familieAktuelleLage">Aktuelle Lage</label><select id="familieAktuelleLage"><option value=""></option></select></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Bilder/Erinnerungen">
 <h2>Bilder und Erinnerungen</h2>
 <div class="grid2">
-<div class="field-wrap" id="kleidungWrapField"><label class="field-label" for="kleidung">Ist Kleidung vorhanden?</label><select id="kleidung"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
-<div class="field-wrap" id="deckchenWrapField"><label class="field-label" for="deckchen">Sind Deckchen vorhanden?</label><select id="deckchen"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
-<div class="field-wrap" id="erinnerungWrapField"><label class="field-label" for="erinnerung">Bringen die Eltern eigene Erinnerungsstücke mit?</label><select id="erinnerung"><option value=""></option><option>Ja</option><option>Nein</option></select></div>
+<div class="field-wrap" id="kleidungWrapField"><label class="field-label" for="kleidung">Ist Kleidung vorhanden?</label><select id="kleidung"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option></select></div>
+<div class="field-wrap" id="deckchenWrapField"><label class="field-label" for="deckchen">Sind Deckchen vorhanden?</label><select id="deckchen"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option></select></div>
+<div class="field-wrap" id="erinnerungWrapField"><label class="field-label" for="erinnerung">Bringen die Eltern eigene Erinnerungsstücke mit?</label><select id="erinnerung"><option value=""></option><option value="Ja">Ja</option></select></div>
 </div>
-<div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div id="bilderZeitfenster" style="margin-top:15px"><div class="block-title">Zeitfenster</div><label class="option"><input class="bilderZeitfensterCheck" name="bilderZeitfenster" type="radio" value="Bilder nur heute möglich."/><span>Bilder nur heute möglich.</span></label><label class="option"><input class="bilderZeitfensterCheck" name="bilderZeitfenster" type="radio" value="Bilder auch morgen möglich."/><span>Bilder auch morgen möglich.</span></label><label class="option"><input class="bilderZeitfensterCheck" name="bilderZeitfenster" type="radio" value="Bilder auch in den nächsten Tagen möglich."/><span>Bilder auch in den nächsten Tagen möglich.</span></label></div><div class="field-wrap" id="bilderErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="bilderErgaenzung">Weitere Informationen hier eintragen</label><input id="bilderErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Infekte/Besonderheiten">
 <h2>Infekte / Besonderheiten</h2>
 <div class="grid2">
 <div>
-<div class="field-wrap" id="infektStatusWrapField"><label class="field-label" for="infektStatus">Sind Infekte vorhanden?</label><select id="infektStatus">
-<option value=""></option>
-<option>Nein</option>
-<option>Ja</option>
-<option>Unklar</option>
-</select></div>
-<div class="hidden" id="infektListe">
-<div class="block-title">Infekte</div>
-<label class="option"><input class="infektCheck" type="checkbox" value="MRSA"/><span>MRSA</span></label>
-<label class="option"><input class="infektCheck" type="checkbox" value="Covid"/><span>Covid</span></label>
-<label class="option"><input class="infektCheck" type="checkbox" value="Norovirus"/><span>Norovirus</span></label>
-<label class="option"><input class="infektCheck" type="checkbox" value="Hepatitis"/><span>Hepatitis</span></label>
-<label class="option"><input class="infektCheck" type="checkbox" value="HIV"/><span>HIV</span></label>
-<label class="option"><input class="infektCheck" type="checkbox" value="Sonstiger Infekt"/><span>Sonstiger Infekt</span></label>
+<div class="field-wrap" id="infektStatusWrapField"><label class="field-label" for="infektStatus">Sind Infekte vorhanden?</label><select id="infektStatus"><option value=""></option><option value="Nein">Nein</option><option value="Ja">Ja</option><option value="Unklar">Unklar</option></select></div>
+<div class="hidden" id="infektListe"><div class="block-title">Infekte</div><label class="option"><input class="infektCheck" type="checkbox" value="Corona"/><span>Corona</span></label><label class="option"><input class="infektCheck" type="checkbox" value="Hepatitis"/><span>Hepatitis</span></label><label class="option"><input class="infektCheck" type="checkbox" value="HIV"/><span>HIV</span></label><label class="option"><input class="infektCheck" type="checkbox" value="Influenza"/><span>Influenza</span></label><label class="option"><input class="infektCheck" type="checkbox" value="MRSA Krankenhauskeim"/><span>MRSA Krankenhauskeim</span></label></div>
+<div class="field-wrap hidden" id="schutzkleidungWrapField" style="margin-top:10px">
+<label class="field-label" for="schutzkleidung">Schutzkleidung vorhanden?</label>
+<select id="schutzkleidung"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option></select>
 </div>
 </div>
 <div>
-<div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind äußerliche Besonderheiten vorhanden?</label><select id="besonderheitStatus">
-<option value=""></option>
-<option>Nein</option>
-<option>Ja</option>
-<option>Unklar</option>
-</select></div>
-<div class="hidden" id="besonderheitenListe">
-<div class="block-title">Äußerliche Besonderheiten</div>
-<label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label>
-<label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label>
-<label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label>
-<label class="option"><input class="besonderheitCheck" type="checkbox" value="Herzfehler"/><span>Herzfehler</span></label>
-<label class="option"><input class="besonderheitCheck" type="checkbox" value="Sonstige Besonderheit"/><span>Sonstige Besonderheit</span></label>
+<div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind äußerliche Besonderheiten vorhanden?</label><select id="besonderheitStatus"><option value=""></option><option value="Nein">Nein</option><option value="Ja">Ja</option><option value="Unklar">Unklar</option></select></div>
+<div class="hidden" id="besonderheitenListe"><div class="block-title">Äußerliche Besonderheiten</div><label class="option"><input class="besonderheitCheck" type="checkbox" value="Allgemeine äußerliche Fehlbildungen"/><span>Allgemeine äußerliche Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Anenzephalie"/><span>Anenzephalie</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hautablösungen erwartet"/><span>Hautablösungen erwartet</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrops fetalis"/><span>Hydrops fetalis</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Innere Fehlbildungen"/><span>Innere Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Omphalozele"/><span>Omphalozele</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Spina bifida"/><span>Spina bifida</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Turner-Syndrom"/><span>Turner-Syndrom</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Verkürzte Gliedmaßen"/><span>Verkürzte Gliedmaßen</span></label></div>
 </div>
 </div>
-</div>
-<div class="field-wrap" id="medizinErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="medizinErgaenzung">Ergänzung</label><input id="medizinErgaenzung" placeholder=""/><div class="lf-hint">Wenn Infekte oder äußerliche Besonderheiten oben nicht aufgeführt sind, bitte hier ergänzen.</div></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="medizinErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="medizinErgaenzung">Weitere Informationen hier eintragen</label><input id="medizinErgaenzung" placeholder=""/><div class="lf-hint">Wenn Infekte oder äußerliche Besonderheiten oben nicht aufgeführt sind, bitte hier ergänzen.</div></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
-<section class="step" data-title="Weitere Hinweise">
-<h2>Weitere Hinweise</h2>
+<section class="step" data-title="Kommunikation">
+<h2>Kommunikation</h2>
 <div class="grid2">
-<div class="field-wrap" id="kommunikationWrapField"><label class="field-label" for="kommunikation">Kommunikation</label><select id="kommunikation"><option value=""></option><option>Deutsch gut möglich</option><option>Wenig Deutsch</option><option>Kein Deutsch</option><option>Englisch gut möglich</option><option>Sonstige Sprache</option></select></div>
+<div class="field-wrap" id="kommunikationWrapField"><label class="field-label" for="kommunikation">Kommunikation</label><select id="kommunikation"><option value=""></option><option value="Kein Deutsch">Kein Deutsch</option><option value="Wenig Deutsch">Wenig Deutsch</option><option value="Englisch möglich">Englisch möglich</option><option value="Kommunikation schwierig">Kommunikation schwierig</option><option value="Übersetzungsprogramm funktioniert gut">Übersetzungsprogramm funktioniert gut</option></select></div>
 </div>
-<div class="field-wrap" id="hinweiseWrapField"><label class="field-label" for="hinweise">Weitere Hinweise</label><textarea id="hinweise" placeholder="Weitere Hinweise" style="margin-top:15px"></textarea></div>
+<div class="nav"></div>
+</section>
+<section class="step" data-title="Abschlussfrage">
+<h2>Abschlussfrage</h2>
+<div class="grid2">
+<div class="field-wrap" id="abschlussfrageWrapField"><label class="field-label" for="abschlussfrage">Abschlussfrage</label><select id="abschlussfrage">
+<option value=""></option>
+<option value="Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?">Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?</option>
+<option value="Wer kann denn hier übernehmen?">Wer kann denn hier übernehmen?</option>
+<option value="Wer kann sofort los?">Wer kann sofort los?</option>
+</select></div>
+<div class="field-wrap" id="vorLosfahrtWrapField"><label class="option"><input id="vorLosfahrtAnrufen" type="checkbox" value="Ruft auf jeden Fall nochmal an bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden."/><span>Vor Losfahrt nochmal anrufen</span></label></div>
+</div>
 <div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step report-step" data-title="Bericht">
@@ -369,6 +364,10 @@ let currentWorkIndex = -1;
 
 function val(id){
   return ($(id)?.value || "").trim();
+}
+
+function radioValue(name){
+  return document.querySelector('input[name="' + name + '"]:checked')?.value || "";
 }
 
 function checkedValues(cls){
@@ -497,7 +496,7 @@ function syncKinderHand(){
     { value:"1 Kind an der Hand", text:"1 Kind an der Hand" },
     { value:"2 Kinder an der Hand", text:"2 Kinder an der Hand" },
     { value:"3 Kinder an der Hand", text:"3 Kinder an der Hand" },
-    { value:"mehrere Kinder an der Hand", text:"mehrere Kinder an der Hand" }
+    { value:"4 Kinder an der Hand", text:"4 Kinder an der Hand" }
   ];
 
   const allowedByKind = {
@@ -505,7 +504,7 @@ function syncKinderHand(){
     "2. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand"],
     "3. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand"],
     "4. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand", "3 Kinder an der Hand"],
-    "5. Kind oder mehr": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand", "3 Kinder an der Hand", "mehrere Kinder an der Hand"]
+    "5. Kind": ["", "keine Kinder an der Hand", "1 Kind an der Hand", "2 Kinder an der Hand", "3 Kinder an der Hand", "4 Kinder an der Hand"]
   };
 
   const allowed = allowedByKind[kind] || allOptions.map(option => option.value);
@@ -536,9 +535,9 @@ function getKindNameParts(){
   const raw = val("kindName");
   if(!raw) return [];
 
-  // Nur klare Trenner: &, +, und. Kein Leerzeichen und kein Bindestrich.
+  // Klare Trenner: &, +, und, Komma, Semikolon. Kein Leerzeichen und kein Bindestrich.
   return raw
-    .split(/\s*(?:&|\+|\bund\b)\s*/i)
+    .split(/\s*(?:&|\+|,|;|\bund\b)\s*/i)
     .map(part => part.trim())
     .filter(Boolean);
 }
@@ -557,39 +556,67 @@ function updateGeschlechtOptions(){
   const current = geschlecht.value;
   const count = detectedKindCount();
 
-  let mode = "einzelkind";
-  let options = ["", "Mädchen", "Junge", "Unbekannt"];
+  let groups = [];
 
   if(count === 2){
-    mode = "zwillinge";
-    options = ["", "MM", "JJ", "MJ", "JM", "Unbekannt"];
+    groups = [
+      {label:"Zwillinge", options:[
+        ["MM","Zwillinge (MM)"],
+        ["JJ","Zwillinge (JJ)"],
+        ["MJ","Zwillinge (MJ)"],
+        ["JM","Zwillinge (JM)"],
+        ["Unbekannt","Zwillinge (unbekannt)"]
+      ]}
+    ];
   }else if(count >= 3){
-    mode = "drillinge";
-    options = ["", "MMM", "JJJ", "MMJ", "MJM", "JMM", "JJM", "JMJ", "MJJ", "Unbekannt"];
+    groups = [
+      {label:"Drillinge", options:[
+        ["MMM","Drillinge (MMM)"],
+        ["JJJ","Drillinge (JJJ)"],
+        ["MMJ","Drillinge (MMJ)"],
+        ["MJM","Drillinge (MJM)"],
+        ["JMM","Drillinge (JMM)"],
+        ["JJM","Drillinge (JJM)"],
+        ["JMJ","Drillinge (JMJ)"],
+        ["MJJ","Drillinge (MJJ)"],
+        ["Unbekannt","Drillinge (unbekannt)"]
+      ]}
+    ];
+  }else{
+    groups = [
+      {label:"Einling", options:[
+        ["Mädchen","Mädchen"],
+        ["Junge","Junge"],
+        ["Unbekannt","Unbekannt"]
+      ]}
+    ];
   }
 
-  const uniqueOptions = [...new Set(options)];
-  const existingValues = Array.from(geschlecht.options).map(option => option.value).join("|");
-
-  if(geschlecht.dataset.mode === mode && existingValues === uniqueOptions.join("|")){
-    return;
-  }
+  const mode = count >= 3 ? "drillinge" : count === 2 ? "zwillinge" : "einling";
+  if(geschlecht.dataset.mode === mode) return;
 
   geschlecht.innerHTML = "";
-  uniqueOptions.forEach(text => {
-    const option = document.createElement("option");
-    option.value = text;
-    option.textContent = text;
-    geschlecht.appendChild(option);
+
+  const empty = document.createElement("option");
+  empty.value = "";
+  empty.textContent = "";
+  geschlecht.appendChild(empty);
+
+  groups.forEach(group => {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = group.label;
+    group.options.forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      optgroup.appendChild(option);
+    });
+    geschlecht.appendChild(optgroup);
   });
 
+  const values = groups.flatMap(group => group.options.map(option => option[0]));
   geschlecht.dataset.mode = mode;
-  geschlecht.value = uniqueOptions.includes(current) ? current : "";
-}
-
-function kindNameHasMehrlingsTrenner(){
-  const name = val("kindName").toLowerCase();
-  return name.includes("&") || name.includes("+") || /\bund\b/i.test(name);
+  geschlecht.value = values.includes(current) ? current : "";
 }
 
 function kindNameHasMehrlingsTrenner(){
@@ -597,62 +624,11 @@ function kindNameHasMehrlingsTrenner(){
 }
 
 function updateMehrlingsSituationOptions(){
-  const art = val("mehrlinge");
   const mehrlingeWrap = $("mehrlingeWrapField") || $("mehrlinge");
-  const statusWrap = $("mehrlingsstatusWrapField") || $("mehrlingsstatus");
-  const status = $("mehrlingsstatus");
-  if(!status) return;
-
-  const showMehrlinge = kindNameHasMehrlingsTrenner() || !!art;
+  const showMehrlinge = kindNameHasMehrlingsTrenner() || !!val("mehrlinge");
 
   if(mehrlingeWrap){
     mehrlingeWrap.classList.toggle("hidden", !showMehrlinge);
-  }
-
-  const current = status.value;
-
-  const options = {
-    "": [""],
-    "Zwillinge": [
-      "",
-      "beide Kinder verstorben",
-      "ein Kind verstorben, ein Kind lebt",
-      "ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht",
-      "kritischer Zustand eines Kindes",
-      "kritischer Zustand beider Kinder",
-      "unklar"
-    ],
-    "Drillinge": [
-      "",
-      "drei Kinder verstorben",
-      "ein Kind verstorben, zwei Kinder leben",
-      "zwei Kinder verstorben, ein Kind lebt",
-      "kritischer Zustand eines Kindes",
-      "kritischer Zustand zweier Kinder",
-      "kritischer Zustand aller Kinder",
-      "unklar"
-    ],
-    "Mehrlinge": [
-      "",
-      "alle verstorben",
-      "mehrere verstorben, mehrere leben",
-      "unterschiedliche Situation",
-      "unklar"
-    ]
-  };
-
-  status.innerHTML = "";
-  (options[art] || options[""]).forEach(text => {
-    const option = document.createElement("option");
-    option.value = text;
-    option.textContent = text;
-    status.appendChild(option);
-  });
-
-  status.value = Array.from(status.options).some(o => o.value === current) ? current : "";
-
-  if(statusWrap){
-    statusWrap.classList.toggle("hidden", !art);
   }
 }
 
@@ -668,7 +644,7 @@ function updateGeschwisterBilderVisibility(){
     hand === "1 Kind an der Hand" ||
     hand === "2 Kinder an der Hand" ||
     hand === "3 Kinder an der Hand" ||
-    hand === "mehrere Kinder an der Hand";
+    hand === "4 Kinder an der Hand";
 
   const anzeigen = eltern === "Ja" && hatGeschwister;
 
@@ -686,30 +662,22 @@ function updateAktuellesAlterVisibility(){
   const geburtWrap = $("alterKindWrapField");
   const einheitWrap = $("alterEinheitWrapField");
   const aktuellWrap = $("aktuellesAlterWrapField");
-  const geburtField = $("alterKind");
-  const einheitField = $("alterEinheit");
   const aktuellField = $("aktuellesAlter");
+  const lebendbilderWrap = $("lebendbilderPrognoseWrapField");
+  const lebendbilderField = $("lebendbilderPrognose");
 
   const situation = val("aktuelleSituation");
-  const zeigeGeburtsalter = ["verstorben","noch lebend","Lebendbilder","Einleitung","Kaiserschnitt"].includes(situation);
   const zeigeAktuell = ["noch lebend","Lebendbilder"].includes(situation);
+  const zeigeLebendbilderPrognose = situation === "Lebendbilder";
 
-  if(geburtWrap) geburtWrap.classList.toggle("hidden", !zeigeGeburtsalter);
-  if(einheitWrap) einheitWrap.classList.toggle("hidden", !zeigeGeburtsalter);
+  if(geburtWrap) geburtWrap.classList.remove("hidden");
+  if(einheitWrap) einheitWrap.classList.remove("hidden");
+
   if(aktuellWrap) aktuellWrap.classList.toggle("hidden", !zeigeAktuell);
+  if(lebendbilderWrap) lebendbilderWrap.classList.toggle("hidden", !zeigeLebendbilderPrognose);
 
   if(!zeigeAktuell && aktuellField){ aktuellField.value = ""; }
-  return;
-
-  [geburtWrap, einheitWrap, aktuellWrap].forEach(wrap => {
-    if(wrap) wrap.classList.toggle("hidden", !anzeigen);
-  });
-
-  if(!anzeigen){
-    if(geburtField) geburtField.value = "";
-    if(einheitField) einheitField.value = "";
-    if(aktuellField) aktuellField.value = "";
-  }
+  if(!zeigeLebendbilderPrognose && lebendbilderField){ lebendbilderField.value = ""; }
 }
 
 function updateWasser(){
@@ -730,15 +698,23 @@ function updateWasser(){
 }
 
 function updateInfektBesonderheiten(){
+  const infektJa = val("infektStatus") === "Ja";
+
   if($("infektListe")){
-    $("infektListe").classList.toggle("hidden", val("infektStatus") !== "Ja");
+    $("infektListe").classList.toggle("hidden", !infektJa);
   }
+
+  if($("schutzkleidungWrapField")){
+    $("schutzkleidungWrapField").classList.toggle("hidden", !infektJa);
+  }
+
   if($("besonderheitenListe")){
     $("besonderheitenListe").classList.toggle("hidden", val("besonderheitStatus") !== "Ja");
   }
 
-  if(val("infektStatus") !== "Ja"){
+  if(!infektJa){
     document.querySelectorAll(".infektCheck").forEach(cb => cb.checked = false);
+    if($("schutzkleidung")) $("schutzkleidung").value = "";
   }
 
   if(val("besonderheitStatus") !== "Ja"){
@@ -775,27 +751,25 @@ function updateGeburtssituationRouting(){
 
   if(situation === "Einleitung"){
     if(label) label.textContent = "Details Einleitung";
-    if(zeitLabel) zeitLabel.textContent = "Seit wann / ab wann?";
+    if(zeitLabel) zeitLabel.textContent = "Zeitpunkt / Zeitraum";
+    if(zeit) zeit.placeholder = "z. B. seit heute Morgen / morgen um 8 Uhr";
     detailWrap.classList.remove("hidden");
     if(zeitWrap) zeitWrap.classList.remove("hidden");
     setDetailOptions([
       "Details Einleitung",
-      "Einleitung geplant",
-      "Einleitung läuft bereits",
-      "Geburt wird erwartet",
-      "Zeitpunkt noch unklar"
+      "Die Mutter befindet sich zur Einleitung in der Klinik.",
+      "Die Mutter wird zur Einleitung in die Klinik gehen.",
+      "Wie lange es bis zur Geburt dauern wird, ist aktuell nicht bekannt."
     ]);
   }else if(situation === "Kaiserschnitt"){
     if(label) label.textContent = "Details Kaiserschnitt";
-    if(zeitLabel) zeitLabel.textContent = "Seit wann / ab wann?";
+    if(zeitLabel) zeitLabel.textContent = "Zeitpunkt";
+    if(zeit) zeit.placeholder = "z. B. morgen um 9 Uhr";
     detailWrap.classList.remove("hidden");
     if(zeitWrap) zeitWrap.classList.remove("hidden");
     setDetailOptions([
       "Details Kaiserschnitt",
-      "Kaiserschnitt geplant",
-      "Kaiserschnitt läuft bereits",
-      "Kaiserschnitt wurde durchgeführt",
-      "Zeitpunkt noch unklar"
+      "Kaiserschnitt geplant"
     ]);
   }else{
     if(label) label.textContent = "Details";
@@ -803,12 +777,46 @@ function updateGeburtssituationRouting(){
     detailWrap.classList.add("hidden");
     if(zeit){
       zeit.value = "";
+      zeit.placeholder = "";
     }
     if(zeitWrap){
       zeitWrap.classList.add("hidden");
     }
     setDetailOptions(["Details"]);
   }
+}
+
+
+
+function updateAbschlussfragenOptions(){
+  const select = $("abschlussfrage");
+  if(!select) return;
+
+  const situation = val("aktuelleSituation");
+  const map = {
+    "Einleitung": "Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?",
+    "Kaiserschnitt": "Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?",
+    "Lebendbilder": "Wer kann sofort los?",
+    "verstorben": "Wer kann denn hier übernehmen?"
+  };
+
+  const frage = map[situation] || "";
+  select.value = frage;
+}
+
+function baueAbschlussBlock(){
+  const teile = [];
+  const frage = val("abschlussfrage");
+
+  if(frage){
+    teile.push(frage);
+  }
+
+  if($("vorLosfahrtAnrufen") && $("vorLosfahrtAnrufen").checked){
+    teile.push("Ruft auf jeden Fall nochmal an bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.");
+  }
+
+  return teile.join("\n");
 }
 
 function recalcAll(){
@@ -819,11 +827,65 @@ function recalcAll(){
   updateAktuellesAlterVisibility();
   updateWasser();
   updateGeburtssituationRouting();
+  updateAbschlussfragenOptions();
   updateInfektBesonderheiten();
   updateReport();
   setOpenStates();
 }
 
+
+
+function mehrlingsArt(){
+  const wert = val("mehrlinge");
+  if(wert.startsWith("Zwillinge")) return "Zwillinge";
+  if(wert.startsWith("Drillinge")) return "Drillinge";
+  return "";
+}
+
+
+function kindStartNumber(kind){
+  const map = {
+    "1. Kind": 1,
+    "2. Kind": 2,
+    "3. Kind": 3,
+    "4. Kind": 4,
+    "5. Kind": 5
+  };
+  return map[kind] || null;
+}
+
+function ordinalWord(index){
+  const map = {
+    1: "erste",
+    2: "zweite",
+    3: "dritte",
+    4: "vierte",
+    5: "fünfte",
+    6: "sechste",
+    7: "siebte"
+  };
+  return map[index] || index + ".";
+}
+
+function mehrlingsCount(){
+  const art = mehrlingsArt();
+  if(art === "Zwillinge") return 2;
+  if(art === "Drillinge") return 3;
+  return 1;
+}
+
+function kindOrdinalRangeText(start, count){
+  const words = [];
+  for(let i = 0; i < count; i++){
+    words.push(ordinalWord(start + i));
+  }
+
+  if(words.length === 1) return words[0] + " Kind";
+  if(words.length === 2) return words[0] + " und " + words[1] + " Kind";
+
+  const last = words.pop();
+  return words.join(", ") + " und " + last + " Kind";
+}
 
 function ordinalKindText(kind){
   const map = {
@@ -831,7 +893,7 @@ function ordinalKindText(kind){
     "2. Kind": "zweite Kind",
     "3. Kind": "dritte Kind",
     "4. Kind": "vierte Kind",
-    "5. Kind oder mehr": "fünfte Kind oder ein weiteres Kind"
+    "5. Kind": "fünfte Kind"
   };
   return map[kind] || "";
 }
@@ -842,82 +904,67 @@ function handText(hand){
     "1 Kind an der Hand": "ein Kind an der Hand",
     "2 Kinder an der Hand": "zwei Kinder an der Hand",
     "3 Kinder an der Hand": "drei Kinder an der Hand",
-    "mehrere Kinder an der Hand": "mehrere Kinder an der Hand"
+    "4 Kinder an der Hand": "vier Kinder an der Hand"
   };
   return map[hand] || hand;
 }
 
 function isMehrling(){
-  return !!val("mehrlinge");
+  return !!mehrlingsArt();
 }
 
 function kindPluralText(){
-  const art = val("mehrlinge");
+  const art = mehrlingsArt();
   if(art === "Zwillinge") return "Die Zwillinge";
   if(art === "Drillinge") return "Die Drillinge";
-  if(art === "Mehrlinge") return "Die Mehrlinge";
   return "Das Kind";
 }
 
 function baueMehrlingssatz(){
-  const art = val("mehrlinge");
-  const status = val("mehrlingsstatus");
+  const wert = val("mehrlinge");
 
-  if(!art) return "";
+  if(!wert) return "";
 
-  if(art === "Zwillinge"){
-    if(status === "beide Kinder verstorben") return "Es geht um Zwillinge, beide Kinder sind verstorben.";
-    if(status === "ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch.";
-    if(status === "ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch, die Prognose ist jedoch sehr schlecht.";
-    if(status === "kritischer Zustand eines Kindes") return "Es geht um Zwillinge. Eines der Kinder befindet sich in kritischem Zustand.";
-    if(status === "kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide Kinder befinden sich in kritischem Zustand.";
-    if(status === "unklar") return "Es geht um Zwillinge, die genaue Situation ist aktuell noch unklar.";
-    return "Es geht um Zwillinge.";
-  }
+  if(wert === "Zwillinge – beide Kinder verstorben") return "Es geht um Zwillinge, beide Kinder sind verstorben.";
+  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch.";
+  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch, die Prognose ist jedoch sehr schlecht.";
+  if(wert === "Zwillinge – kritischer Zustand eines Kindes") return "Es geht um Zwillinge. Eines der Kinder befindet sich in kritischem Zustand.";
+  if(wert === "Zwillinge – kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide Kinder befinden sich in kritischem Zustand.";
 
-  if(art === "Drillinge"){
-    if(status === "drei Kinder verstorben") return "Es geht um Drillinge, alle drei Kinder sind verstorben.";
-    if(status === "ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge. Ein Kind ist bereits verstorben, zwei Kinder leben noch.";
-    if(status === "zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge. Zwei Kinder sind bereits verstorben, ein Kind lebt noch.";
-    if(status === "kritischer Zustand eines Kindes") return "Es geht um Drillinge. Eines der Kinder befindet sich in kritischem Zustand.";
-    if(status === "kritischer Zustand zweier Kinder") return "Es geht um Drillinge. Zwei der Kinder befinden sich in kritischem Zustand.";
-    if(status === "kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in kritischem Zustand.";
-    if(status === "unklar") return "Es geht um Drillinge, die genaue Situation ist aktuell noch unklar.";
-    return "Es geht um Drillinge.";
-  }
-
-  if(art === "Mehrlinge"){
-    if(status === "alle verstorben") return "Es geht um Mehrlinge, alle Kinder sind verstorben.";
-    if(status === "mehrere verstorben, mehrere leben") return "Es geht um Mehrlinge. Mehrere Kinder sind verstorben und mehrere Kinder leben.";
-    if(status === "unterschiedliche Situation") return "Es geht um Mehrlinge, die Situation der Kinder ist unterschiedlich.";
-    if(status === "unklar") return "Es geht um Mehrlinge, die genaue Situation ist aktuell noch unklar.";
-    return "Es geht um Mehrlinge.";
-  }
+  if(wert === "Drillinge – drei Kinder verstorben") return "Es geht um Drillinge, alle drei Kinder sind verstorben.";
+  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge. Ein Kind ist bereits verstorben, zwei Kinder leben noch.";
+  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge. Zwei Kinder sind bereits verstorben, ein Kind lebt noch.";
+  if(wert === "Drillinge – kritischer Zustand eines Kindes") return "Es geht um Drillinge. Eines der Kinder befindet sich in kritischem Zustand.";
+  if(wert === "Drillinge – kritischer Zustand zweier Kinder") return "Es geht um Drillinge. Zwei der Kinder befinden sich in kritischem Zustand.";
+  if(wert === "Drillinge – kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in kritischem Zustand.";
 
   return "";
 }
 
 function baueFamiliensatz(){
   const kind = val("kindFamilie");
-  const hand = val("kinderHand");
+  const handRaw = val("kinderHand");
+  const start = kindStartNumber(kind);
+  const count = mehrlingsCount();
+
+  const handSatz = handRaw ? "Die Eltern haben " + handText(handRaw) + "." : "";
+
+  if(!kind && !handSatz) return "";
+
+  if(start && count > 1){
+    return "Für die Familie wären die Kinder das " + kindOrdinalRangeText(start, count) + "." + (handSatz ? " " + handSatz : "");
+  }
 
   const kindText = ordinalKindText(kind);
-  const handSatz = hand ? "Die Eltern haben " + handText(hand) + "." : "";
 
-  if(!kindText && !handSatz) return "";
-
-  if(kindText && handSatz){
-    if(isMehrling()){
-      return "Für die Familie wären die Kinder das " + kindText.replace("Kind", "und weitere Kind") + ". " + handSatz;
+  if(kindText && handRaw){
+    if(handRaw === "keine Kinder an der Hand"){
+      return "Für die Familie wäre es das " + kindText + ". Die Eltern haben keine Kinder an der Hand.";
     }
-    return "Für die Familie wäre es das " + kindText + ". " + handSatz;
+    return "Für die Familie wäre es das " + kindText + ", die Eltern haben bereits " + handText(handRaw) + ".";
   }
 
-  if(kindText){
-    if(isMehrling()) return "Für die Familie wären es weitere Kinder.";
-    return "Für die Familie wäre es das " + kindText + ".";
-  }
-
+  if(kindText) return "Für die Familie wäre es das " + kindText + ".";
   return handSatz;
 }
 
@@ -940,98 +987,85 @@ function baueAnsprechpartnerText(){
   const beschreibung = val("gespraech");
   let name = capitalise(val("ansprechpartner"));
 
-  const rolleMap = {
-    "Vater": "papa",
-    "Mutter": "mama",
-    "Hebamme": "hebamme",
-    "Schwester": "schwester",
-    "Arzt": "arzt",
-    "Ärztin": "aerztin",
-    "Pflege": "pflege",
-    "Seelsorge": "seelsorge",
-    "Sonstige": "sonstige"
-  };
-
-  const rolleId = rolleMap[rolleLabel] || "";
-
-  const adj = beschreibung && !["wechselnd", "schwer einschätzbar"].includes(beschreibung)
-    ? beschreibung
-    : "";
-
   if(!rolleLabel && !name) return "";
 
-  const rollenGrammatik = {
-    papa:     { artikel: "dem", adjEndung: "en", nomen: "Papa" },
-    mama:     { artikel: "der", adjEndung: "en", nomen: "Mama" },
-    hebamme:  { artikel: "der", adjEndung: "en", nomen: "Hebamme" },
-    schwester:{ artikel: "", adjEndung: "en", nomen: "Schwester" },
-    arzt:     { artikel: "dem", adjEndung: "en", nomen: "Arzt" },
-    aerztin:  { artikel: "der", adjEndung: "en", nomen: "Ärztin" },
-    pflege:   { artikel: "jemandem aus der", adjEndung: "en", nomen: "Pflege" },
-    seelsorge:{ artikel: "jemandem von der", adjEndung: "en", nomen: "Seelsorge" }
-  };
-
-  if((rolleId === "arzt" || rolleId === "aerztin") && name && !/^Dr\./i.test(name)){
-    name = "Dr. " + name;
-  }
-
+  const adj = beschreibung ? beschreibung + " " : "";
   let person = "";
 
-  if(rolleId === "sonstige"){
-    person = name || "jemandem";
-  }else if(rollenGrammatik[rolleId]){
-    const r = rollenGrammatik[rolleId];
+  if(name){
+    if(rolleLabel === "Papa") person = "Papa " + name;
+    else if(rolleLabel === "Mama") person = "Mama " + name;
+    else if(rolleLabel === "Oma") person = "Oma " + name;
+    else if(rolleLabel === "Freundin") person = "Freundin " + name;
+    else if(rolleLabel === "Hebamme") person = "Hebamme " + name;
+    else if(rolleLabel === "Schwester") person = "Schwester " + name;
+    else if(rolleLabel === "Ärztin") person = (/^Dr\./i.test(name) ? name : "Dr. " + name);
+    else if(rolleLabel === "Arzt") person = (/^Dr\./i.test(name) ? name : "Dr. " + name);
+    else if(rolleLabel === "Frau von der Seelsorge") person = "Frau " + name + " von der Seelsorge";
+    else if(rolleLabel === "Herr von der Seelsorge") person = "Herr " + name + " von der Seelsorge";
+    else if(rolleLabel === "Sozialdienst") person = "dem Sozialdienst, " + name;
+    else if(rolleLabel === "Familienangehörige/r") person = "Familienangehörige/r " + name;
+    else person = name;
 
-    if(rolleId === "pflege" || rolleId === "seelsorge"){
-      person = r.artikel + " " + r.nomen;
-      if(name) person += " " + name;
-    }else{
-      person = r.artikel ? r.artikel + " " : "";
-      if(adj) person += adj + r.adjEndung + " ";
-      person += r.nomen;
-      if(name) person += " " + name;
+    if(rolleLabel === "Sozialdienst"){
+      return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
     }
-  }else if(rolleLabel){
-    person = rolleLabel;
-    if(name) person += " " + name;
-  }else{
-    person = name;
+    return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
   }
+
+  if(rolleLabel === "Papa") person = "dem " + adj + "Papa";
+  else if(rolleLabel === "Mama") person = "der " + adj + "Mama";
+  else if(rolleLabel === "Oma") person = "der " + adj + "Oma";
+  else if(rolleLabel === "Freundin") person = "der " + adj + "Freundin";
+  else if(rolleLabel === "Hebamme") person = "einer " + adj + "Hebamme";
+  else if(rolleLabel === "Schwester") person = "einer " + adj + "Schwester";
+  else if(rolleLabel === "Ärztin") person = "einer " + adj + "Ärztin";
+  else if(rolleLabel === "Arzt") person = "einem " + adj + "Arzt";
+  else if(rolleLabel === "Frau von der Seelsorge") person = "einer Frau von der Seelsorge";
+  else if(rolleLabel === "Herr von der Seelsorge") person = "einem Herrn von der Seelsorge";
+  else if(rolleLabel === "Sozialdienst") person = "dem Sozialdienst";
+  else if(rolleLabel === "Familienangehörige/r") person = "einem Familienangehörigen";
+  else person = rolleLabel;
 
   return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
 }
 
 
+
 function baueKsElDetailSatz(){
+  const situation = val("aktuelleSituation");
   const detail = val("ksElDetail");
   const zeit = val("ksElZeit");
   const teile = [];
 
-  if(detail === "Einleitung geplant") teile.push("Die Einleitung ist geplant.");
-  if(detail === "Einleitung läuft bereits") teile.push("Die Einleitung läuft bereits.");
-  if(detail === "Geburt wird erwartet") teile.push("Die Geburt wird erwartet.");
-  if(detail === "Kaiserschnitt geplant") teile.push("Der Kaiserschnitt ist geplant.");
-  if(detail === "Kaiserschnitt läuft bereits") teile.push("Der Kaiserschnitt läuft bereits.");
-  if(detail === "Kaiserschnitt wurde durchgeführt") teile.push("Der Kaiserschnitt wurde bereits durchgeführt.");
-  if(detail === "Zeitpunkt noch unklar") teile.push("Der genaue Zeitpunkt ist noch unklar.");
-
-  if(zeit){
-    if(val("aktuelleSituation") === "Einleitung") teile.push("Zeitangabe zur Einleitung: " + zeit + ".");
-    else if(val("aktuelleSituation") === "Kaiserschnitt") teile.push("Zeitangabe zum Kaiserschnitt: " + zeit + ".");
-    else teile.push("Zeitangabe: " + zeit + ".");
+  if(situation === "Einleitung"){
+    if(detail === "Die Mutter befindet sich zur Einleitung in der Klinik."){
+      teile.push(zeit
+        ? "Die Mutter befindet sich seit " + zeit + " zur Einleitung in der Klinik."
+        : "Die Mutter befindet sich zur Einleitung in der Klinik.");
+    }else if(detail === "Die Mutter wird zur Einleitung in die Klinik gehen."){
+      teile.push(zeit
+        ? "Die Mutter wird " + zeit + " zur Einleitung in die Klinik gehen."
+        : "Die Mutter wird zur Einleitung in die Klinik gehen.");
+    }else if(detail === "Wie lange es bis zur Geburt dauern wird, ist aktuell nicht bekannt."){
+      teile.push("Wie lange es bis zur Geburt dauern wird, ist aktuell nicht bekannt.");
+      if(zeit) teile.push("Zeitangabe zur Einleitung: " + zeit + ".");
+    }else if(zeit){
+      teile.push("Zeitangabe zur Einleitung: " + zeit + ".");
+    }
+  }else if(situation === "Kaiserschnitt"){
+    if(zeit){
+      teile.push("Der Kaiserschnitt ist für " + zeit + " geplant.");
+    }else if(detail === "Kaiserschnitt geplant"){
+      teile.push("Der Kaiserschnitt ist geplant.");
+    }
   }
 
   return teile.join(" ");
 }
 
-function baueGeburtssituationSatz(){
-  const situation = val("aktuelleSituation");
 
-  if(situation === "verstorben") return "Das Kind ist bereits verstorben.";
-  if(situation === "noch lebend") return "Das Kind lebt aktuell noch.";
-  if(situation === "Lebendbilder") return "Es geht um Lebendbilder.";
-  if(situation === "Einleitung") return "Es handelt sich um eine Einleitungssituation.";
-  if(situation === "Kaiserschnitt") return "Es handelt sich um eine Kaiserschnittsituation.";
+function baueGeburtssituationSatz(){
   return "";
 }
 
@@ -1077,106 +1111,156 @@ function baueKleidungSatz(){
   return teile.join(" ");
 }
 
+function ensureSentenceEnd(text){
+  const t = (text || "").trim();
+  if(!t) return "";
+  return /[.!?]$/.test(t) ? t : t + ".";
+}
+
+function normalisiereZusatz(text){
+  return ensureSentenceEnd(normalisiereAbsatz(text));
+}
+
 function normalisiereAbsatz(text){
   return (text || "").replace(/\s+/g, " ").replace(/\s+\./g, ".").trim();
 }
 
 function updateReport(){
-  if(consentValue() !== "ja"){
-    $("report").textContent = "Berichtsausgabe";
-    return;
+  try{
+    if(consentValue() !== "ja"){
+      $("report").textContent = "Berichtsausgabe";
+      return;
+    }
+
+    const blocks = [];
+    const seen = new Set();
+
+    const add = text => {
+      const raw = (text || "").trim();
+      if(!raw) return;
+
+      const key = raw.replace(/\s+/g, " ").toLowerCase();
+      if(seen.has(key)) return;
+
+      seen.add(key);
+      blocks.push(raw);
+    };
+
+    const situationWert = val("aktuelleSituation");
+    const lebendbilder = situationWert === "Lebendbilder";
+
+    if(lebendbilder){
+      add("HIER GEHT ES UM LEBENDBILDER, ES EILT.");
+    }
+
+    add("Hallo ihr Lieben,");
+
+    const apBlock = [
+      baueAnsprechpartnerText(),
+      normalisiereZusatz(val("ansprechpartnerErgaenzung"))
+    ].filter(Boolean).join("\n");
+    add(apBlock);
+
+    const sternenkindBlock = [
+      baueMehrlingssatz(),
+      baueGeburtssituationSatz(),
+      baueKsElDetailSatz(),
+      baueAltersSatz(),
+      val("lebendbilderPrognose"),
+      normalisiereZusatz(val("sternenkindErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    add(sternenkindBlock);
+
+    const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
+      ? "Für die Eltern wäre es das erste gemeinsame Kind."
+      : "";
+
+    const familienBlock = [
+      baueFamiliensatz(),
+      erstesGemeinsamesKind,
+      val("familieAktuelleLage"),
+      normalisiereZusatz(val("familieErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    add(familienBlock);
+
+    const bilder = [];
+    const hand = val("kinderHand");
+    const geschwisterSingular = hand === "1 Kind an der Hand";
+
+    if(val("elternDabei") === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
+    if(val("elternDabei") === "Nein") bilder.push("Die Eltern sind bei den Bildern nicht dabei.");
+    if(val("elternDabei") === "Unklar") bilder.push("Ob die Eltern bei den Bildern dabei sein möchten, ist aktuell nicht bekannt.");
+
+    if($("geschwisterDabei") && !$("geschwisterDabei").disabled){
+      if(val("geschwisterDabei") === "Ja") bilder.push(geschwisterSingular ? "Das Geschwisterkind wird bei den Bildern dabei sein." : "Die Geschwister werden bei den Bildern dabei sein.");
+      if(val("geschwisterDabei") === "Nein") bilder.push(geschwisterSingular ? "Das Geschwisterkind ist bei den Bildern nicht dabei." : "Die Geschwister sind bei den Bildern nicht dabei.");
+      if(val("geschwisterDabei") === "Unklar") bilder.push(geschwisterSingular ? "Ob das Geschwisterkind mit auf die Bilder möchte, ist aktuell nicht bekannt." : "Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+    }
+
+    const bilderBlock = [
+      bilder.join(" "),
+      baueKleidungSatz(),
+      radioValue("bilderZeitfenster"),
+      normalisiereZusatz(val("bilderErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    add(bilderBlock);
+
+    if(situationWert === "verstorben"){
+      if(val("wasser") === "Ja") add("Die Wassermethode wird angewendet.");
+      if(val("wasser") === "Nein") add("Die Wassermethode wird nicht angewendet.");
+      if(val("wasser") === "nicht möglich") add("Die Wassermethode ist nicht möglich.");
+      if(val("wasser") === "Unklar") add("Ob die Wassermethode angewendet wird, ist aktuell nicht bekannt.");
+      if(val("wasser") === "Nach Geburt") add("Die Wassermethode ist nach der Geburt vorgesehen.");
+      if(val("wasser") === "Nach Geburt unklar") add("Ob die Wassermethode nach der Geburt möglich ist, ist aktuell noch unklar.");
+    }
+
+    const komm = val("kommunikation");
+    if(komm === "Wenig Deutsch") add("Die Eltern sprechen wenig Deutsch.");
+    if(komm === "Kein Deutsch") add("Die Eltern sprechen kein Deutsch.");
+    if(komm === "Englisch möglich") add("Die Kommunikation auf Englisch ist möglich.");
+    if(komm === "Kommunikation schwierig") add("Die Kommunikation ist aktuell schwierig.");
+    if(komm === "Übersetzungsprogramm funktioniert gut") add("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
+
+    const medizinBlock = [];
+    const besonderheitStatus = val("besonderheitStatus");
+    const infektStatus = val("infektStatus");
+    const besonderheiten = checkedValues("besonderheitCheck");
+    const infekte = checkedValues("infektCheck");
+
+    if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
+      medizinBlock.push("Es sind weder äußerliche Besonderheiten noch Infekte bekannt.");
+    }else if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
+      medizinBlock.push("Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+    }else{
+      if(besonderheitStatus === "Ja" && besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
+      else if(besonderheitStatus === "Ja" && !besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+      else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
+      else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+
+      if(infektStatus === "Nein") medizinBlock.push("Es sind keine Infekte bekannt.");
+      else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("Infekte:\n- " + infekte.join("\n- "));
+      else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+      else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
+    }
+
+    if(val("schutzkleidung") === "Ja") medizinBlock.push("Schutzkleidung ist vorhanden.");
+    if(val("schutzkleidung") === "Unklar") medizinBlock.push("Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt.");
+
+    if(val("medizinErgaenzung")) medizinBlock.push(normalisiereZusatz(val("medizinErgaenzung")));
+    add(medizinBlock.join("\n"));
+
+    add(baueAbschlussBlock());
+
+    add("Vielen Dank und liebe Grüße");
+
+    const mitarbeiter = formatPersonName(val("mitarbeiter"));
+    if(mitarbeiter) add(mitarbeiter);
+
+    $("report").textContent = blocks.join("\n\n");
+  }catch(error){
+    console.error("Bericht konnte nicht vollständig erzeugt werden:", error);
+    $("report").textContent = "Hallo ihr Lieben,\n\nVielen Dank und liebe Grüße";
   }
-
-  const blocks = [];
-  const seen = new Set();
-
-  const add = text => {
-    const raw = (text || "").trim();
-    if(!raw) return;
-
-    const key = raw.replace(/\s+/g, " ").toLowerCase();
-    if(seen.has(key)) return;
-
-    seen.add(key);
-    blocks.push(raw);
-  };
-
-  const situationWert = val("aktuelleSituation");
-  const lebendbilder = situationWert === "Lebendbilder";
-
-  if(lebendbilder){
-    add("HIER GEHT ES UM LEBENDBILDER, ES EILT.");
-  }
-
-  add("Hallo ihr Lieben,");
-
-  const apBlock = [
-    baueAnsprechpartnerText(),
-    val("ansprechpartnerErgaenzung")
-  ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-  add(apBlock);
-
-  const situation = [
-    baueMehrlingssatz(),
-    baueGeburtssituationSatz(),
-    baueKsElDetailSatz(),
-    baueAltersSatz()
-  ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-  add(situation);
-
-  add(baueFamiliensatz());
-
-  const bilder = [];
-  if(val("elternDabei") === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
-  if(val("elternDabei") === "Nein") bilder.push("Die Eltern sind bei den Bildern nicht dabei.");
-  if(val("elternDabei") === "Unklar") bilder.push("Ob die Eltern bei den Bildern dabei sein möchten, ist aktuell nicht bekannt.");
-
-  if($("geschwisterDabei") && !$("geschwisterDabei").disabled){
-    if(val("geschwisterDabei") === "Ja") bilder.push("Die Geschwister werden bei den Bildern dabei sein.");
-    if(val("geschwisterDabei") === "Nein") bilder.push("Die Geschwister sind bei den Bildern nicht dabei.");
-    if(val("geschwisterDabei") === "Unklar") bilder.push("Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
-  }
-  add(bilder.join(" "));
-
-  add(baueKleidungSatz());
-
-  if(situationWert === "verstorben"){
-    if(val("wasser") === "Ja") add("Die Wassermethode wird angewendet.");
-    if(val("wasser") === "Nein") add("Die Wassermethode wird nicht angewendet.");
-    if(val("wasser") === "nicht möglich") add("Die Wassermethode ist nicht möglich.");
-  }
-
-  const komm = val("kommunikation");
-  if(komm === "Deutsch gut möglich") add("Die Kommunikation auf Deutsch ist gut möglich.");
-  if(komm === "Wenig Deutsch") add("Die Eltern sprechen wenig Deutsch.");
-  if(komm === "Kein Deutsch") add("Die Eltern sprechen kein Deutsch.");
-  if(komm === "Englisch gut möglich") add("Die Kommunikation auf Englisch ist gut möglich.");
-  if(komm === "Sonstige Sprache") add("Es wurde eine sonstige Sprache angegeben.");
-
-  const besonderheiten = checkedValues("besonderheitCheck");
-  const medizinErgaenzung = val("medizinErgaenzung");
-
-  if(val("besonderheitStatus") === "Ja" && besonderheiten.length) add("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
-  else if(val("besonderheitStatus") === "Ja" && !besonderheiten.length) add("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-  else if(val("besonderheitStatus") === "Nein") add("Es sind keine äußerlichen Besonderheiten bekannt.");
-  else if(val("besonderheitStatus") === "Unklar") add("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
-
-  const infekte = checkedValues("infektCheck");
-  if(val("infektStatus") === "Nein") add("Es sind keine Infekte bekannt.");
-  else if(val("infektStatus") === "Ja" && infekte.length) add("Infekte:\n- " + infekte.join("\n- "));
-  else if(val("infektStatus") === "Ja" && !infekte.length) add("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-  else if(val("infektStatus") === "Unklar") add("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
-
-  if(medizinErgaenzung) add(medizinErgaenzung);
-
-  if(val("hinweise")) add(val("hinweise"));
-
-  add("Vielen Dank und liebe Grüße");
-
-  const mitarbeiter = formatPersonName(val("mitarbeiter"));
-  if(mitarbeiter) add(mitarbeiter);
-
-  $("report").textContent = blocks.join("\n\n");
 }
 
 const mehrlingeField = $("mehrlinge");
@@ -1235,6 +1319,5 @@ document.addEventListener("keydown", function(event){
 });
 
 </script>
-
 </body>
 </html>

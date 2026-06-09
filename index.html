@@ -189,27 +189,43 @@ body.admin-mode .step h2::after{
   font-weight:600;
 }
 
-/* Admin-Debugansicht: alle dynamischen/normalerweise verborgenen Felder sichtbar machen. */
-body.admin-mode .hidden{
+/* Admin-Debugansicht:
+   Alle Abschnitte als Header sichtbar.
+   Dynamikfelder werden erst innerhalb einer geöffneten Karte sichtbar. */
+body.admin-mode .step{
   display:block !important;
 }
-body.admin-mode #sternenkindDynamicGrid{
+body.admin-mode .step:not(.open):not(.report-step) > *:not(h2){
+  display:none !important;
+}
+body.admin-mode .step:not(.open) h2{
+  cursor:pointer;
+  margin:0;
+  padding:13px 16px;
+  border:1px solid #9db7d4;
+  border-radius:8px;
+  background:#e8f1fb;
+}
+body.admin-mode .step.open .hidden{
+  display:block !important;
+}
+body.admin-mode .step.open #sternenkindDynamicGrid{
   display:grid !important;
 }
-body.admin-mode .field-wrap.hidden{
+body.admin-mode .step.open .field-wrap.hidden{
   padding:8px;
   border-radius:8px;
   background:#faf7f0;
   outline:1px dashed #dccfb8;
   outline-offset:2px;
 }
-body.admin-mode .field-wrap.hidden input,
-body.admin-mode .field-wrap.hidden select,
-body.admin-mode .field-wrap.hidden textarea{
+body.admin-mode .step.open .field-wrap.hidden input,
+body.admin-mode .step.open .field-wrap.hidden select,
+body.admin-mode .step.open .field-wrap.hidden textarea{
   background:#f8f4ea;
   border-color:#e7dfd0;
 }
-body.admin-mode .field-wrap.hidden .field-label::after{
+body.admin-mode .step.open .field-wrap.hidden .field-label::after{
   content:" · dynamisch";
   color:#8a6f43;
   font-size:12px;
@@ -427,6 +443,64 @@ body.admin-mode #abschlussfrageWrapField select{
   font-weight:600;
 }
 
+
+body.admin-mode .step > h2{
+  cursor:pointer;
+}
+
+
+/* ADMIN HEADER FIX */
+body.admin-mode .step{
+  display:block !important;
+  padding:10px 0;
+}
+body.admin-mode .step > h2{
+  cursor:pointer !important;
+  margin:0;
+  padding:13px 16px;
+  border:1px solid #9db7d4;
+  border-radius:8px;
+  background:#e8f1fb;
+}
+body.admin-mode .step:not(.open):not(.report-step) > *:not(h2){
+  display:none !important;
+}
+body.admin-mode .step.open > *{
+  display:block;
+}
+body.admin-mode .step.open .grid2,
+body.admin-mode .step.open .grid3,
+body.admin-mode .step.open #sternenkindDynamicGrid{
+  display:grid !important;
+}
+body.admin-mode .step.open .hidden{
+  display:block !important;
+}
+
+
+/* ADMIN REPORT FIX: Bericht im Admin immer sichtbar lassen */
+body.admin-mode .step.report-step,
+body.admin-mode .step.report-step.open{
+  display:block !important;
+}
+body.admin-mode .step.report-step > *{
+  display:block !important;
+}
+body.admin-mode .step.report-step .report,
+body.admin-mode .step.report-step .reportbox,
+body.admin-mode #report{
+  display:block !important;
+}
+body.admin-mode .step.report-step h2{
+  cursor:default !important;
+  background:transparent !important;
+  border:0 !important;
+  padding:0 !important;
+}
+body.admin-mode .step.report-step:not(.open) > *:not(h2){
+  display:block !important;
+}
+
 </style>
 </head>
 <body>
@@ -481,7 +555,24 @@ body.admin-mode #abschlussfrageWrapField select{
 <option>SSW</option>
 <option>Monat(e)</option>
 <option>Jahr(e)</option>
-</select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge"><option value=""></option><optgroup label="Zwillinge"><option value="Zwillinge – beide Kinder verstorben">beide Kinder verstorben</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt">ein Kind verstorben, ein Kind lebt</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht">ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht</option><option value="Zwillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Zwillinge – kritischer Zustand beider Kinder">kritischer Zustand beider Kinder</option></optgroup><optgroup label="Drillinge"><option value="Drillinge – drei Kinder verstorben">drei Kinder verstorben</option><option value="Drillinge – ein Kind verstorben, zwei Kinder leben">ein Kind verstorben, zwei Kinder leben</option><option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei Kinder verstorben, ein Kind lebt</option><option value="Drillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Drillinge – kritischer Zustand zweier Kinder">kritischer Zustand zweier Kinder</option><option value="Drillinge – kritischer Zustand aller Kinder">kritischer Zustand aller Kinder</option></optgroup></select></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
+</select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge">
+<option value=""></option>
+<optgroup label="Zwillinge">
+<option value="Zwillinge – beide Kinder verstorben">beide verstorben</option>
+<option value="Zwillinge – ein Kind verstorben, ein Kind lebt">einer verstorben, einer lebt</option>
+<option value="Zwillinge – ein Kind verstorben, ein Kind kritisch">einer verstorben, einer kritisch</option>
+<option value="Zwillinge – kritischer Zustand beider Kinder">beide kritisch</option>
+</optgroup>
+<optgroup label="Drillinge">
+<option value="Drillinge – drei Kinder verstorben">alle verstorben</option>
+<option value="Drillinge – ein Kind verstorben, zwei Kinder leben">einer verstorben, zwei leben</option>
+<option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei verstorben, einer lebt</option>
+<option value="Drillinge – ein Kind verstorben, zwei Kinder kritisch">einer verstorben, zwei kritisch</option>
+<option value="Drillinge – zwei Kinder verstorben, ein Kind kritisch">zwei verstorben, einer kritisch</option>
+<option value="Drillinge – zwei Kinder kritisch, ein Kind lebt">zwei kritisch, einer lebt</option>
+<option value="Drillinge – kritischer Zustand aller Kinder">alle kritisch</option>
+</optgroup>
+</select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
 <option value=""></option>
 </select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/><div class="lf-hint hidden" id="ksElZeitHinweis"></div></div><div class="field-wrap hidden" id="einleitungZusatzWrapField">
 <label class="field-label">Zusatzinfos Einleitung</label>
@@ -505,7 +596,7 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option value="1. Kind">1. Kind</option><option value="2. Kind">2. Kind</option><option value="3. Kind">3. Kind</option><option value="4. Kind">4. Kind</option><option value="5. Kind">5. Kind</option></select></div>
 <div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option value="keine Kinder an der Hand">keine Kinder an der Hand</option><option value="1 Kind an der Hand">1 Kind an der Hand</option><option value="2 Kinder an der Hand">2 Kinder an der Hand</option><option value="3 Kinder an der Hand">3 Kinder an der Hand</option><option value="4 Kinder an der Hand">4 Kinder an der Hand</option></select></div>
 </div>
-<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wäre es das erste gemeinsame Kind."/><span>Für die Eltern wäre es das erste gemeinsame Kind.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="field-wrap" id="familieAktuelleLageWrapField" style="margin-top:15px"><label class="field-label" for="familieAktuelleLage">Aktuelle Lage</label><select id="familieAktuelleLage"><option value=""></option></select></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wären es die ersten gemeinsamen Kinder."/><span>Für die Eltern wären es die ersten gemeinsamen Kinder.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="field-wrap" id="familieAktuelleLageWrapField" style="margin-top:15px"><label class="field-label" for="familieAktuelleLage">Aktuelle Lage</label><select id="familieAktuelleLage"><option value=""></option></select></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Bilder">
 <h2>Bilder</h2>
@@ -587,6 +678,7 @@ const reportStep = allSteps.find(step => step.classList.contains("report-step") 
 const workSteps = allSteps.filter(step => step !== consentStep && step !== reportStep);
 
 let currentWorkIndex = -1;
+let adminOpenIndex = -1;
 
 function isAdminMode(){
   return document.body.classList.contains("admin-mode");
@@ -595,18 +687,21 @@ function isAdminMode(){
 function adminRevealDynamicFields(){
   if(!isAdminMode()) return;
 
-  document.querySelectorAll(".hidden").forEach(el => {
+  document.querySelectorAll(".step.open .hidden").forEach(el => {
     el.hidden = false;
     el.style.display = "";
   });
 
-  document.querySelectorAll("input, select, textarea").forEach(el => {
+  document.querySelectorAll(".step.open input, .step.open select, .step.open textarea").forEach(el => {
     el.disabled = false;
   });
 }
 
 function toggleAdminMode(){
   document.body.classList.toggle("admin-mode");
+  if(isAdminMode() && adminOpenIndex < 0){
+    adminOpenIndex = 0;
+  }
   recalcAll();
 }
 
@@ -800,12 +895,21 @@ function setOpenStates(){
     reportStep.classList.add("open");
   }
 
+  // Auch im Adminmodus muss zuerst das Einverständnis gesetzt sein.
   if(consentValue() !== "ja"){
     return;
   }
 
+  // Admin: alle Arbeitsabschnitte als Header sichtbar,
+  // genau ein Abschnitt kann geöffnet werden.
   if(admin){
-    workSteps.forEach(step => step.classList.add("open"));
+    workSteps.forEach((step, index) => {
+      if(index === adminOpenIndex){
+        step.classList.add("open");
+      }else{
+        step.classList.add("todo");
+      }
+    });
     return;
   }
 
@@ -951,16 +1055,14 @@ function getKindNameParts(){
 
   // Klare Trenner: &, +, und, Komma, Semikolon. Kein Leerzeichen und kein Bindestrich.
   return raw
-    .split(/\s*(?:&|\+|,|;|\bund\b)\s*/i)
+    .split(/\s*(?:&|\+|,|;|\/|\n|\bund\b)\s*/i)
     .map(part => part.trim())
     .filter(Boolean);
 }
 
 function detectedKindCount(){
   const parts = getKindNameParts();
-  if(parts.length >= 3) return 3;
-  if(parts.length === 2) return 2;
-  return 1;
+  return Math.max(1, parts.length);
 }
 
 function updateGeschlechtOptions(){
@@ -1037,17 +1139,161 @@ function kindNameHasMehrlingsTrenner(){
   return detectedKindCount() >= 2;
 }
 
+
+function updateAktuelleSituationOptions(){
+  const select = $("aktuelleSituation");
+  if(!select) return;
+
+  const current = select.value;
+  const mehrlinge = val("mehrlinge");
+
+  const alleMehrlingeVerstorben =
+    mehrlinge === "Zwillinge – beide Kinder verstorben" ||
+    mehrlinge === "Drillinge – drei Kinder verstorben";
+
+  const standard = [
+    ["", ""],
+    ["verstorben", "verstorben"],
+    ["noch lebend", "noch lebend"],
+    ["Lebendbilder", "Lebendbilder"],
+    ["Einleitung", "Einleitung"],
+    ["Kaiserschnitt", "Kaiserschnitt"]
+  ];
+
+  const nurVerstorbenElKs = [
+    ["", ""],
+    ["verstorben", "verstorben"],
+    ["Einleitung", "Einleitung"],
+    ["Kaiserschnitt", "Kaiserschnitt"]
+  ];
+
+  const options = alleMehrlingeVerstorben ? nurVerstorbenElKs : standard;
+
+  select.innerHTML = "";
+
+  options.forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+
+  const validValues = options.map(option => option[0]);
+  select.value = validValues.includes(current) ? current : "";
+}
+
+
 function updateMehrlingsSituationOptions(){
   const mehrlingeWrap = $("mehrlingeWrapField") || $("mehrlinge");
-  const showMehrlinge = kindNameHasMehrlingsTrenner() || !!val("mehrlinge");
+  const mehrlinge = $("mehrlinge");
+  if(!mehrlingeWrap || !mehrlinge) return;
 
-  if(mehrlingeWrap){
-    if(isAdminMode()){
-      mehrlingeWrap.classList.remove("hidden");
-    }else{
-      mehrlingeWrap.classList.toggle("hidden", !showMehrlinge);
-    }
+  const count = detectedKindCount();
+  const current = mehrlinge.value;
+  const situation = val("aktuelleSituation");
+
+  const zwillingeOptions = [
+    ["Zwillinge – beide Kinder verstorben", "beide verstorben"],
+    ["Zwillinge – ein Kind verstorben, ein Kind lebt", "einer verstorben, einer lebt"],
+    ["Zwillinge – ein Kind verstorben, ein Kind kritisch", "einer verstorben, einer kritisch"],
+    ["Zwillinge – kritischer Zustand beider Kinder", "beide kritisch"]
+  ];
+
+  const drillingeOptions = [
+    ["Drillinge – drei Kinder verstorben", "alle verstorben"],
+    ["Drillinge – ein Kind verstorben, zwei Kinder leben", "einer verstorben, zwei leben"],
+    ["Drillinge – zwei Kinder verstorben, ein Kind lebt", "zwei verstorben, einer lebt"],
+    ["Drillinge – ein Kind verstorben, zwei Kinder kritisch", "einer verstorben, zwei kritisch"],
+    ["Drillinge – zwei Kinder verstorben, ein Kind kritisch", "zwei verstorben, einer kritisch"],
+    ["Drillinge – zwei Kinder kritisch, ein Kind lebt", "zwei kritisch, einer lebt"],
+    ["Drillinge – kritischer Zustand aller Kinder", "alle kritisch"]
+  ];
+
+  const rebuild = (label, options) => {
+    mehrlinge.innerHTML = "";
+
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "";
+    mehrlinge.appendChild(empty);
+
+    const group = document.createElement("optgroup");
+    group.label = label;
+
+    options.forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      group.appendChild(option);
+    });
+
+    mehrlinge.appendChild(group);
+
+    const validValues = options.map(option => option[0]);
+    mehrlinge.value = validValues.includes(current) ? current : "";
+  };
+
+  if(isAdminMode()){
+    mehrlingeWrap.classList.remove("hidden");
+    return;
   }
+
+  // Bei 2 Namen: Zwillingsoptionen.
+  if(count === 2){
+    rebuild("Zwillinge", zwillingeOptions);
+    mehrlingeWrap.classList.remove("hidden");
+    return;
+  }
+
+  // Bei 3 Namen: Drillingsoptionen.
+  if(count === 3){
+    rebuild("Drillinge", drillingeOptions);
+    mehrlingeWrap.classList.remove("hidden");
+    return;
+  }
+
+  // Bei EL/KS darf das Mehrlingsfeld trotzdem sichtbar bleiben,
+  // damit Mehrlinge auch vor Geburt / bei geplantem oder erfolgtem KS erfasst werden können.
+  // Ohne 2/3 Namen zeigen wir beide Gruppen an.
+  if(situation === "Einleitung" || situation === "Kaiserschnitt"){
+    mehrlinge.innerHTML = "";
+
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "";
+    mehrlinge.appendChild(empty);
+
+    const zwGroup = document.createElement("optgroup");
+    zwGroup.label = "Zwillinge";
+    zwillingeOptions.forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      zwGroup.appendChild(option);
+    });
+    mehrlinge.appendChild(zwGroup);
+
+    const drGroup = document.createElement("optgroup");
+    drGroup.label = "Drillinge";
+    drillingeOptions.forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      drGroup.appendChild(option);
+    });
+    mehrlinge.appendChild(drGroup);
+
+    const validValues = [...zwillingeOptions, ...drillingeOptions].map(option => option[0]);
+    mehrlinge.value = validValues.includes(current) ? current : "";
+
+    mehrlingeWrap.classList.remove("hidden");
+    return;
+  }
+
+  // Ab 4 Kindern / Mehrlinge allgemein: keine festen Optionen erzwingen,
+  // sondern manuell in den Ergänzungen beschreiben.
+  mehrlinge.value = "";
+  mehrlingeWrap.classList.add("hidden");
 }
 
 function updateGeschwisterBilderVisibility(){
@@ -1081,6 +1327,48 @@ function updateGeschwisterBilderVisibility(){
 
   geschwister.disabled = !anzeigen;
 }
+
+
+function updateLebendbilderDropdownOptions(){
+  const select = $("lebendbilderPrognose");
+  if(!select) return;
+
+  const current = select.value;
+  const mehrlingswert = val("mehrlinge");
+
+  // Nur bei Mehrlingssituationen, die selbst schon "kritisch" enthalten,
+  // wird "Zustand sehr kritisch" aus LB ausgeblendet.
+  // Für Einlinge bleibt die Option sichtbar.
+  const mehrlingIstBereitsKritisch =
+    /kritisch/i.test(mehrlingswert);
+
+  const optionen = [
+    { value:"Zustand sehr kritisch", label:"Zustand sehr kritisch", hideIfKritisch:true },
+    { value:"Überleben nach Einschätzung nicht möglich", label:"Überleben nach Einschätzung nicht möglich" },
+    { value:"Lebenserhaltende Maßnahmen sollen beendet werden", label:"Lebenserhaltende Maßnahmen sollen beendet werden" },
+    { value:"Nur noch palliative Maßnahmen", label:"Nur noch palliative Maßnahmen" }
+  ];
+
+  select.innerHTML = "";
+
+  const empty = document.createElement("option");
+  empty.value = "";
+  empty.textContent = "";
+  select.appendChild(empty);
+
+  optionen
+    .filter(option => !(mehrlingIstBereitsKritisch && option.hideIfKritisch))
+    .forEach(optionData => {
+      const option = document.createElement("option");
+      option.value = optionData.value;
+      option.textContent = optionData.label;
+      select.appendChild(option);
+    });
+
+  const values = Array.from(select.options).map(option => option.value);
+  select.value = values.includes(current) ? current : "";
+}
+
 
 function updateAktuellesAlterVisibility(){
   const geburtWrap = $("alterKindWrapField");
@@ -1448,10 +1736,12 @@ function updateZeitlogikHinweis(){
 function recalcAll(){
   enforceTwoDigitBirthAge();
   updateMehrlingsSituationOptions();
+  updateAktuelleSituationOptions();
   updateGeschlechtOptions();
   syncKinderHand();
   updateGeschwisterBilderVisibility();
   updateAktuellesAlterVisibility();
+  updateLebendbilderDropdownOptions();
   updateWasser();
   updateGeburtssituationRouting();
   updateZeitlogikHinweis();
@@ -1459,9 +1749,9 @@ function recalcAll(){
   updateInfektBesonderheiten();
   updateKommunikationVisibility();
   clearSituationSpecificValues();
+  setOpenStates();
   adminRevealDynamicFields();
   updateReport();
-  setOpenStates();
 }
 
 
@@ -1556,18 +1846,18 @@ function baueMehrlingssatz(){
 
   if(!wert) return "";
 
-  if(wert === "Zwillinge – beide Kinder verstorben") return "Es geht um Zwillinge, beide Kinder sind verstorben.";
-  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch.";
-  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht") return "Es geht um Zwillinge. Ein Kind ist bereits verstorben, das andere lebt noch, die Prognose ist jedoch sehr schlecht.";
-  if(wert === "Zwillinge – kritischer Zustand eines Kindes") return "Es geht um Zwillinge. Eines der Kinder befindet sich in kritischem Zustand.";
-  if(wert === "Zwillinge – kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide Kinder befinden sich in kritischem Zustand.";
+  if(wert === "Zwillinge – beide Kinder verstorben") return "Es geht um Zwillinge, die beide verstorben sind.";
+  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge, von denen einer verstorben ist und einer lebt.";
+  if(wert === "Zwillinge – ein Kind verstorben, ein Kind kritisch") return "Es geht um Zwillinge, von denen einer verstorben ist und einer sich in einem kritischen Zustand befindet.";
+  if(wert === "Zwillinge – kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide befinden sich in einem kritischen Zustand.";
 
-  if(wert === "Drillinge – drei Kinder verstorben") return "Es geht um Drillinge, alle drei Kinder sind verstorben.";
-  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge. Ein Kind ist bereits verstorben, zwei Kinder leben noch.";
-  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge. Zwei Kinder sind bereits verstorben, ein Kind lebt noch.";
-  if(wert === "Drillinge – kritischer Zustand eines Kindes") return "Es geht um Drillinge. Eines der Kinder befindet sich in kritischem Zustand.";
-  if(wert === "Drillinge – kritischer Zustand zweier Kinder") return "Es geht um Drillinge. Zwei der Kinder befinden sich in kritischem Zustand.";
-  if(wert === "Drillinge – kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in kritischem Zustand.";
+  if(wert === "Drillinge – drei Kinder verstorben") return "Es geht um Drillinge, die alle drei verstorben sind.";
+  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge, von denen einer verstorben ist und zwei noch leben.";
+  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge, von denen zwei bereits verstorben sind und einer noch lebt.";
+  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder kritisch") return "Es geht um Drillinge, von denen einer verstorben ist und zwei sich in einem kritischen Zustand befinden.";
+  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind kritisch") return "Es geht um Drillinge, von denen zwei bereits verstorben sind und einer sich in einem kritischen Zustand befindet.";
+  if(wert === "Drillinge – zwei Kinder kritisch, ein Kind lebt") return "Es geht um Drillinge, von denen einer lebt und zwei sich in einem kritischen Zustand befinden.";
+  if(wert === "Drillinge – kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in einem kritischen Zustand.";
 
   return "";
 }
@@ -1745,7 +2035,7 @@ function baueKsElDetailSatz(){
 function lebendbilderPrognoseSatz(){
   const p = val("lebendbilderPrognose");
   const map = {
-    "Zustand sehr kritisch": "Der Zustand des Kindes ist aktuell sehr kritisch.",
+    "Zustand sehr kritisch": "Der Zustand ist aktuell sehr kritisch.",
     "Überleben nach Einschätzung nicht möglich": "Nach aktueller ärztlicher Einschätzung ist ein Überleben des Kindes nicht möglich.",
     "Lebenserhaltende Maßnahmen sollen beendet werden": "Die lebenserhaltenden Maßnahmen sollen beendet werden.",
     "Nur noch palliative Maßnahmen": "Für das Kind werden aktuell nur noch palliative Maßnahmen durchgeführt."
@@ -1826,7 +2116,7 @@ function updateReport(){
   try{
     // Admin-Testmodus: Bericht auch ohne gesetztes Einverständnis erzeugen.
     // Normalmodus bleibt unverändert gesperrt, bis Einverständnis = ja ist.
-    if(consentValue() !== "ja" && !isAdminMode()){
+    if(consentValue() !== "ja"){
       $("report").textContent = "Berichtsausgabe";
       return;
     }
@@ -1873,7 +2163,7 @@ function updateReport(){
     add(sternenkindBlock);
 
     const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
-      ? "Für die Eltern wäre es das erste gemeinsame Kind."
+      ? "Für die Eltern wären es die ersten gemeinsamen Kinder."
       : "";
 
     const familienBlock = [
@@ -2029,11 +2319,27 @@ document.addEventListener("input", event => {
 
 
 document.addEventListener("click", event => {
-  const heading = event.target.closest(".step.done > h2, .step.todo > h2");
-  if(!heading || isAdminMode()) return;
+  const heading = event.target.closest(".step > h2");
+  if(!heading) return;
 
   const step = heading.closest(".step");
+  if(!step) return;
+
   const index = workSteps.indexOf(step);
+
+  if(isAdminMode()){
+    if(index >= 0){
+      adminOpenIndex = adminOpenIndex === index ? -1 : index;
+      recalcAll();
+      if(adminOpenIndex === index){
+        step.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+    }
+    return;
+  }
+
+  if(!(step.classList.contains("done") || step.classList.contains("todo"))) return;
+
   if(index >= 0){
     currentWorkIndex = index;
     recalcAll();

@@ -125,7 +125,7 @@ button{
   border-radius:5px;
   padding:14px;
   white-space:pre-wrap;
-  line-height:1.5;
+  line-height:1.42;
   font-size:15px;
 }
 
@@ -189,43 +189,27 @@ body.admin-mode .step h2::after{
   font-weight:600;
 }
 
-/* Admin-Debugansicht:
-   Alle Abschnitte als Header sichtbar.
-   Dynamikfelder werden erst innerhalb einer geöffneten Karte sichtbar. */
-body.admin-mode .step{
+/* Admin-Debugansicht: alle dynamischen/normalerweise verborgenen Felder sichtbar machen. */
+body.admin-mode .hidden{
   display:block !important;
 }
-body.admin-mode .step:not(.open):not(.report-step) > *:not(h2){
-  display:none !important;
-}
-body.admin-mode .step:not(.open) h2{
-  cursor:pointer;
-  margin:0;
-  padding:13px 16px;
-  border:1px solid #9db7d4;
-  border-radius:8px;
-  background:#e8f1fb;
-}
-body.admin-mode .step.open .hidden{
-  display:block !important;
-}
-body.admin-mode .step.open #sternenkindDynamicGrid{
+body.admin-mode #sternenkindDynamicGrid{
   display:grid !important;
 }
-body.admin-mode .step.open .field-wrap.hidden{
+body.admin-mode .field-wrap.hidden{
   padding:8px;
   border-radius:8px;
   background:#faf7f0;
   outline:1px dashed #dccfb8;
   outline-offset:2px;
 }
-body.admin-mode .step.open .field-wrap.hidden input,
-body.admin-mode .step.open .field-wrap.hidden select,
-body.admin-mode .step.open .field-wrap.hidden textarea{
+body.admin-mode .field-wrap.hidden input,
+body.admin-mode .field-wrap.hidden select,
+body.admin-mode .field-wrap.hidden textarea{
   background:#f8f4ea;
   border-color:#e7dfd0;
 }
-body.admin-mode .step.open .field-wrap.hidden .field-label::after{
+body.admin-mode .field-wrap.hidden .field-label::after{
   content:" · dynamisch";
   color:#8a6f43;
   font-size:12px;
@@ -443,64 +427,6 @@ body.admin-mode #abschlussfrageWrapField select{
   font-weight:600;
 }
 
-
-body.admin-mode .step > h2{
-  cursor:pointer;
-}
-
-
-/* ADMIN HEADER FIX */
-body.admin-mode .step{
-  display:block !important;
-  padding:10px 0;
-}
-body.admin-mode .step > h2{
-  cursor:pointer !important;
-  margin:0;
-  padding:13px 16px;
-  border:1px solid #9db7d4;
-  border-radius:8px;
-  background:#e8f1fb;
-}
-body.admin-mode .step:not(.open):not(.report-step) > *:not(h2){
-  display:none !important;
-}
-body.admin-mode .step.open > *{
-  display:block;
-}
-body.admin-mode .step.open .grid2,
-body.admin-mode .step.open .grid3,
-body.admin-mode .step.open #sternenkindDynamicGrid{
-  display:grid !important;
-}
-body.admin-mode .step.open .hidden{
-  display:block !important;
-}
-
-
-/* ADMIN REPORT FIX: Bericht im Admin immer sichtbar lassen */
-body.admin-mode .step.report-step,
-body.admin-mode .step.report-step.open{
-  display:block !important;
-}
-body.admin-mode .step.report-step > *{
-  display:block !important;
-}
-body.admin-mode .step.report-step .report,
-body.admin-mode .step.report-step .reportbox,
-body.admin-mode #report{
-  display:block !important;
-}
-body.admin-mode .step.report-step h2{
-  cursor:default !important;
-  background:transparent !important;
-  border:0 !important;
-  padding:0 !important;
-}
-body.admin-mode .step.report-step:not(.open) > *:not(h2){
-  display:block !important;
-}
-
 </style>
 </head>
 <body>
@@ -516,7 +442,7 @@ body.admin-mode .step.report-step:not(.open) > *:not(h2){
 </section>
 <section class="step" data-title="Mitarbeiter">
 <h2>Welcher Mitarbeiter hat die Einsatzanforderung erstellt? *</h2>
-<div class="field-wrap" id="mitarbeiterWrapField"><label class="field-label" for="mitarbeiter">Mitarbeiter/in *</label><input id="mitarbeiter" placeholder="" required="required"/><div class="lf-hint" id="mitarbeiterEnterHinweis">Zum Absenden Enter drücken.</div></div><div class="notice" id="mitarbeiterPflichtHinweis">Bitte Mitarbeiter/in eintragen.</div>
+<div class="field-wrap" id="mitarbeiterWrapField"><label class="field-label" for="mitarbeiter">Mitarbeiter/in *</label><div class="lf-hint">Bitte nur Buchstaben verwenden.</div><input id="mitarbeiter" placeholder="" required="required"/><div class="lf-hint" id="mitarbeiterEnterHinweis">Zum Absenden Enter drücken.</div></div><div class="notice" id="mitarbeiterPflichtHinweis">Bitte Mitarbeiter/in eintragen.</div>
 <div class="nav"><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Klinik">
@@ -539,40 +465,23 @@ body.admin-mode .step.report-step:not(.open) > *:not(h2){
 <h2>Ansprechpartner/in vor Ort</h2>
 <div class="grid3">
 <div class="field-wrap" id="ansprechpartnerWrapField"><label class="field-label" for="ansprechpartner">Name Ansprechpartner/in</label><input id="ansprechpartner" placeholder="Name Ansprechpartner/in"/></div>
-<div class="field-wrap" id="funktionWrapField"><label class="field-label" for="funktion">Funktion</label><select id="funktion"><option value=""></option><option value="Papa">Papa</option><option value="Mama">Mama</option><option value="Oma">Oma</option><option value="Freundin">Freundin</option><option value="Familienangehörige/r">Familienangehörige/r</option><option value="Hebamme">Hebamme</option><option value="Schwester">Schwester</option><option value="Ärztin">Ärztin</option><option value="Arzt">Arzt</option><option value="Frau von der Seelsorge">Frau von der Seelsorge</option><option value="Herr von der Seelsorge">Herr von der Seelsorge</option><option value="Sozialdienst">Sozialdienst</option></select></div>
+<div class="field-wrap" id="funktionWrapField"><label class="field-label" for="funktion">Funktion</label><select id="funktion"><option value=""></option><option value="Papa">Papa</option><option value="Mama">Mama</option><option value="Oma">Oma</option><option value="Freundin">Freundin</option><option value="Familienangehörige/r">Familienangehörige/r</option><option value="Hebamme">Hebamme</option><option value="Schwester">Schwester</option><option value="Ärztin">Ärztin</option><option value="Arzt">Arzt</option><option value="Frau von der Seelsorge">Frau von der Seelsorge</option><option value="Herr von der Seelsorge">Herr von der Seelsorge</option><option value="Sozialdienst">Sozialdienst</option><option value="Bestattungsinstitut">Bestattungsinstitut</option></select></div>
 <div class="field-wrap" id="gespraechWrapField"><label class="field-label" for="gespraech">Gesprächssituation</label><select id="gespraech"><option value=""></option><option value="aufgelöst">aufgelöst</option><option value="besorgt">besorgt</option><option value="dankbar">dankbar</option><option value="lieb">lieb</option><option value="nett">nett</option><option value="ruhig">ruhig</option><option value="traurig">traurig</option><option value="verzweifelt">verzweifelt</option></select></div>
 </div>
 <div class="grid2" style="margin-top:15px">
 <div class="field-wrap" id="telefonWrapField"><label class="field-label" for="telefon">Telefon / Mobil</label><input id="telefon" placeholder="Telefon / Mobil"/></div>
-<div class="field-wrap" id="emailWrapField"><label class="field-label" for="email">E-Mail</label><input id="email" placeholder="E-Mail"/></div><div class="field-wrap" id="ansprechpartnerErgaenzungWrapField"><label class="field-label" for="ansprechpartnerErgaenzung">Weitere Informationen hier eintragen</label><input class="small-note-field" id="ansprechpartnerErgaenzung" placeholder=""/></div>
+<div class="field-wrap" id="emailWrapField"><label class="field-label" for="email">E-Mail</label><input id="email" placeholder="E-Mail"/></div><div class="grid2" style="align-items:end"><div class="field-wrap" id="ansprechpartnerErgaenzungWrapField"><label class="field-label" for="ansprechpartnerErgaenzung">Weitere Informationen hier eintragen</label><input class="small-note-field" id="ansprechpartnerErgaenzung" placeholder=""/></div><div class="field-wrap" id="informationslageUnklarWrapField"><label class="option"><input id="informationslageUnklar" type="checkbox"/><span>Informationslage unklar</span></label></div></div>
 </div>
 <div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Sternenkind">
 <h2>Angaben zum Sternenkind</h2>
-<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" inputmode="numeric" maxlength="2" placeholder=""/></div><div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
+<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div><div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" inputmode="numeric" maxlength="2" placeholder=""/></div><div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
 <option value=""></option>
 <option>SSW</option>
 <option>Monat(e)</option>
 <option>Jahr(e)</option>
-</select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge / Mehrlinge</label><select id="mehrlinge">
-<option value=""></option>
-<optgroup label="Zwillinge">
-<option value="Zwillinge – beide Kinder verstorben">beide verstorben</option>
-<option value="Zwillinge – ein Kind verstorben, ein Kind lebt">einer verstorben, einer lebt</option>
-<option value="Zwillinge – ein Kind verstorben, ein Kind kritisch">einer verstorben, einer kritisch</option>
-<option value="Zwillinge – kritischer Zustand beider Kinder">beide kritisch</option>
-</optgroup>
-<optgroup label="Drillinge">
-<option value="Drillinge – drei Kinder verstorben">alle verstorben</option>
-<option value="Drillinge – ein Kind verstorben, zwei Kinder leben">einer verstorben, zwei leben</option>
-<option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei verstorben, einer lebt</option>
-<option value="Drillinge – ein Kind verstorben, zwei Kinder kritisch">einer verstorben, zwei kritisch</option>
-<option value="Drillinge – zwei Kinder verstorben, ein Kind kritisch">zwei verstorben, einer kritisch</option>
-<option value="Drillinge – zwei Kinder kritisch, ein Kind lebt">zwei kritisch, einer lebt</option>
-<option value="Drillinge – kritischer Zustand aller Kinder">alle kritisch</option>
-</optgroup>
-</select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
+</select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge</label><select id="mehrlinge"><option value=""></option><optgroup label="Zwillinge"><option value="Zwillinge – beide Kinder verstorben">beide Kinder verstorben</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt">ein Kind verstorben, ein Kind lebt</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht">ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht</option><option value="Zwillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Zwillinge – kritischer Zustand beider Kinder">kritischer Zustand beider Kinder</option></optgroup><optgroup label="Drillinge"><option value="Drillinge – drei Kinder verstorben">drei Kinder verstorben</option><option value="Drillinge – ein Kind verstorben, zwei Kinder leben">ein Kind verstorben, zwei Kinder leben</option><option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei Kinder verstorben, ein Kind lebt</option><option value="Drillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Drillinge – kritischer Zustand zweier Kinder">kritischer Zustand zweier Kinder</option><option value="Drillinge – kritischer Zustand aller Kinder">kritischer Zustand aller Kinder</option></optgroup></select></div><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
 <option value=""></option>
 </select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/><div class="lf-hint hidden" id="ksElZeitHinweis"></div></div><div class="field-wrap hidden" id="einleitungZusatzWrapField">
 <label class="field-label">Zusatzinfos Einleitung</label>
@@ -588,7 +497,7 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <p><strong>Hinweis:</strong> In den Unikliniken Freiburg, Bonn, Münster, dem AKH Wien sowie dem Uniklinikum Linz bitte nicht nach der Wassermethode fragen.</p>
 </div></div>
 </div></div>
-<div class="field-wrap" id="informationslageUnklarWrapField" style="margin-top:15px"><label class="option"><input id="informationslageUnklar" type="checkbox"/><span>Informationslage unklar</span></label></div><div class="field-wrap" id="sternenkindErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="sternenkindErgaenzung">Weitere Informationen hier eintragen</label><input id="sternenkindErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="sternenkindErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="sternenkindErgaenzung">Weitere Informationen hier eintragen</label><input id="sternenkindErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Eltern/Familie">
 <h2>Eltern und Familie</h2>
@@ -596,7 +505,7 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option value="1. Kind">1. Kind</option><option value="2. Kind">2. Kind</option><option value="3. Kind">3. Kind</option><option value="4. Kind">4. Kind</option><option value="5. Kind">5. Kind</option></select></div>
 <div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option value="keine Kinder an der Hand">keine Kinder an der Hand</option><option value="1 Kind an der Hand">1 Kind an der Hand</option><option value="2 Kinder an der Hand">2 Kinder an der Hand</option><option value="3 Kinder an der Hand">3 Kinder an der Hand</option><option value="4 Kinder an der Hand">4 Kinder an der Hand</option></select></div>
 </div>
-<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wären es die ersten gemeinsamen Kinder."/><span>Für die Eltern wären es die ersten gemeinsamen Kinder.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="field-wrap" id="familieAktuelleLageWrapField" style="margin-top:15px"><label class="field-label" for="familieAktuelleLage">Aktuelle Lage</label><select id="familieAktuelleLage"><option value=""></option></select></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wären es die ersten gemeinsamen Kinder."/><span>Für die Eltern wären es die ersten gemeinsamen Kinder.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Bilder">
 <h2>Bilder</h2>
@@ -678,7 +587,6 @@ const reportStep = allSteps.find(step => step.classList.contains("report-step") 
 const workSteps = allSteps.filter(step => step !== consentStep && step !== reportStep);
 
 let currentWorkIndex = -1;
-let adminOpenIndex = -1;
 
 function isAdminMode(){
   return document.body.classList.contains("admin-mode");
@@ -687,27 +595,55 @@ function isAdminMode(){
 function adminRevealDynamicFields(){
   if(!isAdminMode()) return;
 
-  document.querySelectorAll(".step.open .hidden").forEach(el => {
+  document.querySelectorAll(".hidden").forEach(el => {
     el.hidden = false;
     el.style.display = "";
   });
 
-  document.querySelectorAll(".step.open input, .step.open select, .step.open textarea").forEach(el => {
+  document.querySelectorAll("input, select, textarea").forEach(el => {
     el.disabled = false;
   });
 }
 
 function toggleAdminMode(){
   document.body.classList.toggle("admin-mode");
-  if(isAdminMode() && adminOpenIndex < 0){
-    adminOpenIndex = 0;
-  }
   recalcAll();
 }
 
 function val(id){
   return ($(id)?.value || "").trim();
 }
+
+function sanitizeMitarbeiterInputValue(value){
+  return (value || "").replace(/[^\p{L}\s]/gu, "");
+}
+
+function countMitarbeiterLetters(value){
+  const matches = sanitizeMitarbeiterInputValue(value).match(/\p{L}/gu);
+  return matches ? matches.length : 0;
+}
+
+
+document.addEventListener("click", event => {
+  const heading = event.target.closest(".step h2");
+  if(!heading) return;
+  const step = heading.closest(".step");
+  if(!step) return;
+
+  if(isAdminMode() && step !== consentStep && step !== reportStep){
+    step.classList.toggle("open");
+    step.classList.toggle("todo", !step.classList.contains("open"));
+    return;
+  }
+}, true);
+
+
+document.addEventListener("input", event => {
+  if(event.target && event.target.id === "mitarbeiter"){
+    event.target.value = sanitizeMitarbeiterInputValue(event.target.value);
+  }
+}, true);
+
 
 function radioValue(name){
   return document.querySelector('input[name="' + name + '"]:checked')?.value || "";
@@ -895,20 +831,14 @@ function setOpenStates(){
     reportStep.classList.add("open");
   }
 
-  // Auch im Adminmodus muss zuerst das Einverständnis gesetzt sein.
   if(consentValue() !== "ja"){
     return;
   }
 
-  // Admin: alle Arbeitsabschnitte als Header sichtbar,
-  // genau ein Abschnitt kann geöffnet werden.
   if(admin){
-    workSteps.forEach((step, index) => {
-      if(index === adminOpenIndex){
-        step.classList.add("open");
-      }else{
-        step.classList.add("todo");
-      }
+    workSteps.forEach(step => {
+      step.classList.add("todo");
+      step.classList.remove("open");
     });
     return;
   }
@@ -957,7 +887,12 @@ function updateConsentFlow(){
 
 function validateCurrentStep(){
   if(workSteps[currentWorkIndex]?.dataset.title === "Mitarbeiter"){
-    const ok = val("mitarbeiter").trim().length >= 2;
+    const field = $("mitarbeiter");
+    if(field){
+      field.value = sanitizeMitarbeiterInputValue(field.value);
+    }
+
+    const ok = countMitarbeiterLetters(val("mitarbeiter")) >= 2;
     const notice = $("mitarbeiterPflichtHinweis");
     if(notice){
       notice.style.display = ok ? "none" : "block";
@@ -1049,20 +984,38 @@ function syncKinderHand(){
 }
 
 
+
+function formatChildNameForReport(name){
+  return String(name || "")
+    .trim()
+    .split(/\s+/)
+    .map(part => part
+      .split("-")
+      .map(piece => piece ? piece.charAt(0).toLocaleUpperCase("de-DE") + piece.slice(1) : piece)
+      .join("-"))
+    .join(" ");
+}
+
+function getKindNameForOutput(){
+  const name = val("kindName");
+  return name ? name : "unbekannt";
+}
+
 function getKindNameParts(){
   const raw = val("kindName");
   if(!raw) return [];
 
-  // Klare Trenner: &, +, und, Komma, Semikolon. Kein Leerzeichen und kein Bindestrich.
   return raw
-    .split(/\s*(?:&|\+|,|;|\/|\n|\bund\b)\s*/i)
+    .split(/[^\p{L}\s-]+/u)
     .map(part => part.trim())
     .filter(Boolean);
 }
 
 function detectedKindCount(){
   const parts = getKindNameParts();
-  return Math.max(1, parts.length);
+  if(parts.length >= 3) return 3;
+  if(parts.length === 2) return 2;
+  return 1;
 }
 
 function updateGeschlechtOptions(){
@@ -1139,161 +1092,116 @@ function kindNameHasMehrlingsTrenner(){
   return detectedKindCount() >= 2;
 }
 
+/* MVC Vorbereitung: Mehrlingssituation
+   Model = verfügbare fachliche Optionen
+   View = rendert ausschließlich die Dropdown-Optionen
+   Controller = entscheidet anhand erkannter Kinderanzahl
+*/
+const MehrlingsSituationModel = Object.freeze({
+  zwillinge: Object.freeze({
+    mode: "zwillinge",
+    label: "Zwillinge",
+    options: Object.freeze([
+      Object.freeze({ value:"Zwillinge – beide Kinder verstorben", label:"beide Kinder verstorben" }),
+      Object.freeze({ value:"Zwillinge – ein Kind verstorben, ein Kind lebt", label:"ein Kind verstorben, ein Kind lebt" }),
+      Object.freeze({ value:"Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht", label:"ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht" }),
+      Object.freeze({ value:"Zwillinge – kritischer Zustand eines Kindes", label:"kritischer Zustand eines Kindes" }),
+      Object.freeze({ value:"Zwillinge – kritischer Zustand beider Kinder", label:"kritischer Zustand beider Kinder" })
+    ])
+  }),
+  drillinge: Object.freeze({
+    mode: "drillinge",
+    label: "Drillinge",
+    options: Object.freeze([
+      Object.freeze({ value:"Drillinge – drei Kinder verstorben", label:"drei Kinder verstorben" }),
+      Object.freeze({ value:"Drillinge – ein Kind verstorben, zwei Kinder leben", label:"ein Kind verstorben, zwei Kinder leben" }),
+      Object.freeze({ value:"Drillinge – zwei Kinder verstorben, ein Kind lebt", label:"zwei Kinder verstorben, ein Kind lebt" }),
+      Object.freeze({ value:"Drillinge – kritischer Zustand eines Kindes", label:"kritischer Zustand eines Kindes" }),
+      Object.freeze({ value:"Drillinge – kritischer Zustand zweier Kinder", label:"kritischer Zustand zweier Kinder" }),
+      Object.freeze({ value:"Drillinge – kritischer Zustand aller Kinder", label:"kritischer Zustand aller Kinder" })
+    ])
+  })
+});
 
-function updateAktuelleSituationOptions(){
-  const select = $("aktuelleSituation");
-  if(!select) return;
+const MehrlingsSituationController = {
+  getDetectedCount(){
+    return detectedKindCount();
+  },
 
-  const current = select.value;
-  const mehrlinge = val("mehrlinge");
+  getState(){
+    const count = this.getDetectedCount();
 
-  const alleMehrlingeVerstorben =
-    mehrlinge === "Zwillinge – beide Kinder verstorben" ||
-    mehrlinge === "Drillinge – drei Kinder verstorben";
+    if(count === 2){
+      return { visible:true, group:MehrlingsSituationModel.zwillinge };
+    }
 
-  const standard = [
-    ["", ""],
-    ["verstorben", "verstorben"],
-    ["noch lebend", "noch lebend"],
-    ["Lebendbilder", "Lebendbilder"],
-    ["Einleitung", "Einleitung"],
-    ["Kaiserschnitt", "Kaiserschnitt"]
-  ];
+    if(count >= 3){
+      return { visible:true, group:MehrlingsSituationModel.drillinge };
+    }
 
-  const nurVerstorbenElKs = [
-    ["", ""],
-    ["verstorben", "verstorben"],
-    ["Einleitung", "Einleitung"],
-    ["Kaiserschnitt", "Kaiserschnitt"]
-  ];
+    return { visible:false, group:null };
+  }
+};
 
-  const options = alleMehrlingeVerstorben ? nurVerstorbenElKs : standard;
+const MehrlingsSituationView = {
+  renderSelect(select, group){
+    if(!select) return;
 
-  select.innerHTML = "";
+    const current = select.value;
+    const allowedValues = group ? group.options.map(option => option.value) : [];
+    const nextMode = group ? group.mode : "einling";
 
-  options.forEach(([value, label]) => {
-    const option = document.createElement("option");
-    option.value = value;
-    option.textContent = label;
-    select.appendChild(option);
-  });
+    if(select.dataset.mode === nextMode){
+      if(!allowedValues.includes(current)){
+        select.value = "";
+      }
+      return;
+    }
 
-  const validValues = options.map(option => option[0]);
-  select.value = validValues.includes(current) ? current : "";
-}
+    select.innerHTML = "";
 
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "";
+    select.appendChild(empty);
+
+    if(group){
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = group.label;
+
+      group.options.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.value;
+        option.textContent = item.label;
+        optgroup.appendChild(option);
+      });
+
+      select.appendChild(optgroup);
+    }
+
+    select.dataset.mode = nextMode;
+    select.value = allowedValues.includes(current) ? current : "";
+  },
+
+  setVisibility(wrapper, visible){
+    if(!wrapper) return;
+
+    if(isAdminMode()){
+      wrapper.classList.remove("hidden");
+      return;
+    }
+
+    wrapper.classList.toggle("hidden", !visible);
+  }
+};
 
 function updateMehrlingsSituationOptions(){
-  const mehrlingeWrap = $("mehrlingeWrapField") || $("mehrlinge");
-  const mehrlinge = $("mehrlinge");
-  if(!mehrlingeWrap || !mehrlinge) return;
+  const select = $("mehrlinge");
+  const wrapper = $("mehrlingeWrapField") || select;
+  const state = MehrlingsSituationController.getState();
 
-  const count = detectedKindCount();
-  const current = mehrlinge.value;
-  const situation = val("aktuelleSituation");
-
-  const zwillingeOptions = [
-    ["Zwillinge – beide Kinder verstorben", "beide verstorben"],
-    ["Zwillinge – ein Kind verstorben, ein Kind lebt", "einer verstorben, einer lebt"],
-    ["Zwillinge – ein Kind verstorben, ein Kind kritisch", "einer verstorben, einer kritisch"],
-    ["Zwillinge – kritischer Zustand beider Kinder", "beide kritisch"]
-  ];
-
-  const drillingeOptions = [
-    ["Drillinge – drei Kinder verstorben", "alle verstorben"],
-    ["Drillinge – ein Kind verstorben, zwei Kinder leben", "einer verstorben, zwei leben"],
-    ["Drillinge – zwei Kinder verstorben, ein Kind lebt", "zwei verstorben, einer lebt"],
-    ["Drillinge – ein Kind verstorben, zwei Kinder kritisch", "einer verstorben, zwei kritisch"],
-    ["Drillinge – zwei Kinder verstorben, ein Kind kritisch", "zwei verstorben, einer kritisch"],
-    ["Drillinge – zwei Kinder kritisch, ein Kind lebt", "zwei kritisch, einer lebt"],
-    ["Drillinge – kritischer Zustand aller Kinder", "alle kritisch"]
-  ];
-
-  const rebuild = (label, options) => {
-    mehrlinge.innerHTML = "";
-
-    const empty = document.createElement("option");
-    empty.value = "";
-    empty.textContent = "";
-    mehrlinge.appendChild(empty);
-
-    const group = document.createElement("optgroup");
-    group.label = label;
-
-    options.forEach(([value, text]) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = text;
-      group.appendChild(option);
-    });
-
-    mehrlinge.appendChild(group);
-
-    const validValues = options.map(option => option[0]);
-    mehrlinge.value = validValues.includes(current) ? current : "";
-  };
-
-  if(isAdminMode()){
-    mehrlingeWrap.classList.remove("hidden");
-    return;
-  }
-
-  // Bei 2 Namen: Zwillingsoptionen.
-  if(count === 2){
-    rebuild("Zwillinge", zwillingeOptions);
-    mehrlingeWrap.classList.remove("hidden");
-    return;
-  }
-
-  // Bei 3 Namen: Drillingsoptionen.
-  if(count === 3){
-    rebuild("Drillinge", drillingeOptions);
-    mehrlingeWrap.classList.remove("hidden");
-    return;
-  }
-
-  // Bei EL/KS darf das Mehrlingsfeld trotzdem sichtbar bleiben,
-  // damit Mehrlinge auch vor Geburt / bei geplantem oder erfolgtem KS erfasst werden können.
-  // Ohne 2/3 Namen zeigen wir beide Gruppen an.
-  if(situation === "Einleitung" || situation === "Kaiserschnitt"){
-    mehrlinge.innerHTML = "";
-
-    const empty = document.createElement("option");
-    empty.value = "";
-    empty.textContent = "";
-    mehrlinge.appendChild(empty);
-
-    const zwGroup = document.createElement("optgroup");
-    zwGroup.label = "Zwillinge";
-    zwillingeOptions.forEach(([value, text]) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = text;
-      zwGroup.appendChild(option);
-    });
-    mehrlinge.appendChild(zwGroup);
-
-    const drGroup = document.createElement("optgroup");
-    drGroup.label = "Drillinge";
-    drillingeOptions.forEach(([value, text]) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = text;
-      drGroup.appendChild(option);
-    });
-    mehrlinge.appendChild(drGroup);
-
-    const validValues = [...zwillingeOptions, ...drillingeOptions].map(option => option[0]);
-    mehrlinge.value = validValues.includes(current) ? current : "";
-
-    mehrlingeWrap.classList.remove("hidden");
-    return;
-  }
-
-  // Ab 4 Kindern / Mehrlinge allgemein: keine festen Optionen erzwingen,
-  // sondern manuell in den Ergänzungen beschreiben.
-  mehrlinge.value = "";
-  mehrlingeWrap.classList.add("hidden");
+  MehrlingsSituationView.renderSelect(select, state.group);
+  MehrlingsSituationView.setVisibility(wrapper, state.visible);
 }
 
 function updateGeschwisterBilderVisibility(){
@@ -1329,46 +1237,28 @@ function updateGeschwisterBilderVisibility(){
 }
 
 
-function updateLebendbilderDropdownOptions(){
-  const select = $("lebendbilderPrognose");
-  if(!select) return;
+const LebendbilderEligibilityModel = Object.freeze({
+  allChildrenDeceasedMehrlingsValues: Object.freeze([
+    "Zwillinge – beide Kinder verstorben",
+    "Drillinge – drei Kinder verstorben"
+  ])
+});
 
-  const current = select.value;
-  const mehrlingswert = val("mehrlinge");
+const LebendbilderEligibilityController = {
+  isAllChildrenDeceasedMehrlingsSituation(){
+    return LebendbilderEligibilityModel.allChildrenDeceasedMehrlingsValues.includes(val("mehrlinge"));
+  },
 
-  // Nur bei Mehrlingssituationen, die selbst schon "kritisch" enthalten,
-  // wird "Zustand sehr kritisch" aus LB ausgeblendet.
-  // Für Einlinge bleibt die Option sichtbar.
-  const mehrlingIstBereitsKritisch =
-    /kritisch/i.test(mehrlingswert);
+  allowsLebendbilderFields(){
+    if(val("aktuelleSituation") !== "Lebendbilder") return false;
+    return !this.isAllChildrenDeceasedMehrlingsSituation();
+  },
 
-  const optionen = [
-    { value:"Zustand sehr kritisch", label:"Zustand sehr kritisch", hideIfKritisch:true },
-    { value:"Überleben nach Einschätzung nicht möglich", label:"Überleben nach Einschätzung nicht möglich" },
-    { value:"Lebenserhaltende Maßnahmen sollen beendet werden", label:"Lebenserhaltende Maßnahmen sollen beendet werden" },
-    { value:"Nur noch palliative Maßnahmen", label:"Nur noch palliative Maßnahmen" }
-  ];
-
-  select.innerHTML = "";
-
-  const empty = document.createElement("option");
-  empty.value = "";
-  empty.textContent = "";
-  select.appendChild(empty);
-
-  optionen
-    .filter(option => !(mehrlingIstBereitsKritisch && option.hideIfKritisch))
-    .forEach(optionData => {
-      const option = document.createElement("option");
-      option.value = optionData.value;
-      option.textContent = optionData.label;
-      select.appendChild(option);
-    });
-
-  const values = Array.from(select.options).map(option => option.value);
-  select.value = values.includes(current) ? current : "";
-}
-
+  allowsAktuellesAlter(){
+    if(val("aktuelleSituation") === "noch lebend") return true;
+    return this.allowsLebendbilderFields();
+  }
+};
 
 function updateAktuellesAlterVisibility(){
   const geburtWrap = $("alterKindWrapField");
@@ -1378,9 +1268,8 @@ function updateAktuellesAlterVisibility(){
   const lebendbilderWrap = $("lebendbilderPrognoseWrapField");
   const lebendbilderField = $("lebendbilderPrognose");
 
-  const situation = val("aktuelleSituation");
-  const zeigeAktuell = ["noch lebend","Lebendbilder"].includes(situation);
-  const zeigeLebendbilderPrognose = situation === "Lebendbilder";
+  const zeigeAktuell = LebendbilderEligibilityController.allowsAktuellesAlter();
+  const zeigeLebendbilderPrognose = LebendbilderEligibilityController.allowsLebendbilderFields();
 
   if(isAdminMode()){
     if(geburtWrap) geburtWrap.classList.remove("hidden");
@@ -1398,8 +1287,15 @@ function updateAktuellesAlterVisibility(){
   if(aktuellWrap) aktuellWrap.classList.toggle("hidden", !zeigeAktuell);
   if(lebendbilderWrap) lebendbilderWrap.classList.toggle("hidden", !zeigeLebendbilderPrognose);
 
-  if(!zeigeAktuell && aktuellField){ aktuellField.value = ""; }
-  if(!zeigeLebendbilderPrognose && lebendbilderField){ lebendbilderField.value = ""; }
+  if(aktuellField){
+    aktuellField.disabled = !zeigeAktuell;
+    if(!zeigeAktuell) aktuellField.value = "";
+  }
+
+  if(lebendbilderField){
+    lebendbilderField.disabled = !zeigeLebendbilderPrognose;
+    if(!zeigeLebendbilderPrognose) lebendbilderField.value = "";
+  }
 }
 
 function setWasserOptions(mode){
@@ -1421,6 +1317,37 @@ function setWasserOptions(mode){
 
   wasser.value = options.includes(current) ? current : "";
 }
+
+
+const MehrlingsLebendbilderGuardModel = Object.freeze({
+  allChildrenDeceasedValues: Object.freeze([
+    "Zwillinge – beide Kinder verstorben",
+    "Drillinge – drei Kinder verstorben"
+  ]),
+  forbiddenSituations: Object.freeze([
+    "Lebendbilder",
+    "noch lebend"
+  ]),
+  fallbackSituation: "verstorben"
+});
+
+const MehrlingsLebendbilderGuardController = {
+  isAllChildrenDeceased(){
+    return MehrlingsLebendbilderGuardModel.allChildrenDeceasedValues.includes(val("mehrlinge"));
+  },
+
+  enforce(){
+    const situation = $("aktuelleSituation");
+    if(!situation) return;
+
+    if(
+      this.isAllChildrenDeceased() &&
+      MehrlingsLebendbilderGuardModel.forbiddenSituations.includes(situation.value)
+    ){
+      situation.value = MehrlingsLebendbilderGuardModel.fallbackSituation;
+    }
+  }
+};
 
 function updateWasser(){
   if(!$("wasser")) return;
@@ -1447,6 +1374,24 @@ function updateWasser(){
     $("wasser").value = "";
     $("wasser").disabled = true;
     if(wasserField) wasserField.classList.add("hidden");
+  }
+}
+
+
+function updateLebendbilderPrognoseOptions(){
+  const select = $("lebendbilderPrognose");
+  if(!select) return;
+
+  const kritischOption = Array.from(select.options).find(option => option.value === "Zustand sehr kritisch");
+  if(!kritischOption) return;
+
+  const ausblenden = mehrlingssituationEnthaeltKritischenZustand();
+
+  kritischOption.hidden = ausblenden;
+  kritischOption.disabled = ausblenden;
+
+  if(ausblenden && select.value === "Zustand sehr kritisch"){
+    select.value = "";
   }
 }
 
@@ -1568,6 +1513,7 @@ function updateAbschlussfragenOptions(){
   const select = $("abschlussfrage");
   if(!select) return;
 
+  MehrlingsLebendbilderGuardController.enforce();
   const situation = val("aktuelleSituation");
   const map = {
     "Einleitung": "Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?",
@@ -1600,11 +1546,11 @@ function clearSituationSpecificValues(){
 
   // Beim Testen soll immer nur die aktuell gewählte Situation im Bericht stehen.
   // Werte aus zuvor getesteten Situationen werden deshalb bewusst geleert.
-  if(situation !== "Lebendbilder" && $("lebendbilderPrognose")){
+  if((situation !== "Lebendbilder" || !LebendbilderEligibilityController.allowsLebendbilderFields()) && $("lebendbilderPrognose")){
     $("lebendbilderPrognose").value = "";
   }
 
-  if(!["noch lebend", "Lebendbilder"].includes(situation) && $("aktuellesAlter")){
+  if(!LebendbilderEligibilityController.allowsAktuellesAlter() && $("aktuellesAlter")){
     $("aktuellesAlter").value = "";
   }
 
@@ -1649,8 +1595,330 @@ function updateKommunikationVisibility(){
 }
 
 
+
+const DateTimeFormatterModel = {
+  weekdays: [
+    { keys:["mon", "mont", "monta", "montag"], label:"Montag" },
+    { keys:["die", "dien", "dienst", "dienstag"], label:"Dienstag" },
+    { keys:["mit", "mitt", "mittw", "mittwoch"], label:"Mittwoch" },
+    { keys:["don", "donn", "donner", "donnerstag"], label:"Donnerstag" },
+    { keys:["fre", "frei", "freitag"], label:"Freitag" },
+    { keys:["sam", "sams", "samstag"], label:"Samstag" },
+    { keys:["son", "sonn", "sonntag"], label:"Sonntag" }
+  ],
+  timeWords: [
+    { keys:["ges", "gest", "gestern"], label:"gestern" },
+    { keys:["vorg", "vorge", "vorgestern"], label:"vorgestern" },
+    { keys:["heu", "heut", "heute"], label:"heute" },
+    { keys:["mor", "morg", "morgen"], label:"morgen" },
+    { keys:["übe", "über", "übermorgen", "ueb", "ueber", "uebermorgen"], label:"übermorgen" },
+    { keys:["frü", "früh", "fru", "frue", "frueh"], label:"früh" },
+    { keys:["vorm", "vormi", "vormittag"], label:"vormittag" },
+    { keys:["mitta", "mittag"], label:"mittag" },
+    { keys:["nachm", "nachmi", "nachmittag"], label:"nachmittag" },
+    { keys:["abe", "aben", "abend"], label:"abend" },
+    { keys:["nac", "nach", "nacht"], label:"nacht" },
+    { keys:["spä", "spät", "später", "spa", "spae", "spaet", "spaeter"], label:"später" }
+  ],
+  contextualTimePhrases: [
+    { pattern:/\bheute\s+mor\w*\b/giu, replacement:"heute morgen" },
+    { pattern:/\bheute\s+(frü|fru)\w*\b/giu, replacement:"heute früh" },
+    { pattern:/\bheute\s+vorm\w*\b/giu, replacement:"heute vormittag" },
+    { pattern:/\bheute\s+mitta\w*\b/giu, replacement:"heute mittag" },
+    { pattern:/\bheute\s+nachm\w*\b/giu, replacement:"heute nachmittag" },
+    { pattern:/\bheute\s+abe\w*\b/giu, replacement:"heute abend" },
+    { pattern:/\bheute\s+nac(h?t?)?\w*\b/giu, replacement:"heute nacht" }
+  ],
+  durationNumberAliases: [
+    { keys:["ein", "eins", "eine", "einen", "einem", "einer", "eier"], label:"__SINGULAR_ARTICLE__", singular:true },
+    { keys:["zwi", "zwei"], label:"zwei", value:2 },
+    { keys:["dri", "dre", "drei"], label:"drei", value:3 },
+    { keys:["vie", "vier"], label:"vier", value:4 },
+    { keys:["fün", "fünf", "fun", "funf", "fue", "fuen", "fuenf"], label:"fünf", value:5 },
+    { keys:["sec", "sech", "sechs"], label:"sechs", value:6 },
+    { keys:["sie", "sieb", "sieben"], label:"sieben", value:7 },
+    { keys:["ach", "acht"], label:"acht", value:8 },
+    { keys:["neu", "neun"], label:"neun", value:9 },
+    { keys:["zeh", "zehn"], label:"zehn", value:10 },
+    { keys:["elf"], label:"elf" },
+    { keys:["zwö", "zwöl", "zwölf", "zwo", "zwoe", "zwoel", "zwoelf"], label:"zwölf" },
+    { keys:["dreizehn"], label:"dreizehn" },
+    { keys:["vierzehn"], label:"vierzehn" },
+    { keys:["fünfzehn", "fuenfzehn"], label:"fünfzehn" },
+    { keys:["sechzehn"], label:"sechzehn" },
+    { keys:["siebzehn"], label:"siebzehn" },
+    { keys:["achtzehn"], label:"achtzehn" },
+    { keys:["neunzehn"], label:"neunzehn" },
+    { keys:["zwanzig"], label:"zwanzig" }
+  ],
+  durationUnitAliases: [
+    { keys:["tag", "tage", "tagen"], singular:"Tag", plural:"Tage", dativePlural:"Tagen", dativeArticle:"einem" },
+    { keys:["woc", "woch", "woche", "wochen"], singular:"Woche", plural:"Wochen", dativePlural:"Wochen", dativeArticle:"einer" },
+    { keys:["stu", "stun", "stunde", "stunden"], singular:"Stunde", plural:"Stunden", dativePlural:"Stunden", dativeArticle:"einer" },
+    { keys:["min", "minu", "minute", "minuten"], singular:"Minute", plural:"Minuten", dativePlural:"Minuten", dativeArticle:"einer" },
+    { keys:["mon", "mona", "monat", "monate", "monaten"], singular:"Monat", plural:"Monate", dativePlural:"Monaten", dativeArticle:"einem" },
+    { keys:["jah", "jahr", "jahre", "jahren"], singular:"Jahr", plural:"Jahre", dativePlural:"Jahren", dativeArticle:"einem" }
+  ],
+  temporalPrefixes: {
+    past:"vor",
+    future:"in"
+  },
+  explicitTemporalPrefixes: ["vor", "seit", "in", "ab", "am", "um", "für", "fuer"]
+};
+
+const DateTimeFormatterController = {
+  normalizeForReport(value){
+    let normalized = (value || "").trim().replace(/\s+/g, " ");
+    if(!normalized) return "";
+
+    normalized = this.normalizeContextualTimePhrases(normalized);
+    normalized = this.normalizeDurationExpressions(normalized);
+    normalized = this.normalizeSingleWords(normalized);
+
+    return normalized;
+  },
+
+
+  normalizeAgeForReport(value){
+    let normalized = (value || "").trim().replace(/\s+/g, " ");
+    if(!normalized) return "";
+
+    const word = "[A-Za-zÄÖÜäöüß]+";
+    const bareDuration = new RegExp("\\b(\\d+|" + word + ")\\s+(" + word + ")\\b", "giu");
+
+    return normalized.replace(bareDuration, (match, numberPart, unitPart) => {
+      const numberInfo = this.findDurationNumber(numberPart);
+      const unitInfo = this.findDurationUnit(unitPart);
+
+      if(!unitInfo) return match;
+      if(!numberInfo && !/^\\d+$/.test(numberPart)) return match;
+
+      const count = this.getAgeCount(numberPart, numberInfo);
+      const numberText = this.formatAgeNumber(numberPart, numberInfo, unitInfo, count);
+      const unitText = this.formatAgeUnit(unitInfo, count);
+
+      return numberText + " " + unitText;
+    });
+  },
+
+  getAgeCount(numberPart, numberInfo){
+    const raw = String(numberPart || "").trim().toLocaleLowerCase("de-DE");
+
+    if(/^\\d+$/.test(raw)){
+      return Number(raw);
+    }
+
+    if(numberInfo && typeof numberInfo.value === "number"){
+      return numberInfo.value;
+    }
+
+    if(["ein", "eins", "eine", "einen", "einem", "einer", "eier"].includes(raw)){
+      return 1;
+    }
+
+    const label = numberInfo && numberInfo.label ? numberInfo.label : raw;
+    const labelToCount = {
+      "ein":1,
+      "eine":1,
+      "zwei":2,
+      "drei":3,
+      "vier":4,
+      "fünf":5,
+      "sechs":6,
+      "sieben":7,
+      "acht":8,
+      "neun":9,
+      "zehn":10,
+      "elf":11,
+      "zwölf":12
+    };
+
+    return labelToCount[label] || null;
+  },
+
+  formatAgeNumber(numberPart, numberInfo, unitInfo, count){
+    const raw = String(numberPart || "").trim().toLocaleLowerCase("de-DE");
+
+    const numericMap = {
+      "1":"__SINGULAR_ARTICLE__",
+      "2":"zwei",
+      "3":"drei",
+      "4":"vier",
+      "5":"fünf",
+      "6":"sechs",
+      "7":"sieben",
+      "8":"acht",
+      "9":"neun",
+      "10":"zehn",
+      "11":"elf",
+      "12":"zwölf",
+      "13":"dreizehn",
+      "14":"vierzehn",
+      "15":"fünfzehn",
+      "16":"sechzehn",
+      "17":"siebzehn",
+      "18":"achtzehn",
+      "19":"neunzehn",
+      "20":"zwanzig"
+    };
+
+    if(/^\\d+$/.test(raw)){
+      if(raw === "1"){
+        return ["Woche", "Stunde", "Minute"].includes(unitInfo.singular) ? "eine" : "ein";
+      }
+      return numericMap[raw] || raw;
+    }
+
+    const label = numberInfo ? numberInfo.label : raw;
+
+    if(count === 1){
+      return ["Woche", "Stunde", "Minute"].includes(unitInfo.singular) ? "eine" : "ein";
+    }
+
+    return label;
+  },
+
+  formatAgeUnit(unitInfo, count){
+    return count === 1 ? unitInfo.singular : unitInfo.plural;
+  },
+
+  normalizeForReportWithContext(value, expectedCategory){
+    const normalized = this.normalizeForReport(value);
+    return this.applyTemporalPrefix(normalized, expectedCategory);
+  },
+
+  normalizeContextualTimePhrases(value){
+    return DateTimeFormatterModel.contextualTimePhrases.reduce((result, entry) => {
+      return result.replace(entry.pattern, entry.replacement);
+    }, value);
+  },
+
+  normalizeDurationExpressions(value){
+    const word = "[A-Za-zÄÖÜäöüß]+";
+    const explicitPrefix = DateTimeFormatterModel.explicitTemporalPrefixes.join("|");
+    const prefixedDuration = new RegExp("\\b(" + explicitPrefix + ")\\s+(\\d+|" + word + ")\\s+(" + word + ")\\b", "giu");
+    const bareDuration = new RegExp("\\b(\\d+|" + word + ")\\s+(" + word + ")\\b", "giu");
+
+    const normalizeMatch = (numberPart, unitPart) => {
+      const numberInfo = this.findDurationNumber(numberPart);
+      const unitInfo = this.findDurationUnit(unitPart);
+
+      if(!unitInfo) return null;
+      if(!numberInfo && !/^\d+$/.test(numberPart)) return null;
+
+      const normalizedNumber = this.formatDurationNumber(numberPart, numberInfo, unitInfo);
+      const normalizedUnit = this.formatDurationUnit(unitInfo, normalizedNumber, numberInfo);
+      return normalizedNumber + " " + normalizedUnit;
+    };
+
+    let result = value.replace(prefixedDuration, (match, prefix, numberPart, unitPart) => {
+      const normalized = normalizeMatch(numberPart, unitPart);
+      return normalized ? prefix.toLocaleLowerCase("de-DE") + " " + normalized : match;
+    });
+
+    result = result.replace(bareDuration, (match, numberPart, unitPart, offset, fullText) => {
+      const before = fullText.slice(0, offset).trimEnd().split(/\s+/).pop() || "";
+      const beforeLower = before.toLocaleLowerCase("de-DE");
+
+      if(DateTimeFormatterModel.explicitTemporalPrefixes.includes(beforeLower)) return match;
+
+      const normalized = normalizeMatch(numberPart, unitPart);
+      return normalized || match;
+    });
+
+    return result;
+  },
+
+  normalizeSingleWords(value){
+    return value.replace(/[A-Za-zÄÖÜäöüß]+/g, word => {
+      const lower = word.toLocaleLowerCase("de-DE");
+
+      const weekday = this.findByAlias(DateTimeFormatterModel.weekdays, lower);
+      if(weekday) return weekday.label;
+
+      const timeWord = this.findByAlias(DateTimeFormatterModel.timeWords, lower);
+      if(timeWord) return timeWord.label;
+
+      return word;
+    });
+  },
+
+  applyTemporalPrefix(value, expectedCategory){
+    const normalized = (value || "").trim();
+    if(!normalized || !["past", "future"].includes(expectedCategory)) return normalized;
+
+    const lower = normalized.toLocaleLowerCase("de-DE");
+    const hasExplicitPrefix = DateTimeFormatterModel.explicitTemporalPrefixes.some(prefix => {
+      return lower === prefix || lower.startsWith(prefix + " ");
+    });
+
+    if(hasExplicitPrefix) return normalized;
+    if(!this.startsWithDuration(normalized)) return normalized;
+
+    const prefix = DateTimeFormatterModel.temporalPrefixes[expectedCategory];
+    return prefix ? prefix + " " + normalized : normalized;
+  },
+
+  startsWithDuration(value){
+    const match = String(value || "").trim().match(/^(\d+|[A-Za-zÄÖÜäöüß]+)\s+([A-Za-zÄÖÜäöüß]+)\b/iu);
+    if(!match) return false;
+
+    const numberPart = match[1];
+    const unitPart = match[2];
+
+    const hasNumber = /^\d+$/.test(numberPart) || !!this.findDurationNumber(numberPart);
+    const hasUnit = !!this.findDurationUnit(unitPart);
+
+    return hasNumber && hasUnit;
+  },
+
+  findDurationNumber(value){
+    const key = String(value || "").trim().toLocaleLowerCase("de-DE");
+    if(!key || key.length < 3) return null;
+
+    return DateTimeFormatterModel.durationNumberAliases.find(entry => {
+      return entry.keys.some(alias => alias === key);
+    }) || null;
+  },
+
+  findDurationUnit(value){
+    const key = String(value || "").trim().toLocaleLowerCase("de-DE");
+    if(!key || key.length < 3) return null;
+
+    return DateTimeFormatterModel.durationUnitAliases.find(entry => {
+      return entry.keys.some(alias => alias === key || alias.startsWith(key) || key.startsWith(alias));
+    }) || null;
+  },
+
+  formatDurationNumber(numberPart, numberInfo, unitInfo){
+    if(!numberInfo) return numberPart;
+    if(numberInfo.label === "__SINGULAR_ARTICLE__"){
+      return unitInfo.dativeArticle || "einem";
+    }
+    return numberInfo.label;
+  },
+
+  formatDurationUnit(unitInfo, normalizedNumber, numberInfo){
+    if(numberInfo && numberInfo.singular) return unitInfo.singular;
+    if(String(normalizedNumber || "").trim() === "1") return unitInfo.singular;
+    return unitInfo.dativePlural || unitInfo.plural;
+  },
+
+  findByAlias(list, word){
+    if(!word || word.length < 3) return null;
+
+    return list.find(entry => {
+      return entry.keys.some(alias => alias === word);
+    }) || null;
+  },
+
+  escapeRegExp(value){
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+};
+
 function zeitKategorie(text){
-  const z = (text || "").trim().toLowerCase();
+  const z = DateTimeFormatterController.normalizeForReport(text).toLocaleLowerCase("de-DE");
   if(!z) return "";
 
   const pastPatterns = [
@@ -1666,6 +1934,7 @@ function zeitKategorie(text){
   ];
 
   const futurePatterns = [
+    "in ",
     "morgen",
     "übermorgen",
     "naechste",
@@ -1736,12 +2005,12 @@ function updateZeitlogikHinweis(){
 function recalcAll(){
   enforceTwoDigitBirthAge();
   updateMehrlingsSituationOptions();
-  updateAktuelleSituationOptions();
+  MehrlingsLebendbilderGuardController.enforce();
   updateGeschlechtOptions();
   syncKinderHand();
   updateGeschwisterBilderVisibility();
   updateAktuellesAlterVisibility();
-  updateLebendbilderDropdownOptions();
+  updateLebendbilderPrognoseOptions();
   updateWasser();
   updateGeburtssituationRouting();
   updateZeitlogikHinweis();
@@ -1749,9 +2018,9 @@ function recalcAll(){
   updateInfektBesonderheiten();
   updateKommunikationVisibility();
   clearSituationSpecificValues();
-  setOpenStates();
   adminRevealDynamicFields();
   updateReport();
+  setOpenStates();
 }
 
 
@@ -1846,18 +2115,18 @@ function baueMehrlingssatz(){
 
   if(!wert) return "";
 
-  if(wert === "Zwillinge – beide Kinder verstorben") return "Es geht um Zwillinge, die beide verstorben sind.";
+  if(wert === "Zwillinge – beide Kinder verstorben") return "Es geht um Zwillinge, beide Kinder sind verstorben.";
   if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt") return "Es geht um Zwillinge, von denen einer verstorben ist und einer lebt.";
-  if(wert === "Zwillinge – ein Kind verstorben, ein Kind kritisch") return "Es geht um Zwillinge, von denen einer verstorben ist und einer sich in einem kritischen Zustand befindet.";
-  if(wert === "Zwillinge – kritischer Zustand beider Kinder") return "Es geht um Zwillinge. Beide befinden sich in einem kritischen Zustand.";
+  if(wert === "Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht") return "Es geht um Zwillinge, von denen einer verstorben ist und einer lebt. Die Prognose ist jedoch sehr schlecht.";
+  if(wert === "Zwillinge – kritischer Zustand eines Kindes") return "Es geht um Zwillinge, von denen sich ein Kind aktuell in einem sehr kritischen Zustand befindet.";
+  if(wert === "Zwillinge – kritischer Zustand beider Kinder") return "Es geht um Zwillinge, beide Kinder befinden sich aktuell in einem sehr kritischen Zustand.";
 
-  if(wert === "Drillinge – drei Kinder verstorben") return "Es geht um Drillinge, die alle drei verstorben sind.";
-  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge, von denen einer verstorben ist und zwei noch leben.";
-  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge, von denen zwei bereits verstorben sind und einer noch lebt.";
-  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder kritisch") return "Es geht um Drillinge, von denen einer verstorben ist und zwei sich in einem kritischen Zustand befinden.";
-  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind kritisch") return "Es geht um Drillinge, von denen zwei bereits verstorben sind und einer sich in einem kritischen Zustand befindet.";
-  if(wert === "Drillinge – zwei Kinder kritisch, ein Kind lebt") return "Es geht um Drillinge, von denen einer lebt und zwei sich in einem kritischen Zustand befinden.";
-  if(wert === "Drillinge – kritischer Zustand aller Kinder") return "Es geht um Drillinge. Alle drei Kinder befinden sich in einem kritischen Zustand.";
+  if(wert === "Drillinge – drei Kinder verstorben") return "Es geht um Drillinge, alle drei Kinder sind verstorben.";
+  if(wert === "Drillinge – ein Kind verstorben, zwei Kinder leben") return "Es geht um Drillinge, von denen einer verstorben ist und zwei leben.";
+  if(wert === "Drillinge – zwei Kinder verstorben, ein Kind lebt") return "Es geht um Drillinge, von denen zwei verstorben sind und einer lebt.";
+  if(wert === "Drillinge – kritischer Zustand eines Kindes") return "Es geht um Drillinge, von denen sich ein Kind aktuell in einem sehr kritischen Zustand befindet.";
+  if(wert === "Drillinge – kritischer Zustand zweier Kinder") return "Es geht um Drillinge, zwei der Kinder befinden sich aktuell in einem sehr kritischen Zustand.";
+  if(wert === "Drillinge – kritischer Zustand aller Kinder") return "Es geht um Drillinge, alle drei Kinder befinden sich aktuell in einem sehr kritischen Zustand.";
 
   return "";
 }
@@ -1865,23 +2134,23 @@ function baueMehrlingssatz(){
 function baueFamiliensatz(){
   const kind = val("kindFamilie");
   const handRaw = val("kinderHand");
+  const hasChildrenAtHand = handRaw && handRaw !== "keine Kinder an der Hand";
   const start = kindStartNumber(kind);
   const count = mehrlingsCount();
+  const groupLabel = count === 2 ? "Zwillinge" : count === 3 ? "Drillinge" : "";
 
-  const handSatz = handRaw ? "Die Eltern haben " + handText(handRaw) + "." : "";
+  const handSatz = hasChildrenAtHand ? "Die Eltern haben " + handText(handRaw) + "." : "";
 
   if(!kind && !handSatz) return "";
 
   if(start && count > 1){
-    return "Für die Familie wären die Kinder das " + kindOrdinalRangeText(start, count) + "." + (handSatz ? " " + handSatz : "");
+    const basis = "Die " + groupLabel + " wären das " + kindOrdinalRangeText(start, count) + " der Familie.";
+    return basis + (handSatz ? " " + handSatz : "");
   }
 
   const kindText = ordinalKindText(kind);
 
-  if(kindText && handRaw){
-    if(handRaw === "keine Kinder an der Hand"){
-      return "Für die Familie wäre es das " + kindText + ". Die Eltern haben keine Kinder an der Hand.";
-    }
+  if(kindText && hasChildrenAtHand){
     return "Für die Familie wäre es das " + kindText + ", die Eltern haben bereits " + handText(handRaw) + ".";
   }
 
@@ -1903,73 +2172,273 @@ function capitalise(text){
   return t ? t.charAt(0).toUpperCase() + t.slice(1) : "";
 }
 
-function baueAnsprechpartnerText(){
-  const rolleLabel = val("funktion");
-  const beschreibung = val("gespraech");
-  let name = capitalise(val("ansprechpartner"));
+/* AP MVC: Rollenmodell + Ausgabecontroller */
+const APRoleModel = Object.freeze({
+  roles: Object.freeze({
+    "Papa": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"dem",
+      noSituationPattern:"dem Papa {name}",
+      situationPattern:"{article} {adj}Papa {name}",
+      noNamePattern:"{article} {adj}Papa"
+    }),
+    "Mama": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noSituationPattern:"der Mama {name}",
+      situationPattern:"{article} {adj}Mama {name}",
+      noNamePattern:"{article} {adj}Mama"
+    }),
+    "Oma": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noSituationPattern:"Oma {name}",
+      situationPattern:"{article} {adj}Oma {name}",
+      noNamePattern:"{article} {adj}Oma"
+    }),
+    "Freundin": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noSituationPattern:"der Freundin {name}",
+      situationPattern:"{article} {adj}Freundin {name}",
+      noNamePattern:"{article} {adj}Freundin"
+    }),
+    "Familienangehörige/r": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"dem",
+      noSituationPattern:"dem Familienangehörigen {name}",
+      situationPattern:"{article} {adj}Familienangehörigen {name}",
+      noNamePattern:"{article} {adj}Familienangehörigen"
+    }),
+    "Hebamme": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noSituationPattern:"Hebamme {name}",
+      situationPattern:"{article} {adj}Hebamme {name}",
+      noNamePattern:"{article} {adj}Hebamme"
+    }),
+    "Schwester": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noSituationPattern:"Schwester {name}",
+      situationPattern:"{article} {adj}Schwester {name}",
+      noNamePattern:"{article} {adj}Schwester"
+    }),
+    "Ärztin": Object.freeze({
+      usesSituation:false,
+      noSituationPattern:"Dr. {name}",
+      noNamePattern:"der Ärztin",
+      normalizeName:"doctor"
+    }),
+    "Arzt": Object.freeze({
+      usesSituation:false,
+      noSituationPattern:"Dr. {name}",
+      noNamePattern:"dem Arzt",
+      normalizeName:"doctor"
+    }),
+    "Frau von der Seelsorge": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"der",
+      noNamePattern:"{article} {adj}Frau von der Seelsorge",
+      custom:"seelsorge_frau"
+    }),
+    "Herr von der Seelsorge": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"dem",
+      noNamePattern:"{article} {adj}Herrn von der Seelsorge",
+      custom:"seelsorge_herr"
+    }),
+    "Sozialdienst": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"dem",
+      noNamePattern:"{article} {adj}Sozialdienst",
+      custom:"sozialdienst"
+    }),
+    "Bestattungsinstitut": Object.freeze({
+      usesSituation:true,
+      articleWithSituation:"dem",
+      noNamePattern:"{article} {adj}Bestattungsinstitut",
+      custom:"bestattungsinstitut"
+    })
+  })
+});
 
-  if(!rolleLabel && !name) return "";
+const APNameClassifier = {
+  firstNames: new Set([
+    "anna", "jenny", "thomas", "manuela", "maria", "max", "loisl",
+    "désirée", "desiree", "julia", "lisa", "sarah", "lara", "sabine",
+    "michael", "peter", "franz", "lukas"
+  ]),
 
-  const adj = beschreibung ? beschreibung + " " : "";
-  let person = "";
-
-  const adjMitEndung = beschreibung ? beschreibung + "en " : "";
-
-  if(name){
-    if(rolleLabel === "Papa") person = beschreibung ? "dem " + adjMitEndung + "Papa " + name : "Papa " + name;
-    else if(rolleLabel === "Mama") person = beschreibung ? "der " + adjMitEndung + "Mama " + name : "Mama " + name;
-    else if(rolleLabel === "Oma") person = beschreibung ? "der " + adjMitEndung + "Oma " + name : "Oma " + name;
-    else if(rolleLabel === "Freundin") person = beschreibung ? "der " + adjMitEndung + "Freundin " + name : "Freundin " + name;
-    else if(rolleLabel === "Hebamme") person = beschreibung ? "der " + adjMitEndung + "Hebamme " + name : "Hebamme " + name;
-    else if(rolleLabel === "Schwester") person = beschreibung ? "der " + adjMitEndung + "Schwester " + name : "Schwester " + name;
-    else if(rolleLabel === "Ärztin") person = beschreibung ? "der " + adjMitEndung + (/^Dr\./i.test(name) ? name : "Dr. " + name) : (/^Dr\./i.test(name) ? name : "Dr. " + name);
-    else if(rolleLabel === "Arzt") person = beschreibung ? "dem " + adjMitEndung + (/^Dr\./i.test(name) ? name : "Dr. " + name) : (/^Dr\./i.test(name) ? name : "Dr. " + name);
-    else if(rolleLabel === "Frau von der Seelsorge") person = beschreibung ? "der " + adjMitEndung + "Frau " + name + " von der Seelsorge" : "Frau " + name + " von der Seelsorge";
-    else if(rolleLabel === "Herr von der Seelsorge") person = beschreibung ? "dem " + adjMitEndung + "Herrn " + name + " von der Seelsorge" : "Herr " + name + " von der Seelsorge";
-    else if(rolleLabel === "Sozialdienst") person = "dem Sozialdienst, " + name;
-    else if(rolleLabel === "Familienangehörige/r") person = beschreibung ? "dem " + adjMitEndung + "Familienangehörigen " + name : "Familienangehörige/r " + name;
-    else person = name;
-
-    return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
+  isLikelyFirstName(name){
+    const parts = (name || "").trim().split(/\s+/).filter(Boolean);
+    if(parts.length !== 1) return false;
+    return this.firstNames.has(parts[0].toLocaleLowerCase("de-DE"));
   }
+};
 
-  if(rolleLabel === "Papa") person = "dem " + adj + "Papa";
-  else if(rolleLabel === "Mama") person = "der " + adj + "Mama";
-  else if(rolleLabel === "Oma") person = "der " + adj + "Oma";
-  else if(rolleLabel === "Freundin") person = "der " + adj + "Freundin";
-  else if(rolleLabel === "Hebamme") person = "einer " + adj + "Hebamme";
-  else if(rolleLabel === "Schwester") person = "einer " + adj + "Schwester";
-  else if(rolleLabel === "Ärztin") person = "einer " + adj + "Ärztin";
-  else if(rolleLabel === "Arzt") person = "einem " + adj + "Arzt";
-  else if(rolleLabel === "Frau von der Seelsorge") person = "einer Frau von der Seelsorge";
-  else if(rolleLabel === "Herr von der Seelsorge") person = "einem Herrn von der Seelsorge";
-  else if(rolleLabel === "Sozialdienst") person = "dem Sozialdienst";
-  else if(rolleLabel === "Familienangehörige/r") person = "einem Familienangehörigen";
-  else person = rolleLabel;
+const APTextFormatter = {
+  clean(text){
+    return (text || "").replace(/\s+/g, " ").trim();
+  },
 
-  return ("Ich habe mit " + person + " telefoniert.").replace(/\s+/g, " ").trim();
+  adjective(value){
+    return value ? value + "en " : "";
+  },
+
+  applyPattern(pattern, data){
+    return this.clean(
+      (pattern || "")
+        .replaceAll("{article}", data.article || "")
+        .replaceAll("{adj}", data.adj || "")
+        .replaceAll("{name}", data.name || "")
+    );
+  },
+
+  ensureDoctorPrefix(name){
+    const cleanName = this.clean(name);
+    return /^Dr\./i.test(cleanName) ? cleanName.replace(/^dr\./i, "Dr.") : "Dr. " + cleanName;
+  }
+};
+
+const APRoleController = {
+  formatName(rawName){
+    return formatPersonName(rawName);
+  },
+
+  hasSituation(model, description){
+    return !!description && model.usesSituation !== false;
+  },
+
+  formatPerson({ role, rawName, description }){
+    const model = APRoleModel.roles[role];
+    const name = this.formatName(rawName);
+    const useSituation = model ? this.hasSituation(model, description) : !!description;
+    const adj = APTextFormatter.adjective(useSituation ? description : "");
+
+    if(!model){
+      return name || role || "";
+    }
+
+    if(name && model.custom){
+      return this.formatCustom(model.custom, name, adj, useSituation, model.articleWithSituation);
+    }
+
+    if(name){
+      const normalizedName = model.normalizeName === "doctor"
+        ? APTextFormatter.ensureDoctorPrefix(name).replace(/^Dr\.\s*/i, "")
+        : name;
+
+      const pattern = useSituation ? model.situationPattern : model.noSituationPattern;
+      return APTextFormatter.applyPattern(pattern, {
+        article: model.articleWithSituation || "",
+        adj,
+        name: normalizedName
+      });
+    }
+
+    return APTextFormatter.applyPattern(model.noNamePattern, {
+      article: model.articleWithSituation || "",
+      adj,
+      name: ""
+    });
+  },
+
+  formatCustom(type, name, adj, useSituation, article){
+    const isFirstName = APNameClassifier.isLikelyFirstName(name);
+
+    if(type === "seelsorge_frau"){
+      if(useSituation){
+        return APTextFormatter.clean(article + " " + adj + (isFirstName ? name : "Frau " + name) + " von der Seelsorge");
+      }
+      return APTextFormatter.clean((isFirstName ? name : "Frau " + name) + " von der Seelsorge");
+    }
+
+    if(type === "seelsorge_herr"){
+      if(useSituation){
+        return APTextFormatter.clean(article + " " + adj + (isFirstName ? name : "Herrn " + name) + " von der Seelsorge");
+      }
+      return APTextFormatter.clean((isFirstName ? name : "Herrn " + name) + " von der Seelsorge");
+    }
+
+    if(type === "sozialdienst"){
+      if(useSituation){
+        return APTextFormatter.clean(article + " " + adj + (isFirstName ? name : "Frau " + name) + " vom Sozialdienst");
+      }
+      return APTextFormatter.clean((isFirstName ? name : "Frau " + name) + " vom Sozialdienst");
+    }
+
+    if(type === "bestattungsinstitut"){
+      if(useSituation){
+        return APTextFormatter.clean(article + " " + adj + (isFirstName ? name : "Frau " + name) + " vom Bestattungsinstitut");
+      }
+      return APTextFormatter.clean((isFirstName ? name : "Frau " + name) + " vom Bestattungsinstitut");
+    }
+
+    return name;
+  },
+
+  buildSentence(){
+    const role = val("funktion");
+    const rawName = val("ansprechpartner");
+    const description = val("gespraech");
+
+    if(!role && !rawName) return "";
+
+    const person = this.formatPerson({ role, rawName, description });
+    return APTextFormatter.clean("Ich habe mit " + person + " telefoniert.");
+  }
+};
+
+function baueAnsprechpartnerText(){
+  return APRoleController.buildSentence();
 }
 
 
 
 
+function anzahlVerstorbeneKinder(){
+  const mehrlinge = val("mehrlinge") || "";
+
+  if(/Zwillinge.*beide Kinder verstorben/i.test(mehrlinge)) return 2;
+  if(/Zwillinge.*ein Kind verstorben/i.test(mehrlinge)) return 1;
+
+  if(/Drillinge.*drei Kinder verstorben/i.test(mehrlinge)) return 3;
+  if(/Drillinge.*zwei Kinder verstorben/i.test(mehrlinge)) return 2;
+  if(/Drillinge.*ein Kind verstorben/i.test(mehrlinge)) return 1;
+
+  return 1;
+}
+
 function baueWasserSatz(){
   const wasser = val("wasser");
-  const situation = val("aktuelleSituation");
-
   if(!wasser) return "";
 
-  if(situation === "Einleitung" || (situation === "Kaiserschnitt" && val("ksElDetail") === "Der Kaiserschnitt ist geplant.")){
-    if(wasser === "Nach Geburt") return "Die Wassermethode ist nach der Geburt vorgesehen.";
-    if(wasser === "Nach Geburt unklar") return "Ob die Wassermethode nach der Geburt möglich ist, ist aktuell noch unklar.";
-    return "";
+  const plural = anzahlVerstorbeneKinder() >= 2;
+  const bezug = plural ? "die Sternchen" : "das Sternchen";
+
+  if(wasser === "Ja"){
+    return "Für " + bezug + " wird die Wassermethode angewendet.";
   }
 
-  if(situation === "verstorben" || (situation === "Kaiserschnitt" && val("ksElDetail") === "Der Kaiserschnitt hat stattgefunden.")){
-    if(wasser === "Ja") return "Die Wassermethode wird angewendet.";
-    if(wasser === "Nein") return "Die Wassermethode wird nicht angewendet.";
-    if(wasser === "nicht möglich") return "Die Wassermethode ist nicht möglich.";
-    if(wasser === "Unklar") return "Ob die Wassermethode angewendet wird, ist aktuell nicht bekannt.";
+  if(wasser === "Nein"){
+    return "Die Wassermethode wird nicht angewendet.";
+  }
+
+  if(wasser === "nicht möglich"){
+    return "Die Wassermethode ist nicht möglich.";
+  }
+
+  if(wasser === "Unklar"){
+    return "Ob die Wassermethode angewendet werden kann, ist aktuell unklar.";
+  }
+
+  if(wasser === "Nach Geburt"){
+    return "Nach der Geburt soll für " + bezug + " die Wassermethode angewendet werden.";
+  }
+
+  if(wasser === "Nach Geburt unklar"){
+    return "Ob die Wassermethode nach der Geburt angewendet werden kann, ist aktuell unklar.";
   }
 
   return "";
@@ -1978,9 +2447,10 @@ function baueWasserSatz(){
 function baueKsElDetailSatz(){
   const situation = val("aktuelleSituation");
   const detail = val("ksElDetail");
-  const zeit = val("ksElZeit");
+  const zeitRaw = val("ksElZeit");
   const expected = erwarteteZeitKategorie();
-  const actual = zeitKategorie(zeit);
+  const zeit = DateTimeFormatterController.normalizeForReportWithContext(zeitRaw, expected);
+  const actual = zeitKategorie(zeitRaw);
   const teile = [];
 
   if(expected && actual && actual !== "neutral" && expected !== actual){
@@ -2022,9 +2492,15 @@ function baueKsElDetailSatz(){
         ? "Der Kaiserschnitt hat " + zeit + " stattgefunden."
         : "Der Kaiserschnitt hat stattgefunden.");
     }else if(detail === "Der Kaiserschnitt ist geplant."){
-      teile.push(zeit
-        ? "Der Kaiserschnitt ist für " + zeit + " geplant."
-        : "Der Kaiserschnitt ist geplant.");
+      if(zeit){
+        const zeitLower = zeit.toLocaleLowerCase("de-DE");
+        const hatEigenePraeposition = /^(in|für|fuer|am|um|ab)\s+/iu.test(zeitLower);
+        teile.push(hatEigenePraeposition
+          ? "Der Kaiserschnitt ist " + zeit + " geplant."
+          : "Der Kaiserschnitt ist für " + zeit + " geplant.");
+      }else{
+        teile.push("Der Kaiserschnitt ist geplant.");
+      }
     }
   }
 
@@ -2032,15 +2508,12 @@ function baueKsElDetailSatz(){
 }
 
 
+function mehrlingssituationEnthaeltKritischenZustand(){
+  return /kritischer Zustand/i.test(val("mehrlinge"));
+}
+
 function lebendbilderPrognoseSatz(){
-  const p = val("lebendbilderPrognose");
-  const map = {
-    "Zustand sehr kritisch": "Der Zustand ist aktuell sehr kritisch.",
-    "Überleben nach Einschätzung nicht möglich": "Nach aktueller ärztlicher Einschätzung ist ein Überleben des Kindes nicht möglich.",
-    "Lebenserhaltende Maßnahmen sollen beendet werden": "Die lebenserhaltenden Maßnahmen sollen beendet werden.",
-    "Nur noch palliative Maßnahmen": "Für das Kind werden aktuell nur noch palliative Maßnahmen durchgeführt."
-  };
-  return map[p] || "";
+  return LebendbilderController.buildPrognosisLine();
 }
 
 function baueInformationslageSatz(){
@@ -2054,15 +2527,23 @@ function baueGeburtssituationSatz(){
 }
 
 function baueAltersSatz(){
-  // SSW-/Geburtsalter-Felder bleiben im Formular erhalten,
-  // erzeugen aber keinen automatischen Berichtssatz mehr.
-  // Nur das aktuelle Alter bei "noch lebend" / "Lebendbilder" darf weiterhin als Satz erscheinen.
+  const alter = val("alterKind");
+  const einheit = val("alterEinheit");
   const aktuell = val("aktuellesAlter");
 
-  if(aktuell){
-    return (isMehrling() ? "Das lebende Kind ist" : "Das Kind ist") + " aktuell " + aktuell + " alt.";
+  const kindText = isMehrling() ? kindPluralText() : "Das Kind";
+  const geburtsSatz = alter && einheit
+    ? (einheit === "SSW"
+      ? kindText + (isMehrling() ? " wurden" : " wurde") + " in der " + alter + ". SSW geboren"
+      : "Das Geburtsalter beträgt " + alter + " " + einheit)
+    : "";
+
+  if(geburtsSatz && aktuell){
+    return geburtsSatz + " und " + (isMehrling() ? "das lebende Kind ist" : "ist") + " aktuell " + aktuell + " alt.";
   }
 
+  if(geburtsSatz) return geburtsSatz + ".";
+  if(aktuell) return (isMehrling() ? "Das lebende Kind ist" : "Das Kind ist") + " aktuell " + aktuell + " alt.";
   return "";
 }
 
@@ -2112,17 +2593,376 @@ function normalisiereAbsatz(text){
   return (text || "").replace(/\s+/g, " ").replace(/\s+\./g, ".").trim();
 }
 
-function updateReport(){
-  try{
-    // Admin-Testmodus: Bericht auch ohne gesetztes Einverständnis erzeugen.
-    // Normalmodus bleibt unverändert gesperrt, bis Einverständnis = ja ist.
-    if(consentValue() !== "ja"){
-      $("report").textContent = "Berichtsausgabe";
-      return;
+
+
+/* MVC LB_AUDIT_001: Lebendbilder-Ausgabe */
+const LebendbilderModel = Object.freeze({
+  prognosisTexts: Object.freeze({
+    "Zustand sehr kritisch": "Der Zustand ist aktuell sehr kritisch.",
+    "Überleben nach Einschätzung nicht möglich": "Nach aktueller ärztlicher Einschätzung ist ein Überleben nicht möglich.",
+    "Lebenserhaltende Maßnahmen sollen beendet werden": "Die lebenserhaltenden Maßnahmen sollen beendet werden.",
+    "Nur noch palliative Maßnahmen": "Es werden aktuell nur noch palliative Maßnahmen durchgeführt."
+  })
+});
+
+
+/* MVC FIX V9: LB-Alter-Normalisierung */
+const LBAgeFormatterModel = Object.freeze({
+  numberWords: Object.freeze({
+    "1":"__ONE__",
+    "2":"zwei",
+    "3":"drei",
+    "4":"vier",
+    "5":"fünf",
+    "6":"sechs",
+    "7":"sieben",
+    "8":"acht",
+    "9":"neun",
+    "10":"zehn",
+    "11":"elf",
+    "12":"zwölf",
+    "13":"dreizehn",
+    "14":"vierzehn",
+    "15":"fünfzehn",
+    "16":"sechzehn",
+    "17":"siebzehn",
+    "18":"achtzehn",
+    "19":"neunzehn",
+    "20":"zwanzig",
+    "zwi":"zwei",
+    "zwei":"zwei",
+    "dri":"drei",
+    "drei":"drei",
+    "vie":"vier",
+    "vier":"vier",
+    "fün":"fünf",
+    "fun":"fünf",
+    "fue":"fünf",
+    "fünf":"fünf",
+    "funf":"fünf",
+    "fuenf":"fünf",
+    "sec":"sechs",
+    "sechs":"sechs",
+    "sie":"sieben",
+    "sieben":"sieben",
+    "ach":"acht",
+    "acht":"acht",
+    "neu":"neun",
+    "neun":"neun",
+    "zeh":"zehn",
+    "zehn":"zehn",
+    "ein":"__ONE__",
+    "eins":"__ONE__",
+    "eine":"__ONE__",
+    "einer":"__ONE__",
+    "einem":"__ONE__",
+    "einen":"__ONE__"
+  }),
+  units: Object.freeze({
+    "tag": Object.freeze({ singular:"Tag", plural:"Tage", article:"ein" }),
+    "tage": Object.freeze({ singular:"Tag", plural:"Tage", article:"ein" }),
+    "tagen": Object.freeze({ singular:"Tag", plural:"Tage", article:"ein" }),
+    "woch": Object.freeze({ singular:"Woche", plural:"Wochen", article:"eine" }),
+    "woche": Object.freeze({ singular:"Woche", plural:"Wochen", article:"eine" }),
+    "wochen": Object.freeze({ singular:"Woche", plural:"Wochen", article:"eine" }),
+    "monat": Object.freeze({ singular:"Monat", plural:"Monate", article:"ein" }),
+    "monate": Object.freeze({ singular:"Monat", plural:"Monate", article:"ein" }),
+    "monaten": Object.freeze({ singular:"Monat", plural:"Monate", article:"ein" }),
+    "jahr": Object.freeze({ singular:"Jahr", plural:"Jahre", article:"ein" }),
+    "jahre": Object.freeze({ singular:"Jahr", plural:"Jahre", article:"ein" }),
+    "jahren": Object.freeze({ singular:"Jahr", plural:"Jahre", article:"ein" }),
+    "stunde": Object.freeze({ singular:"Stunde", plural:"Stunden", article:"eine" }),
+    "stunden": Object.freeze({ singular:"Stunde", plural:"Stunden", article:"eine" }),
+    "minute": Object.freeze({ singular:"Minute", plural:"Minuten", article:"eine" }),
+    "minuten": Object.freeze({ singular:"Minute", plural:"Minuten", article:"eine" })
+  })
+});
+
+const LBAgeFormatterController = {
+  normalize(raw){
+    const value = String(raw || "").trim().replace(/\s+/g, " ");
+    if(!value) return "";
+
+    const parts = value.split(" ");
+    if(parts.length < 2) return this.normalizeSingleToken(value);
+
+    const numberPart = parts[0];
+    const unitPart = parts.slice(1).join(" ");
+
+    return this.normalizePair(numberPart, unitPart);
+  },
+
+  normalizeSingleToken(value){
+    return value;
+  },
+
+  normalizePair(numberPart, unitPart){
+    const unitKey = this.findUnitKey(unitPart);
+    if(!unitKey) return `${numberPart} ${unitPart}`.trim();
+
+    const unit = LBAgeFormatterModel.units[unitKey];
+    const numberInfo = this.normalizeNumber(numberPart, unit);
+
+    const unitText = numberInfo.isSingular ? unit.singular : unit.plural;
+
+    return `${numberInfo.text} ${unitText}`.trim();
+  },
+
+  normalizeNumber(numberPart, unit){
+    const raw = String(numberPart || "").trim().toLocaleLowerCase("de-DE");
+
+    if(/^\d+$/.test(raw)){
+      if(raw === "1"){
+        return { text:unit.article, isSingular:true };
+      }
+
+      const mapped = LBAgeFormatterModel.numberWords[raw];
+      return { text:mapped && mapped !== "__ONE__" ? mapped : raw, isSingular:false };
     }
 
+    const mapped = LBAgeFormatterModel.numberWords[raw];
+
+    if(mapped === "__ONE__"){
+      return { text:unit.article, isSingular:true };
+    }
+
+    if(mapped){
+      return { text:mapped, isSingular:false };
+    }
+
+    return { text:numberPart, isSingular:false };
+  },
+
+  findUnitKey(unitPart){
+    const raw = String(unitPart || "").trim().toLocaleLowerCase("de-DE");
+    if(LBAgeFormatterModel.units[raw]) return raw;
+
+    const three = raw.slice(0, 3);
+    if(three === "tag") return "tage";
+    if(three === "woc") return "wochen";
+    if(three === "mon") return "monate";
+    if(three === "jah") return "jahre";
+    if(three === "stu") return "stunden";
+    if(three === "min") return "minuten";
+
+    return "";
+  }
+};
+
+
+const LebendbilderController = {
+  isLebendbilder(){
+    return LebendbilderEligibilityController.allowsLebendbilderFields();
+  },
+
+  isMehrling(){
+    return detectedKindCount() >= 2;
+  },
+
+  getSingleName(){
+    const name = val("kindName");
+    if(!name || /^unbekannt$/iu.test(name)) return "";
+    if(this.isMehrling()) return "";
+    return name;
+  },
+
+  normalizeAge(raw){
+    return LBAgeFormatterController.normalize(raw);
+  },
+
+  buildAgeLine(){
+    if(!this.isLebendbilder()) return "";
+
+    const age = this.normalizeAge(val("aktuellesAlter"));
+    if(!age) return "";
+
+    if(this.isMehrling()){
+      return "Das lebende Kind ist " + age + " alt.";
+    }
+
+    const name = this.getSingleName();
+    if(name){
+      return formatChildNameForReport(name) + " ist jetzt " + age + " alt.";
+    }
+
+    return "Das Kind ist jetzt " + age + " alt.";
+  },
+
+  buildPrognosisLine(){
+    if(!this.isLebendbilder()) return "";
+    if(val("lebendbilderPrognose") === "Zustand sehr kritisch" && mehrlingssituationEnthaeltKritischenZustand()) return "";
+    return LebendbilderModel.prognosisTexts[val("lebendbilderPrognose")] || "";
+  }
+};
+
+function ReportSections(){
+  return {
+    header(){
+      return LebendbilderEligibilityController.allowsLebendbilderFields()
+        ? "HIER GEHT ES UM LEBENDBILDER, ES EILT."
+        : "";
+    },
+
+    greeting(){
+      return "Hallo ihr Lieben,";
+    },
+
+    ansprechpartner(){
+      return [
+        baueAnsprechpartnerText(),
+        normalisiereZusatz(val("ansprechpartnerErgaenzung")),
+        $("informationslageUnklar")?.checked
+          ? "Zur aktuellen Situation des Kindes konnte nur wenig in Erfahrung gebracht werden."
+          : ""
+      ].filter(Boolean).join("\n");
+    },
+
+    sternenkind(){
+      const aktuellesAlterSatz = LebendbilderController.buildAgeLine();
+
+      return [
+        baueMehrlingssatz(),
+        baueGeburtssituationSatz(),
+        baueKsElDetailSatz(),
+        baueWasserSatz(),
+        aktuellesAlterSatz,
+        lebendbilderPrognoseSatz(),
+        normalisiereZusatz(val("sternenkindErgaenzung"))
+      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    },
+
+    familie(){
+      const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
+        ? "Für die Eltern wären es die ersten gemeinsamen Kinder."
+        : "";
+
+      return [
+        baueFamiliensatz(),
+        erstesGemeinsamesKind,
+        normalisiereZusatz(val("familieErgaenzung"))
+      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    },
+
+    bilder(){
+      const bilder = [];
+      const hand = val("kinderHand");
+      const geschwisterSingular = hand === "1 Kind an der Hand";
+      const elternBilder = val("elternDabei");
+      const geschwisterBilder = val("geschwisterDabei");
+      const geschwisterAktiv = $("geschwisterDabei") && !$("geschwisterDabei").disabled;
+
+      if(elternBilder === "Ja" && geschwisterAktiv && geschwisterBilder === "Ja"){
+        bilder.push(geschwisterSingular
+          ? "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein."
+          : "Die Eltern und die Geschwister werden bei den Bildern dabei sein.");
+      }else{
+        if(elternBilder === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
+        if(elternBilder === "Nein") bilder.push("Die Eltern möchten bei den Bildern nicht dabei sein.");
+        if(elternBilder === "Unklar") bilder.push("Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+
+        if(elternBilder === "Ja" && geschwisterAktiv){
+          if(geschwisterBilder === "Ja"){
+            bilder.push(geschwisterSingular
+              ? "Das Geschwisterkind wird bei den Bildern dabei sein."
+              : "Die Geschwister werden bei den Bildern dabei sein.");
+          }
+          if(geschwisterBilder === "Unklar"){
+            bilder.push(geschwisterSingular
+              ? "Ob das Geschwisterkind mit auf die Bilder möchte, ist aktuell nicht bekannt."
+              : "Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+          }
+        }
+      }
+
+      const zeitfenster = radioValue("bilderZeitfenster");
+      let bilderSatz = bilder.join(" ");
+
+      if(bilderSatz && zeitfenster){
+        if(zeitfenster === "Bilder nur heute möglich."){
+          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche jedoch nur heute möglich sind.";
+        }else if(zeitfenster === "Bilder auch morgen möglich."){
+          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch morgen noch möglich sind.";
+        }else if(zeitfenster === "Bilder auch in den nächsten Tagen möglich."){
+          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch in den nächsten Tagen noch möglich sind.";
+        }
+      }
+
+      return [
+        bilderSatz,
+        (!bilderSatz ? zeitfenster : ""),
+        normalisiereZusatz(val("bilderErgaenzung"))
+      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    },
+
+    kleidung(){
+      return [
+        baueKleidungSatz()
+      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+    },
+
+    kommunikation(){
+      const lines = [];
+      const kommunikation = checkedValues("kommunikationCheck");
+
+      if(kommunikation.includes("Wenig Deutsch")) lines.push("Die Eltern sprechen wenig Deutsch.");
+      if(kommunikation.includes("Kein Deutsch")) lines.push("Die Eltern sprechen kein Deutsch.");
+      if(kommunikation.includes("Englisch möglich")) lines.push("Die Kommunikation auf Englisch ist möglich.");
+      if(kommunikation.includes("Kommunikation schwierig")) lines.push("Die Kommunikation ist aktuell schwierig.");
+      if(kommunikation.includes("Übersetzungsprogramm funktioniert gut")) lines.push("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
+
+      return lines.join("\n");
+    },
+
+    medizin(){
+      const medizinBlock = [];
+      const besonderheitStatus = val("besonderheitStatus");
+      const infektStatus = val("infektStatus");
+      const besonderheiten = checkedValues("besonderheitCheck");
+      const infekte = checkedValues("infektCheck");
+
+      if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
+        medizinBlock.push("Es sind weder äußerliche Besonderheiten noch Infekte bekannt.");
+      }else if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
+        medizinBlock.push("Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+      }else{
+        if(besonderheitStatus === "Ja" && besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
+        else if(besonderheitStatus === "Ja" && !besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+        else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
+        else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+
+        if(infektStatus === "Nein") medizinBlock.push("Es sind keine Infekte bekannt.");
+        else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("Infekte:\n- " + infekte.join("\n- "));
+        else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+        else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
+      }
+
+      if(val("schutzkleidung") === "Ja") medizinBlock.push("Schutzkleidung ist vorhanden.");
+      if(val("schutzkleidung") === "Unklar") medizinBlock.push("Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt.");
+
+      if(val("medizinErgaenzung")) medizinBlock.push(normalisiereZusatz(val("medizinErgaenzung")));
+
+      return medizinBlock.join("\n");
+    },
+
+    abschluss(){
+      return baueAbschlussBlock();
+    },
+
+    footer(){
+      return "Vielen Dank und liebe Grüße";
+    },
+
+    mitarbeiter(){
+      return formatPersonName(val("mitarbeiter"));
+    }
+  };
+}
+
+const ReportModel = {
+  build(){
     const blocks = [];
     const seen = new Set();
+    const sections = ReportSections();
 
     const add = text => {
       const raw = (text || "").trim();
@@ -2135,146 +2975,33 @@ function updateReport(){
       blocks.push(raw);
     };
 
-    const situationWert = val("aktuelleSituation");
-    const lebendbilder = situationWert === "Lebendbilder";
+    [
+      sections.header(),
+      sections.greeting(),
+      sections.ansprechpartner(),
+      sections.sternenkind(),
+      sections.familie(),
+      sections.bilder(),
+      sections.kleidung(),
+      sections.kommunikation(),
+      sections.medizin(),
+      sections.abschluss(),
+      sections.footer(),
+      sections.mitarbeiter()
+    ].forEach(add);
 
-    if(lebendbilder){
-      add("HIER GEHT ES UM LEBENDBILDER, ES EILT.");
+    return blocks.join("\n\n");
+  }
+};
+
+function updateReport(){
+  try{
+    if(consentValue() !== "ja" && !isAdminMode()){
+      $("report").textContent = "Berichtsausgabe";
+      return;
     }
 
-    add("Hallo ihr Lieben,");
-
-    const apBlock = [
-      baueAnsprechpartnerText(),
-      normalisiereZusatz(val("ansprechpartnerErgaenzung"))
-    ].filter(Boolean).join("\n");
-    add(apBlock);
-
-    const sternenkindBlock = [
-      baueMehrlingssatz(),
-      baueGeburtssituationSatz(),
-      baueKsElDetailSatz(),
-      baueWasserSatz(),
-      baueAltersSatz(),
-      lebendbilderPrognoseSatz(),
-      baueInformationslageSatz(),
-      normalisiereZusatz(val("sternenkindErgaenzung"))
-    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    add(sternenkindBlock);
-
-    const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
-      ? "Für die Eltern wären es die ersten gemeinsamen Kinder."
-      : "";
-
-    const familienBlock = [
-      baueFamiliensatz(),
-      erstesGemeinsamesKind,
-      val("familieAktuelleLage"),
-      normalisiereZusatz(val("familieErgaenzung"))
-    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    add(familienBlock);
-
-    const bilder = [];
-    const hand = val("kinderHand");
-    const geschwisterSingular = hand === "1 Kind an der Hand";
-    const elternBilder = val("elternDabei");
-    const geschwisterBilder = val("geschwisterDabei");
-    const geschwisterAktiv = $("geschwisterDabei") && !$("geschwisterDabei").disabled;
-
-    if(elternBilder === "Ja" && geschwisterAktiv && geschwisterBilder === "Ja"){
-      bilder.push(geschwisterSingular
-        ? "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein."
-        : "Die Eltern und die Geschwister werden bei den Bildern dabei sein.");
-    }else{
-      if(elternBilder === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
-      if(elternBilder === "Nein") bilder.push("Die Eltern möchten bei den Bildern nicht dabei sein.");
-      if(elternBilder === "Unklar") bilder.push("Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.");
-
-      if(elternBilder === "Ja" && geschwisterAktiv){
-        if(geschwisterBilder === "Ja"){
-          bilder.push(geschwisterSingular
-            ? "Das Geschwisterkind wird bei den Bildern dabei sein."
-            : "Die Geschwister werden bei den Bildern dabei sein.");
-        }
-        // Geschwister = Nein erzeugt bewusst keinen Satz.
-        if(geschwisterBilder === "Unklar"){
-          bilder.push(geschwisterSingular
-            ? "Ob das Geschwisterkind mit auf die Bilder möchte, ist aktuell nicht bekannt."
-            : "Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
-        }
-      }
-    }
-
-    const zeitfenster = radioValue("bilderZeitfenster");
-    let bilderSatz = bilder.join(" ");
-
-    if(bilderSatz && zeitfenster){
-      if(zeitfenster === "Bilder nur heute möglich."){
-        bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche jedoch nur heute möglich sind.";
-      }else if(zeitfenster === "Bilder auch morgen möglich."){
-        bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch morgen noch möglich sind.";
-      }else if(zeitfenster === "Bilder auch in den nächsten Tagen möglich."){
-        bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch in den nächsten Tagen noch möglich sind.";
-      }
-    }
-
-    const bilderBlock = [
-      bilderSatz,
-      (!bilderSatz ? zeitfenster : ""),
-      normalisiereZusatz(val("bilderErgaenzung"))
-    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    add(bilderBlock);
-
-    const kleidungBlock = [
-      baueKleidungSatz()
-    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    add(kleidungBlock);
-
-
-
-    const kommunikation = checkedValues("kommunikationCheck");
-    if(kommunikation.includes("Wenig Deutsch")) add("Die Eltern sprechen wenig Deutsch.");
-    if(kommunikation.includes("Kein Deutsch")) add("Die Eltern sprechen kein Deutsch.");
-    if(kommunikation.includes("Englisch möglich")) add("Die Kommunikation auf Englisch ist möglich.");
-    if(kommunikation.includes("Kommunikation schwierig")) add("Die Kommunikation ist aktuell schwierig.");
-    if(kommunikation.includes("Übersetzungsprogramm funktioniert gut")) add("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
-
-    const medizinBlock = [];
-    const besonderheitStatus = val("besonderheitStatus");
-    const infektStatus = val("infektStatus");
-    const besonderheiten = checkedValues("besonderheitCheck");
-    const infekte = checkedValues("infektCheck");
-
-    if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
-      medizinBlock.push("Es sind weder äußerliche Besonderheiten noch Infekte bekannt.");
-    }else if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
-      medizinBlock.push("Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
-    }else{
-      if(besonderheitStatus === "Ja" && besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
-      else if(besonderheitStatus === "Ja" && !besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-      else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
-      else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
-
-      if(infektStatus === "Nein") medizinBlock.push("Es sind keine Infekte bekannt.");
-      else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("Infekte:\n- " + infekte.join("\n- "));
-      else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-      else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
-    }
-
-    if(val("schutzkleidung") === "Ja") medizinBlock.push("Schutzkleidung ist vorhanden.");
-    if(val("schutzkleidung") === "Unklar") medizinBlock.push("Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt.");
-
-    if(val("medizinErgaenzung")) medizinBlock.push(normalisiereZusatz(val("medizinErgaenzung")));
-    add(medizinBlock.join("\n"));
-
-    add(baueAbschlussBlock());
-
-    add("Vielen Dank und liebe Grüße");
-
-    const mitarbeiter = formatPersonName(val("mitarbeiter"));
-    if(mitarbeiter) add(mitarbeiter);
-
-    $("report").textContent = blocks.join("\n\n");
+    $("report").textContent = ReportModel.build();
   }catch(error){
     console.error("Bericht konnte nicht vollständig erzeugt werden:", error);
     $("report").textContent = "Hallo ihr Lieben,\n\nVielen Dank und liebe Grüße";
@@ -2319,27 +3046,11 @@ document.addEventListener("input", event => {
 
 
 document.addEventListener("click", event => {
-  const heading = event.target.closest(".step > h2");
-  if(!heading) return;
+  const heading = event.target.closest(".step.done > h2, .step.todo > h2");
+  if(!heading || isAdminMode()) return;
 
   const step = heading.closest(".step");
-  if(!step) return;
-
   const index = workSteps.indexOf(step);
-
-  if(isAdminMode()){
-    if(index >= 0){
-      adminOpenIndex = adminOpenIndex === index ? -1 : index;
-      recalcAll();
-      if(adminOpenIndex === index){
-        step.scrollIntoView({behavior:"smooth", block:"start"});
-      }
-    }
-    return;
-  }
-
-  if(!(step.classList.contains("done") || step.classList.contains("todo"))) return;
-
   if(index >= 0){
     currentWorkIndex = index;
     recalcAll();

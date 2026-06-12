@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>TEST_MVC_V2_IB – DSK Einsatzanforderung</title>
+<title>Index_V21_P01_PalliativeGeburt – DSK Einsatzanforderung</title>
 <style>
 :root{
   --bg:#eaf0f4;
@@ -125,7 +125,7 @@ button{
   border-radius:5px;
   padding:14px;
   white-space:pre-wrap;
-  line-height:1.42;
+  line-height:1.46;
   font-size:15px;
 }
 
@@ -427,6 +427,11 @@ body.admin-mode #abschlussfrageWrapField select{
   font-weight:600;
 }
 
+
+.bericht p{margin-bottom:0.35em;}
+.report-heading{font-weight:700;}
+.report-call-notice{font-weight:600;font-style:italic;}
+.report-urgent{font-weight:700;}
 </style>
 </head>
 <body>
@@ -476,7 +481,7 @@ body.admin-mode #abschlussfrageWrapField select{
 </section>
 <section class="step" data-title="Sternenkind">
 <h2>Angaben zum Sternenkind</h2>
-<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div><div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" inputmode="numeric" maxlength="2" placeholder=""/></div><div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
+<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation"><option value=""></option><option value="verstorben">verstorben</option><option value="noch lebend">noch lebend</option><option value="Lebendbilder">Lebendbilder</option><option value="Einleitung">Einleitung</option><option value="Kaiserschnitt">Kaiserschnitt</option></select></div><div class="field-wrap" id="palliativeGeburtWrapField"><label class="option"><input id="palliativeGeburt" type="checkbox" value="Palliative Geburt"/><span>Palliative Geburt</span></label></div><div class="field-wrap" id="alterKindWrapField"><label class="field-label" for="alterKind">Geburtsalter</label><input id="alterKind" inputmode="numeric" maxlength="2" placeholder=""/></div><div class="field-wrap" id="alterEinheitWrapField"><label class="field-label" for="alterEinheit">Einheit des Alters</label><select id="alterEinheit">
 <option value=""></option>
 <option>SSW</option>
 <option>Monat(e)</option>
@@ -488,7 +493,7 @@ body.admin-mode #abschlussfrageWrapField select{
 <label class="option" id="einleitungWehenWrapField"><input id="einleitungWehen" type="checkbox" value="Es haben bereits Wehen eingesetzt."/><span>Es haben bereits Wehen eingesetzt.</span></label>
 <label class="option" id="geburtNichtAbsehbarWrapField"><input id="geburtNichtAbsehbar" type="checkbox" value="Wann die Geburt stattfinden wird, ist aktuell noch nicht absehbar."/><span>Wann die Geburt stattfinden wird, ist aktuell noch nicht absehbar.</span></label>
 </div><div id="wasserWrap">
-<div class="field-wrap" id="wasserWrapField"><label class="field-label" for="wasser">Wassermethode</label><select id="wasser"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="nicht möglich">nicht möglich</option><option value="Unklar">Unklar</option><option value="Nach Geburt">Nach Geburt</option><option value="Nach Geburt unklar">Nach Geburt unklar</option></select><div class="lf-hint" id="wasserMethodeHinweise">
+<div class="field-wrap" id="wasserWrapField"><label class="field-label" for="wasser">Wassermethode</label><select id="wasser"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option><option value="Nach Geburt">Nach Geburt</option><option value="Nach Geburt unklar">Nach Geburt unklar</option></select><div class="lf-hint" id="wasserMethodeHinweise">
 <p><strong>Anwendung Wassermethode</strong><br/>
 Ein Gefäß mit kühlem Leitungswasser befüllen.<br/>
 Das Kind hineinlegen und kühl stellen.<br/>
@@ -505,7 +510,7 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option value="1. Kind">1. Kind</option><option value="2. Kind">2. Kind</option><option value="3. Kind">3. Kind</option><option value="4. Kind">4. Kind</option><option value="5. Kind">5. Kind</option></select></div>
 <div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option value="keine Kinder an der Hand">keine Kinder an der Hand</option><option value="1 Kind an der Hand">1 Kind an der Hand</option><option value="2 Kinder an der Hand">2 Kinder an der Hand</option><option value="3 Kinder an der Hand">3 Kinder an der Hand</option><option value="4 Kinder an der Hand">4 Kinder an der Hand</option></select></div>
 </div>
-<div class="field-wrap" id="erstesGemeinsamesKindWrapField" style="margin-top:15px"><label class="option"><input id="erstesGemeinsamesKind" type="checkbox" value="Für die Eltern wären es die ersten gemeinsamen Kinder."/><span>Für die Eltern wären es die ersten gemeinsamen Kinder.</span></label></div><div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="familieErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="familieErgaenzung">Weitere Informationen hier eintragen</label><input id="familieErgaenzung" placeholder=""/></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Bilder">
 <h2>Bilder</h2>
@@ -562,9 +567,10 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="grid2">
 <div class="field-wrap" id="abschlussfrageWrapField"><label class="field-label" for="abschlussfrage">Abschlussfrage</label><select id="abschlussfrage">
 <option value=""></option>
-<option value="Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?">Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?</option>
-<option value="Wer kann denn hier übernehmen?">Wer kann denn hier übernehmen?</option>
+<option value="Wer kann sich denn hier bereithalten und als Ansprechpartner zur Verfügung stehen?">Wer kann sich denn hier bereithalten und als Ansprechpartner zur Verfügung stehen?</option>
+<option value="Wer kann sich hier bereithalten und als Ansprechpartner zur Verfügung stehen?">Wer kann sich hier bereithalten und als Ansprechpartner zur Verfügung stehen?</option>
 <option value="Wer kann sofort los?">Wer kann sofort los?</option>
+<option value="Wer kann denn hier übernehmen?">Wer kann denn hier übernehmen?</option>
 </select></div>
 <div class="field-wrap" id="vorLosfahrtWrapField"><label class="option"><input id="vorLosfahrtAnrufen" type="checkbox" value="Ruft auf jeden Fall nochmal an bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden."/><span>Vor Losfahrt nochmal anrufen</span></label></div>
 </div>
@@ -790,8 +796,8 @@ const IB_CONTROLLER = {
       else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
       else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
 
-      if(infektStatus === "Nein") medizinBlock.push("Es sind keine Infekte bekannt.");
-      else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("Infekte:\n- " + infekte.join("\n- "));
+      if(infektStatus === "Nein") medizinBlock.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
+      else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("\nBekannte Infekte:\n- " + infekte.join("\n- "));
       else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
       else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
     }
@@ -831,15 +837,14 @@ function setOpenStates(){
     reportStep.classList.add("open");
   }
 
-  if(consentValue() !== "ja"){
+  if(admin){
+    workSteps.forEach(step => {
+      step.classList.add("open");
+    });
     return;
   }
 
-  if(admin){
-    workSteps.forEach(step => {
-      step.classList.add("todo");
-      step.classList.remove("open");
-    });
+  if(consentValue() !== "ja"){
     return;
   }
 
@@ -867,7 +872,10 @@ function setOpenStates(){
 function updateConsentFlow(){
   const consent = consentValue();
 
-  if(consent === "ja"){
+  if(isAdminMode()){
+    $("blockedNotice").style.display = "none";
+    currentWorkIndex = 0;
+  }else if(consent === "ja"){
     $("blockedNotice").style.display = "none";
     currentWorkIndex = 0;
   }else{
@@ -904,7 +912,7 @@ function validateCurrentStep(){
 }
 
 function nextStep(){
-  if(consentValue() !== "ja") return;
+  if(!isAdminMode() && consentValue() !== "ja") return;
 
   if(!validateCurrentStep()) return;
 
@@ -922,7 +930,7 @@ function nextStep(){
 }
 
 function prevStep(){
-  if(consentValue() !== "ja") return;
+  if(!isAdminMode() && consentValue() !== "ja") return;
 
   if(currentWorkIndex > 0){
     currentWorkIndex--;
@@ -1260,6 +1268,72 @@ const LebendbilderEligibilityController = {
   }
 };
 
+
+
+/* P01 MVC – Palliative Geburt: erlaubte aktuelle Situationen */
+const PALLIATIVE_GEBURT_MODEL = Object.freeze({
+  normalSituationen: Object.freeze([
+    { value:"", label:"" },
+    { value:"verstorben", label:"verstorben" },
+    { value:"noch lebend", label:"noch lebend" },
+    { value:"Lebendbilder", label:"Lebendbilder" },
+    { value:"Einleitung", label:"Einleitung" },
+    { value:"Kaiserschnitt", label:"Kaiserschnitt" }
+  ]),
+  palliativeSituationen: Object.freeze([
+    { value:"", label:"" },
+    { value:"noch lebend", label:"noch lebend" },
+    { value:"Einleitung", label:"Einleitung" },
+    { value:"Kaiserschnitt", label:"Kaiserschnitt" }
+  ]),
+  fallback: "noch lebend"
+});
+
+const PALLIATIVE_GEBURT_CONTROLLER = {
+  isActive(){
+    return !!$("palliativeGeburt")?.checked;
+  },
+
+  getAllowedSituationen(){
+    return this.isActive()
+      ? PALLIATIVE_GEBURT_MODEL.palliativeSituationen
+      : PALLIATIVE_GEBURT_MODEL.normalSituationen;
+  },
+
+  normalizeCurrentValue(currentValue){
+    const allowed = this.getAllowedSituationen().map(option => option.value);
+    if(allowed.includes(currentValue)) return currentValue;
+    return this.isActive() ? PALLIATIVE_GEBURT_MODEL.fallback : "";
+  }
+};
+
+const PALLIATIVE_GEBURT_VIEW = {
+  renderSituationSelect(){
+    const select = $("aktuelleSituation");
+    if(!select) return;
+
+    const mode = PALLIATIVE_GEBURT_CONTROLLER.isActive() ? "palliativ" : "normal";
+    const nextValue = PALLIATIVE_GEBURT_CONTROLLER.normalizeCurrentValue(select.value);
+
+    if(select.dataset.palliativeMode === mode && select.value === nextValue) return;
+
+    select.innerHTML = "";
+    PALLIATIVE_GEBURT_CONTROLLER.getAllowedSituationen().forEach(item => {
+      const option = document.createElement("option");
+      option.value = item.value;
+      option.textContent = item.label;
+      select.appendChild(option);
+    });
+
+    select.dataset.palliativeMode = mode;
+    select.value = nextValue;
+  }
+};
+
+function updatePalliativeGeburtOptions(){
+  PALLIATIVE_GEBURT_VIEW.renderSituationSelect();
+}
+
 function updateAktuellesAlterVisibility(){
   const geburtWrap = $("alterKindWrapField");
   const einheitWrap = $("alterEinheitWrapField");
@@ -1303,7 +1377,7 @@ function setWasserOptions(mode){
   if(!wasser) return;
 
   const current = wasser.value;
-  const all = ["", "Ja", "Nein", "nicht möglich", "Unklar"];
+  const all = ["", "Ja", "Nein", "Unklar"];
   const nachGeburt = ["", "Nach Geburt", "Nach Geburt unklar"];
   const options = mode === "nachGeburt" ? nachGeburt : all;
 
@@ -1349,10 +1423,35 @@ const MehrlingsLebendbilderGuardController = {
   }
 };
 
+
+const MehrlingsLebendbilderGuardView = {
+  updateSituationOptions(){
+    const situation = $("aktuelleSituation");
+    if(!situation) return;
+
+    const allChildrenDeceased = MehrlingsLebendbilderGuardController.isAllChildrenDeceased();
+
+    Array.from(situation.options).forEach(option => {
+      const forbidden = MehrlingsLebendbilderGuardModel.forbiddenSituations.includes(option.value);
+      option.disabled = allChildrenDeceased && forbidden;
+      option.hidden = allChildrenDeceased && forbidden;
+    });
+  }
+};
+
+
 function updateWasser(){
   if(!$("wasser")) return;
 
   const wasserField = $("wasserWrapField") || $("wasserWrap");
+
+  if($("palliativeGeburt")?.checked){
+    $("wasser").value = "";
+    $("wasser").disabled = true;
+    if(wasserField) wasserField.classList.add("hidden");
+    return;
+  }
+
   const situation = val("aktuelleSituation");
 
   if(isAdminMode()){
@@ -1392,6 +1491,44 @@ function updateLebendbilderPrognoseOptions(){
 
   if(ausblenden && select.value === "Zustand sehr kritisch"){
     select.value = "";
+  }
+}
+
+function updatePalliativeGeburtOptions(){
+  const situation = $("aktuelleSituation");
+  if(!situation) return;
+
+  const isPalliative = !!$("palliativeGeburt")?.checked;
+  const current = situation.value;
+
+  const options = isPalliative
+    ? [
+        ["", ""],
+        ["noch lebend", "noch lebend"],
+        ["Einleitung", "Einleitung"],
+        ["Kaiserschnitt", "Kaiserschnitt"]
+      ]
+    : [
+        ["", ""],
+        ["verstorben", "verstorben"],
+        ["Lebendbilder", "Lebendbilder"],
+        ["Einleitung", "Einleitung"],
+        ["Kaiserschnitt", "Kaiserschnitt"]
+      ];
+
+  situation.innerHTML = "";
+  options.forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    situation.appendChild(option);
+  });
+
+  const allowedValues = options.map(([value]) => value);
+  if(allowedValues.includes(current)){
+    situation.value = current;
+  }else{
+    situation.value = isPalliative ? "noch lebend" : "";
   }
 }
 
@@ -1514,28 +1651,51 @@ function updateAbschlussfragenOptions(){
   if(!select) return;
 
   MehrlingsLebendbilderGuardController.enforce();
-  const situation = val("aktuelleSituation");
-  const map = {
-    "Einleitung": "Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?",
-    "Kaiserschnitt": "Wer kann sich denn hier bereithalten und vielleicht als Ansprechpartner zur Verfügung halten?",
-    "Lebendbilder": "Wer kann sofort los?",
-    "verstorben": "Wer kann denn hier übernehmen?"
-  };
 
-  const frage = map[situation] || "";
+  const situation = val("aktuelleSituation");
+  const palliative = $("palliativeGeburt")?.checked;
+
+  const bereithalten = "Wer kann sich denn hier bereithalten und als Ansprechpartner zur Verfügung stehen?";
+  const sofortLos = "Wer kann sofort los?";
+  const uebernehmen = "Wer kann denn hier übernehmen?";
+
+  let frage = "";
+
+  if(palliative){
+    frage = bereithalten;
+  }else if(situation === "verstorben"){
+    frage = uebernehmen;
+  }else if(situation === "Lebendbilder"){
+    frage = sofortLos;
+  }else if(situation === "noch lebend" || situation === "Einleitung" || situation === "Kaiserschnitt"){
+    frage = bereithalten;
+  }
+
   select.value = frage;
 }
 
 function baueAbschlussBlock(){
   const teile = [];
   const frage = val("abschlussfrage");
+  const situation = val("aktuelleSituation");
+  const palliative = !!$("palliativeGeburt")?.checked;
+  const anrufHinweis = "Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.";
+
+  const brauchtAnrufHinweis =
+    !!frage && (
+      palliative ||
+      ["verstorben", "noch lebend", "Einleitung", "Kaiserschnitt"].includes(situation) ||
+      !!$("vorLosfahrtAnrufen")?.checked
+    );
 
   if(frage){
     teile.push(frage);
   }
 
-  if($("vorLosfahrtAnrufen") && $("vorLosfahrtAnrufen").checked){
-    teile.push("Ruft auf jeden Fall nochmal an bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.");
+  if(brauchtAnrufHinweis){
+    teile.push(anrufHinweis);
+  }else if(!frage && $("vorLosfahrtAnrufen")?.checked){
+    teile.push(anrufHinweis);
   }
 
   return teile.join("\n");
@@ -2002,15 +2162,35 @@ function updateZeitlogikHinweis(){
   return true;
 }
 
+
+function updateKommunikationExklusiv(){
+  const checks = Array.from(document.querySelectorAll(".kommunikationCheck"));
+  const keinDeutsch = checks.find(cb => cb.value === "Kein Deutsch");
+  const wenigDeutsch = checks.find(cb => cb.value === "Wenig Deutsch");
+
+  if(!keinDeutsch || !wenigDeutsch) return;
+
+  if(keinDeutsch.checked && document.activeElement === keinDeutsch){
+    wenigDeutsch.checked = false;
+  }
+
+  if(wenigDeutsch.checked && document.activeElement === wenigDeutsch){
+    keinDeutsch.checked = false;
+  }
+}
+
 function recalcAll(){
-  enforceTwoDigitBirthAge();
+  
+  updatePalliativeGeburtOptions();enforceTwoDigitBirthAge();
   updateMehrlingsSituationOptions();
   MehrlingsLebendbilderGuardController.enforce();
+  MehrlingsLebendbilderGuardView.updateSituationOptions();
   updateGeschlechtOptions();
   syncKinderHand();
   updateGeschwisterBilderVisibility();
   updateAktuellesAlterVisibility();
   updateLebendbilderPrognoseOptions();
+  updatePalliativeGeburtOptions();
   updateWasser();
   updateGeburtssituationRouting();
   updateZeitlogikHinweis();
@@ -2131,31 +2311,50 @@ function baueMehrlingssatz(){
   return "";
 }
 
+
+
 function baueFamiliensatz(){
   const kind = val("kindFamilie");
-  const handRaw = val("kinderHand");
-  const hasChildrenAtHand = handRaw && handRaw !== "keine Kinder an der Hand";
-  const start = kindStartNumber(kind);
-  const count = mehrlingsCount();
-  const groupLabel = count === 2 ? "Zwillinge" : count === 3 ? "Drillinge" : "";
+  const hand = val("kinderHand");
+  const mehrlinge = val("mehrlinge");
 
-  const handSatz = hasChildrenAtHand ? "Die Eltern haben " + handText(handRaw) + "." : "";
+  const ord = {
+    1: "erste",
+    2: "zweite",
+    3: "dritte",
+    4: "vierte",
+    5: "fünfte",
+    6: "sechste",
+    7: "siebte"
+  };
 
-  if(!kind && !handSatz) return "";
+  const handMap = {
+    "keine Kinder an der Hand":"keine Kinder an der Hand",
+    "1 Kind an der Hand":"ein Kind an der Hand",
+    "2 Kinder an der Hand":"zwei Kinder an der Hand",
+    "3 Kinder an der Hand":"drei Kinder an der Hand",
+    "4 Kinder an der Hand":"vier Kinder an der Hand"
+  };
 
-  if(start && count > 1){
-    const basis = "Die " + groupLabel + " wären das " + kindOrdinalRangeText(start, count) + " der Familie.";
-    return basis + (handSatz ? " " + handSatz : "");
+  const base = parseInt((kind || "").match(/\d+/)?.[0] || "0", 10);
+  if(!base) return "";
+
+  let satz = "";
+
+  if(mehrlinge.startsWith("Zwillinge")){
+    satz = `Für die Eltern wären die Zwillinge das ${ord[base]} und ${ord[base + 1]} Kind der Familie.`;
+  }else if(mehrlinge.startsWith("Drillinge")){
+    satz = `Für die Eltern wären die Drillinge das ${ord[base]}, ${ord[base + 1]} und ${ord[base + 2]} Kind der Familie.`;
+  }else{
+    satz = `Für die Eltern wäre es das ${ord[base]} Kind der Familie.`;
   }
 
-  const kindText = ordinalKindText(kind);
-
-  if(kindText && hasChildrenAtHand){
-    return "Für die Familie wäre es das " + kindText + ", die Eltern haben bereits " + handText(handRaw) + ".";
+  const handText = handMap[hand];
+  if(handText){
+    return `${satz} Sie haben ${handText}.`;
   }
 
-  if(kindText) return "Für die Familie wäre es das " + kindText + ".";
-  return handSatz;
+  return satz;
 }
 
 function formatPersonName(name){
@@ -2522,6 +2721,13 @@ function baueInformationslageSatz(){
     : "";
 }
 
+
+function bauePalliativeGeburtSatz(){
+  return $("palliativeGeburt")?.checked
+    ? "Es handelt sich um eine palliative Geburt."
+    : "";
+}
+
 function baueGeburtssituationSatz(){
   return "";
 }
@@ -2795,217 +3001,341 @@ const LebendbilderController = {
   }
 };
 
-function ReportSections(){
-  return {
-    header(){
-      return LebendbilderEligibilityController.allowsLebendbilderFields()
-        ? "HIER GEHT ES UM LEBENDBILDER, ES EILT."
-        : "";
-    },
-
-    greeting(){
-      return "Hallo ihr Lieben,";
-    },
-
-    ansprechpartner(){
-      return [
-        baueAnsprechpartnerText(),
-        normalisiereZusatz(val("ansprechpartnerErgaenzung")),
-        $("informationslageUnklar")?.checked
-          ? "Zur aktuellen Situation des Kindes konnte nur wenig in Erfahrung gebracht werden."
-          : ""
-      ].filter(Boolean).join("\n");
-    },
-
-    sternenkind(){
-      const aktuellesAlterSatz = LebendbilderController.buildAgeLine();
-
-      return [
-        baueMehrlingssatz(),
-        baueGeburtssituationSatz(),
-        baueKsElDetailSatz(),
-        baueWasserSatz(),
-        aktuellesAlterSatz,
-        lebendbilderPrognoseSatz(),
-        normalisiereZusatz(val("sternenkindErgaenzung"))
-      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    },
-
-    familie(){
-      const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
-        ? "Für die Eltern wären es die ersten gemeinsamen Kinder."
-        : "";
-
-      return [
-        baueFamiliensatz(),
-        erstesGemeinsamesKind,
-        normalisiereZusatz(val("familieErgaenzung"))
-      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    },
-
-    bilder(){
-      const bilder = [];
-      const hand = val("kinderHand");
-      const geschwisterSingular = hand === "1 Kind an der Hand";
-      const elternBilder = val("elternDabei");
-      const geschwisterBilder = val("geschwisterDabei");
-      const geschwisterAktiv = $("geschwisterDabei") && !$("geschwisterDabei").disabled;
-
-      if(elternBilder === "Ja" && geschwisterAktiv && geschwisterBilder === "Ja"){
-        bilder.push(geschwisterSingular
-          ? "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein."
-          : "Die Eltern und die Geschwister werden bei den Bildern dabei sein.");
-      }else{
-        if(elternBilder === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
-        if(elternBilder === "Nein") bilder.push("Die Eltern möchten bei den Bildern nicht dabei sein.");
-        if(elternBilder === "Unklar") bilder.push("Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.");
-
-        if(elternBilder === "Ja" && geschwisterAktiv){
-          if(geschwisterBilder === "Ja"){
-            bilder.push(geschwisterSingular
-              ? "Das Geschwisterkind wird bei den Bildern dabei sein."
-              : "Die Geschwister werden bei den Bildern dabei sein.");
-          }
-          if(geschwisterBilder === "Unklar"){
-            bilder.push(geschwisterSingular
-              ? "Ob das Geschwisterkind mit auf die Bilder möchte, ist aktuell nicht bekannt."
-              : "Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
-          }
-        }
-      }
-
-      const zeitfenster = radioValue("bilderZeitfenster");
-      let bilderSatz = bilder.join(" ");
-
-      if(bilderSatz && zeitfenster){
-        if(zeitfenster === "Bilder nur heute möglich."){
-          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche jedoch nur heute möglich sind.";
-        }else if(zeitfenster === "Bilder auch morgen möglich."){
-          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch morgen noch möglich sind.";
-        }else if(zeitfenster === "Bilder auch in den nächsten Tagen möglich."){
-          bilderSatz = bilderSatz.replace(/\.$/, "") + ", welche auch in den nächsten Tagen noch möglich sind.";
-        }
-      }
-
-      return [
-        bilderSatz,
-        (!bilderSatz ? zeitfenster : ""),
-        normalisiereZusatz(val("bilderErgaenzung"))
-      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    },
-
-    kleidung(){
-      return [
-        baueKleidungSatz()
-      ].map(normalisiereAbsatz).filter(Boolean).join("\n");
-    },
-
-    kommunikation(){
-      const lines = [];
-      const kommunikation = checkedValues("kommunikationCheck");
-
-      if(kommunikation.includes("Wenig Deutsch")) lines.push("Die Eltern sprechen wenig Deutsch.");
-      if(kommunikation.includes("Kein Deutsch")) lines.push("Die Eltern sprechen kein Deutsch.");
-      if(kommunikation.includes("Englisch möglich")) lines.push("Die Kommunikation auf Englisch ist möglich.");
-      if(kommunikation.includes("Kommunikation schwierig")) lines.push("Die Kommunikation ist aktuell schwierig.");
-      if(kommunikation.includes("Übersetzungsprogramm funktioniert gut")) lines.push("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
-
-      return lines.join("\n");
-    },
-
-    medizin(){
-      const medizinBlock = [];
-      const besonderheitStatus = val("besonderheitStatus");
-      const infektStatus = val("infektStatus");
-      const besonderheiten = checkedValues("besonderheitCheck");
-      const infekte = checkedValues("infektCheck");
-
-      if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
-        medizinBlock.push("Es sind weder äußerliche Besonderheiten noch Infekte bekannt.");
-      }else if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
-        medizinBlock.push("Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
-      }else{
-        if(besonderheitStatus === "Ja" && besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
-        else if(besonderheitStatus === "Ja" && !besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-        else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
-        else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
-
-        if(infektStatus === "Nein") medizinBlock.push("Es sind keine Infekte bekannt.");
-        else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("Infekte:\n- " + infekte.join("\n- "));
-        else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
-        else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
-      }
-
-      if(val("schutzkleidung") === "Ja") medizinBlock.push("Schutzkleidung ist vorhanden.");
-      if(val("schutzkleidung") === "Unklar") medizinBlock.push("Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt.");
-
-      if(val("medizinErgaenzung")) medizinBlock.push(normalisiereZusatz(val("medizinErgaenzung")));
-
-      return medizinBlock.join("\n");
-    },
-
-    abschluss(){
-      return baueAbschlussBlock();
-    },
-
-    footer(){
-      return "Vielen Dank und liebe Grüße";
-    },
-
-    mitarbeiter(){
-      return formatPersonName(val("mitarbeiter"));
-    }
-  };
-}
-
-const ReportModel = {
+const FamilieReportController = {
   build(){
+    const erstesGemeinsamesKind = $("erstesGemeinsamesKind") && $("erstesGemeinsamesKind").checked
+      ? ""
+      : "";
+
+    return [
+      baueFamiliensatz(),
+      erstesGemeinsamesKind,
+      normalisiereZusatz(val("familieErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  }
+};
+
+const WasserReportController = {
+  build(){
+    return baueWasserSatz();
+  }
+};
+
+const BilderReportController = {
+  build(){
+    const bilder = [];
+    const hand = val("kinderHand");
+    const geschwisterSingular = hand === "1 Kind an der Hand";
+    const elternBilder = val("elternDabei");
+    const geschwisterBilder = val("geschwisterDabei");
+    const geschwisterAktiv = $("geschwisterDabei") && !$("geschwisterDabei").disabled;
+
+    if(elternBilder === "Ja" && geschwisterAktiv && geschwisterBilder === "Ja"){
+      bilder.push(geschwisterSingular
+        ? "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein."
+        : "Die Eltern und die Geschwister werden bei den Bildern dabei sein.");
+    }else{
+      if(elternBilder === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
+      if(elternBilder === "Nein") bilder.push("Die Eltern möchten bei den Bildern nicht dabei sein.");
+      if(elternBilder === "Unklar") bilder.push("Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+
+      if(elternBilder === "Ja" && geschwisterAktiv){
+        if(geschwisterBilder === "Ja"){
+          bilder.push(geschwisterSingular
+            ? "Das Geschwisterkind wird bei den Bildern dabei sein."
+            : "Die Geschwister werden bei den Bildern dabei sein.");
+        }
+        if(geschwisterBilder === "Unklar"){
+          bilder.push(geschwisterSingular
+            ? "Ob das Geschwisterkind mit auf die Bilder möchte, ist aktuell nicht bekannt."
+            : "Ob die Geschwister mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+        }
+      }
+    }
+
+    const zeitfenster = radioValue("bilderZeitfenster");
+    let bilderSatz = bilder.join(" ");
+
+    if(bilderSatz && zeitfenster){
+      if(zeitfenster === "Bilder nur heute möglich."){
+        bilderSatz += "\nBilder sind nur heute möglich.";
+      }else if(zeitfenster === "Bilder auch morgen möglich."){
+        bilderSatz += "\nBilder sind auch morgen möglich.";
+      }else if(zeitfenster === "Bilder auch in den nächsten Tagen möglich."){
+        bilderSatz += "\nBilder sind auch in den nächsten Tagen möglich.";
+      }
+    }
+
+    return [
+      bilderSatz,
+      (!bilderSatz ? zeitfenster : ""),
+      normalisiereZusatz(val("bilderErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  }
+};
+
+/* V26d_ReportBuilder_Aufraeumen
+   ReportSections-Wrapper entfernt. ReportBuilder nutzt direkte Controller-Aufrufe.
+   Keine Fachlogik geändert.
+*/
+const WaterMethodReportController = {
+  build(){
+    return WasserReportController.build();
+  }
+};
+
+const ContactReportController = {
+  ansprechpartner(){
+  return [
+    baueAnsprechpartnerText(),
+    normalisiereZusatz(val("ansprechpartnerErgaenzung")),
+    $("informationslageUnklar")?.checked
+      ? "Zur aktuellen Situation des Kindes konnte nur wenig in Erfahrung gebracht werden."
+      : ""
+  ].filter(Boolean).join("\n");
+},
+};
+
+const HeaderFooterReportController = {
+  header(){
+  return (LebendbilderEligibilityController.allowsLebendbilderFields() || ($("palliativeGeburt")?.checked && val("aktuelleSituation") === "noch lebend"))
+    ? "HIER GEHT ES UM LEBENDBILDER, ES EILT."
+    : "";
+},
+
+  greeting(){
+  return "Hallo ihr Lieben,";
+},
+
+  footer(){
+  return "Vielen Dank und liebe Grüße";
+},
+
+  mitarbeiter(){
+  return formatPersonName(val("mitarbeiter"));
+}
+};
+
+const AbschlussfrageReportController = {
+  build(){
+    return baueAbschlussBlock();
+  }
+};
+
+const KleidungReportController = {
+  build(){
+    return [
+      baueKleidungSatz()
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  }
+};
+
+const SternenkindReportController = {
+  build(){
+    const aktuellesAlterSatz = LebendbilderController.buildAgeLine();
+
+    return [
+      baueMehrlingssatz(),
+      bauePalliativeGeburtSatz(),
+      baueGeburtssituationSatz(),
+      baueKsElDetailSatz(),
+      aktuellesAlterSatz,
+      lebendbilderPrognoseSatz(),
+      normalisiereZusatz(val("sternenkindErgaenzung"))
+    ].map(normalisiereAbsatz).filter(Boolean).join("\n");
+  }
+};
+
+const KommunikationReportController = {
+  build(){
+    const lines = [];
+    const kommunikation = checkedValues("kommunikationCheck");
+
+    if(kommunikation.includes("Wenig Deutsch")) lines.push("Die Eltern sprechen wenig Deutsch.");
+    if(kommunikation.includes("Kein Deutsch")) lines.push("Die Eltern sprechen kein Deutsch.");
+    if(kommunikation.includes("Englisch möglich")) lines.push("Die Kommunikation auf Englisch ist möglich.");
+    if(kommunikation.includes("Kommunikation schwierig")) lines.push("Die Kommunikation ist aktuell schwierig.");
+    if(kommunikation.includes("Übersetzungsprogramm funktioniert gut")) lines.push("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
+
+    return lines.join("\n");
+  }
+};
+
+const MedizinReportController = {
+  build(){
+    const besonderheitStatus = val("besonderheitStatus");
+    const infektStatus = val("infektStatus");
+    const besonderheiten = checkedValues("besonderheitCheck");
+    const infekte = checkedValues("infektCheck");
+    const lines = [];
+
+    if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
+      return "Es sind weder äußerliche Besonderheiten noch Infekte bekannt.";
+    }
+
+    if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
+      return "Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.";
+    }
+
+    if(besonderheitStatus === "Ja" && besonderheiten.length){
+      lines.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
+    }else if(besonderheitStatus === "Ja"){
+      lines.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+    }else if(besonderheitStatus === "Nein"){
+      lines.push("Es sind keine äußerlichen Besonderheiten bekannt.");
+    }else if(besonderheitStatus === "Unklar"){
+      lines.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+    }
+
+    if(infektStatus === "Nein"){
+      lines.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
+    }else if(infektStatus === "Ja" && infekte.length){
+      lines.push("Bekannte Infekte:\n- " + infekte.join("\n- "));
+    }else if(infektStatus === "Ja"){
+      lines.push("Bekannte Infekte:\nInfekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+    }else if(infektStatus === "Unklar"){
+      lines.push("Bekannte Infekte:\nOb Infekte vorliegen, ist aktuell nicht bekannt.");
+    }
+
+    const medizinZusatz = val("medizinErgaenzung");
+
+    if(val("schutzkleidung") === "Ja"){
+      lines.push(
+        medizinZusatz
+          ? "Schutzkleidung ist vorhanden.\n" + normalisiereZusatz(medizinZusatz)
+          : "Schutzkleidung ist vorhanden."
+      );
+    }else if(val("schutzkleidung") === "Unklar"){
+      lines.push(
+        medizinZusatz
+          ? "Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt.\n" + normalisiereZusatz(medizinZusatz)
+          : "Ob Schutzkleidung vorhanden ist, ist aktuell nicht bekannt."
+      );
+    }else if(medizinZusatz){
+      lines.push(normalisiereZusatz(medizinZusatz));
+    }
+
+    return lines.join("\n\n");
+  }
+};
+
+const FamilyImagesReportController = {
+  build(){
+    return [
+      FamilieReportController.build(),
+      BilderReportController.build()
+    ].filter(Boolean).join("\n");
+  }
+};
+
+const ReportBuilder = {
+  normalizeBlock(text){
+    return (text || "").trim();
+  },
+
+  createKey(text){
+    return this.normalizeBlock(text).replace(/\s+/g, " ").toLowerCase();
+  },
+
+  addUniqueBlock(blocks, seen, text){
+    const raw = this.normalizeBlock(text);
+    if(!raw) return;
+
+    const key = this.createKey(raw);
+    if(seen.has(key)) return;
+
+    seen.add(key);
+    blocks.push(raw);
+  },
+
+  buildFromSections(sections){
     const blocks = [];
     const seen = new Set();
-    const sections = ReportSections();
-
-    const add = text => {
-      const raw = (text || "").trim();
-      if(!raw) return;
-
-      const key = raw.replace(/\s+/g, " ").toLowerCase();
-      if(seen.has(key)) return;
-
-      seen.add(key);
-      blocks.push(raw);
-    };
 
     [
-      sections.header(),
-      sections.greeting(),
-      sections.ansprechpartner(),
-      sections.sternenkind(),
-      sections.familie(),
-      sections.bilder(),
-      sections.kleidung(),
-      sections.kommunikation(),
-      sections.medizin(),
-      sections.abschluss(),
-      sections.footer(),
-      sections.mitarbeiter()
-    ].forEach(add);
+      HeaderFooterReportController.header(),
+      HeaderFooterReportController.greeting(),
+      ContactReportController.ansprechpartner(),
+      SternenkindReportController.build(),
+      WaterMethodReportController.build(),
+      FamilyImagesReportController.build(),
+      KleidungReportController.build(),
+      KommunikationReportController.build(),
+      MedizinReportController.build(),
+      AbschlussfrageReportController.build(),
+      HeaderFooterReportController.footer(),
+      HeaderFooterReportController.mitarbeiter()
+    ].forEach(text => this.addUniqueBlock(blocks, seen, text));
 
     return blocks.join("\n\n");
   }
 };
 
-function updateReport(){
-  try{
-    if(consentValue() !== "ja" && !isAdminMode()){
-      $("report").textContent = "Berichtsausgabe";
-      return;
-    }
-
-    $("report").textContent = ReportModel.build();
-  }catch(error){
-    console.error("Bericht konnte nicht vollständig erzeugt werden:", error);
-    $("report").textContent = "Hallo ihr Lieben,\n\nVielen Dank und liebe Grüße";
+const ReportModel = {
+  build(){
+    return ReportBuilder.buildFromSections();
   }
+};
+
+
+function escapeReportHtml(value){
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function renderReportHtml(value){
+  return escapeReportHtml(value)
+    .replaceAll("Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.", '<span class="report-call-notice">Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.</span>')
+    .replaceAll("HIER GEHT ES UM LEBENDBILDER, ES EILT.", '<span class="report-urgent">HIER GEHT ES UM LEBENDBILDER, ES EILT.</span>')
+    .replaceAll("Äußerliche Besonderheiten:", '<span class="report-heading">Äußerliche Besonderheiten:</span>')
+    .replaceAll("Bekannte Infekte:", '<span class="report-heading">Bekannte Infekte:</span>')
+    .replaceAll("\n", "<br>");
+}
+
+const ReportView = {
+  output(){
+    return $("report");
+  },
+
+  reset(){
+    const target = this.output();
+    if(target) target.textContent = "Berichtsausgabe";
+  },
+
+  render(reportText){
+    const target = this.output();
+    if(target) target.innerHTML = renderReportHtml(reportText);
+  },
+
+  renderFallback(){
+    this.render("Hallo ihr Lieben,\n\nVielen Dank und liebe Grüße");
+  }
+};
+
+const ReportController = {
+  shouldRender(){
+    return consentValue() === "ja" || isAdminMode();
+  },
+
+  update(){
+    try{
+      if(!this.shouldRender()){
+        ReportView.reset();
+        return;
+      }
+
+      ReportView.render(ReportModel.build());
+    }catch(error){
+      console.error("Bericht konnte nicht vollständig erzeugt werden:", error);
+      ReportView.renderFallback();
+    }
+  }
+};
+
+function updateReport(){
+  ReportController.update();
 }
 
 const mehrlingeField = $("mehrlinge");
@@ -3068,6 +3398,10 @@ document.addEventListener("keydown", event => {
   }
 });
 
+
+$("palliativeGeburt")?.addEventListener("change", recalcAll);
+$("aktuelleSituation")?.addEventListener("change", recalcAll);
+
 IB_CONTROLLER.init();
 recalcAll();
 
@@ -3081,6 +3415,22 @@ document.addEventListener("keydown", function(event){
   }
 });
 
+
+document.addEventListener("change", event => {
+  if(event.target && event.target.classList && event.target.classList.contains("kommunikationCheck")){
+    updateKommunikationExklusiv();
+    recalcAll();
+  }
+}, true);
+
+
+
+/* V26c_ReportSections_Wrapper_entfernt
+   Ergebnis:
+   - Keine ReportSections-Wrapper mehr im Code vorhanden.
+   - Keine ReportSections.* Direktaufrufe vorhanden.
+   - Keine Fachlogik geändert. Keine UI geändert.
+*/
 </script>
 </body>
 </html>

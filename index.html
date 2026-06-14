@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>MASTER_2026-06-14 – DSK Einsatzanforderung</title>
+<title>MASTER_2026-06-14_FIX10_ANRUFSATZ_ABSCHLUSSFRAGE – DSK Einsatzanforderung</title>
 <style>
 :root{
   --bg:#eaf0f4;
@@ -430,8 +430,18 @@ body.admin-mode #abschlussfrageWrapField select{
 
 .bericht p{margin-bottom:0.35em;}
 .report-heading{font-weight:700;}
-.report-call-notice{font-weight:600;font-style:italic;}
+.report-call-notice{font-weight:700;font-style:italic;display:block;margin-top:0;}
 .report-urgent{font-weight:700;}
+
+/* MASTER_2026-06-14_FIX05: Infektvalidierung + Kopieren */
+.validation-error{border:2px solid #b91c1c!important;background:#fff1f2!important;border-radius:8px;padding:10px}
+.validation-ok{border:2px solid #2f7d5b!important;background:#e5f3ec!important;border-radius:8px;padding:10px}
+.validation-message{display:none;margin-top:10px;padding:10px 12px;border-left:4px solid #b91c1c;background:#fff;border-radius:5px;color:#7f1d1d;font-size:13px;line-height:1.35}
+.validation-message.show{display:block}
+.copy-row{display:flex;gap:10px;align-items:center;margin-top:14px}
+.btn-copy{background:var(--green);color:white}
+.btn-copy:disabled{background:#9ca3af;cursor:not-allowed}
+.copy-status{font-size:13px;color:var(--muted)}
 </style>
 </head>
 
@@ -541,13 +551,18 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <label class="field-label" for="schutzkleidung">Schutzkleidung vorhanden?</label>
 <select id="schutzkleidung"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option></select>
 </div>
+<div class="field-wrap hidden" id="infektErgaenzungWrapField" style="margin-top:10px">
+<label class="field-label" for="infektErgaenzung">Weitere Informationen zu Infekten</label>
+<input id="infektErgaenzung" placeholder=""/>
+</div>
+<div class="validation-message" id="infektPflichtHinweis">Bitte mindestens einen Infekt auswählen oder Informationen zu den Infekten eintragen.</div>
 </div>
 <div>
 <div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind äußerliche Besonderheiten vorhanden?</label><select id="besonderheitStatus"><option value=""></option><option value="Nein">Nein</option><option value="Ja">Ja</option><option value="Unklar">Unklar</option></select></div>
 <div class="hidden" id="besonderheitenListe"><div class="block-title">Äußerliche Besonderheiten</div><label class="option"><input class="besonderheitCheck" type="checkbox" value="Allgemeine äußerliche Fehlbildungen"/><span>Allgemeine äußerliche Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Anenzephalie"/><span>Anenzephalie</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hautablösungen erwartet"/><span>Hautablösungen erwartet</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrops fetalis"/><span>Hydrops fetalis</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Innere Fehlbildungen"/><span>Innere Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Omphalozele"/><span>Omphalozele</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Spina bifida"/><span>Spina bifida</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Turner-Syndrom"/><span>Turner-Syndrom</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Verkürzte Gliedmaßen"/><span>Verkürzte Gliedmaßen</span></label></div>
 </div>
 </div>
-<div class="field-wrap" id="medizinErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="medizinErgaenzung">Weitere Informationen hier eintragen</label><input id="medizinErgaenzung" placeholder=""/><div class="lf-hint">Wenn Infekte oder äußerliche Besonderheiten oben nicht aufgeführt sind, bitte hier ergänzen.</div></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
+<div class="field-wrap" id="medizinErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="medizinErgaenzung">Weitere Informationen zu äußerlichen Besonderheiten / Medizin</label><input id="medizinErgaenzung" placeholder=""/><div class="lf-hint">Wenn Infekte oder äußerliche Besonderheiten oben nicht aufgeführt sind, bitte hier ergänzen.</div></div><div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button><button class="btn-next" onclick="nextStep()">Weiter</button></div>
 </section>
 <section class="step" data-title="Kommunikation">
 <h2>Kommunikation</h2>
@@ -582,6 +597,10 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="report">
 <h2>Automatisch erzeugte Einsatzanforderung</h2>
 <div class="reportbox" id="report">Berichtsausgabe</div>
+<div class="copy-row">
+  <button class="btn-copy" id="copyReportBtn" type="button" onclick="copyReport()">Bericht kopieren</button>
+  <span class="copy-status" id="copyStatus"></span>
+</div>
 </div>
 <div class="nav"><button class="btn-prev" onclick="prevStep()">Zurück</button></div>
 </section>
@@ -755,6 +774,7 @@ const IB_CONTROLLER = {
     if(isAdminMode()){
       if($("infektListe")) $("infektListe").classList.remove("hidden");
       if($("schutzkleidungWrapField")) $("schutzkleidungWrapField").classList.remove("hidden");
+      if($("infektErgaenzungWrapField")) $("infektErgaenzungWrapField").classList.remove("hidden");
       if($("besonderheitenListe")) $("besonderheitenListe").classList.remove("hidden");
       return;
     }
@@ -767,6 +787,10 @@ const IB_CONTROLLER = {
       $("schutzkleidungWrapField").classList.toggle("hidden", !infektJa);
     }
 
+    if($("infektErgaenzungWrapField")){
+      $("infektErgaenzungWrapField").classList.toggle("hidden", !infektJa);
+    }
+
     if($("besonderheitenListe")){
       $("besonderheitenListe").classList.toggle("hidden", !besonderheitenJa);
     }
@@ -774,6 +798,7 @@ const IB_CONTROLLER = {
     if(!infektJa){
       document.querySelectorAll(".infektCheck").forEach(cb => cb.checked = false);
       if($("schutzkleidung")) $("schutzkleidung").value = "";
+      if($("infektErgaenzung")) $("infektErgaenzung").value = "";
     }
 
     if(!besonderheitenJa){
@@ -794,13 +819,21 @@ const IB_CONTROLLER = {
       medizinBlock.push("Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
     }else{
       if(besonderheitStatus === "Ja" && besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten:\n- " + besonderheiten.join("\n- "));
-      else if(besonderheitStatus === "Ja" && !besonderheiten.length) medizinBlock.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
       else if(besonderheitStatus === "Nein") medizinBlock.push("Es sind keine äußerlichen Besonderheiten bekannt.");
       else if(besonderheitStatus === "Unklar") medizinBlock.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
 
-      if(infektStatus === "Nein") medizinBlock.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
-      else if(infektStatus === "Ja" && infekte.length) medizinBlock.push("\nBekannte Infekte:\n- " + infekte.join("\n- "));
-      else if(infektStatus === "Ja" && !infekte.length) medizinBlock.push("Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+      const infektErgaenzung = normalisiereZusatz(val("infektErgaenzung"));
+      const infektMeldung = infektFehlermeldung();
+
+      if(!infektStatus) medizinBlock.push(infektMeldung);
+      else if(infektStatus === "Nein") medizinBlock.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
+      else if(infektStatus === "Ja"){
+        const infektLines = [];
+        if(infekte.length) infektLines.push("- " + infekte.join("\n- "));
+        if(infektErgaenzung) infektLines.push(infektErgaenzung);
+        if(infektLines.length) medizinBlock.push("\nBekannte Infekte:\n" + infektLines.join("\n"));
+        else medizinBlock.push(infektMeldung);
+      }
       else if(infektStatus === "Unklar") medizinBlock.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
     }
 
@@ -896,6 +929,11 @@ function updateConsentFlow(){
 
 
 function validateCurrentStep(){
+  if(workSteps[currentWorkIndex]?.dataset.title === "Infekte/Besonderheiten"){
+    updateInfektValidation();
+    return infektEingabeGueltig();
+  }
+
   if(workSteps[currentWorkIndex]?.dataset.title === "Mitarbeiter"){
     const field = $("mitarbeiter");
     if(field){
@@ -1211,6 +1249,7 @@ function updateMehrlingsSituationOptions(){
   const state = MehrlingsSituationController.getState();
 
   MehrlingsSituationView.renderSelect(select, state.group);
+  updateSituationByMehrlingsRegel();
   MehrlingsSituationView.setVisibility(wrapper, state.visible);
 }
 
@@ -1441,6 +1480,49 @@ const MehrlingsLebendbilderGuardView = {
   }
 };
 
+
+
+function updateSituationByMehrlingsRegel(){
+  const situation = $("aktuelleSituation");
+  const mehrlinge = val("mehrlinge");
+  if(!situation) return;
+
+  const alleVerstorben = [
+    "Zwillinge – beide Kinder verstorben",
+    "Drillinge – drei Kinder verstorben"
+  ];
+
+  const kritisch = [
+    "Zwillinge – kritischer Zustand eines Kindes",
+    "Zwillinge – kritischer Zustand beider Kinder",
+    "Drillinge – kritischer Zustand eines Kindes",
+    "Drillinge – kritischer Zustand zweier Kinder",
+    "Drillinge – kritischer Zustand aller Kinder"
+  ];
+
+  let erlaubt = null;
+
+  if(alleVerstorben.includes(mehrlinge)){
+    erlaubt = ["","verstorben","Einleitung","Kaiserschnitt"];
+  }else if(kritisch.includes(mehrlinge)){
+    erlaubt = ["","Lebendbilder","Einleitung","Kaiserschnitt"];
+  }
+
+  Array.from(situation.options).forEach(opt=>{
+    if(!erlaubt){
+      opt.hidden = false;
+      opt.disabled = false;
+      return;
+    }
+    const ok = erlaubt.includes(opt.value);
+    opt.hidden = !ok;
+    opt.disabled = !ok;
+  });
+
+  if(erlaubt && !erlaubt.includes(situation.value)){
+    situation.value = "";
+  }
+}
 
 function updateWasser(){
   if(!$("wasser")) return;
@@ -2181,6 +2263,89 @@ function updateKommunikationExklusiv(){
   }
 }
 
+
+
+function infektFehlermeldung(){
+  const status = val("infektStatus");
+
+  if(!status){
+    return "⚠ BITTE ERGÄNZEN:\n\nBeim Punkt Infekte muss Ja, Nein oder Unklar ausgewählt werden.";
+  }
+
+  if(status === "Ja"){
+    const hatCheckbox = checkedValues("infektCheck").length > 0;
+    const hatText = val("infektErgaenzung").length > 0;
+
+    if(!hatCheckbox && !hatText){
+      return "⚠ BITTE ERGÄNZEN:\n\nZum Punkt Infekte bitte mindestens einen bekannten Infekt auswählen\noder weitere Informationen eintragen.";
+    }
+  }
+
+  return "";
+}
+
+function infektEingabeGueltig(){
+  return infektFehlermeldung() === "";
+}
+
+function updateInfektValidation(){
+  const container = $("infektStatusWrapField")?.parentElement;
+  const hinweis = $("infektPflichtHinweis");
+  const copyBtn = $("copyReportBtn");
+  const copyStatus = $("copyStatus");
+  const meldung = infektFehlermeldung();
+  const gueltig = !meldung;
+
+  if(container){
+    container.classList.toggle("validation-error", !gueltig);
+    container.classList.toggle("validation-ok", gueltig && !!val("infektStatus"));
+  }
+
+  if(hinweis){
+    hinweis.textContent = meldung || "";
+    hinweis.classList.toggle("show", !gueltig);
+  }
+
+  if(copyBtn){
+    copyBtn.disabled = !gueltig;
+    copyBtn.title = gueltig ? "" : meldung;
+  }
+
+  if(copyStatus && !gueltig){
+    copyStatus.textContent = "Kopieren gesperrt: Infektangaben unvollständig.";
+  }else if(copyStatus && copyStatus.textContent.startsWith("Kopieren gesperrt")){
+    copyStatus.textContent = "";
+  }
+}
+
+async function copyReport(){
+  updateInfektValidation();
+  if(!infektEingabeGueltig()){
+    if($("copyStatus")) $("copyStatus").textContent = "Kopieren gesperrt: Bitte Infektangaben ergänzen.";
+    return;
+  }
+  const report = $("report");
+  const text = report ? (report.innerText || report.textContent || "").trim() : "";
+  if(!text || text === "Berichtsausgabe"){
+    if($("copyStatus")) $("copyStatus").textContent = "Kein Bericht zum Kopieren vorhanden.";
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(text);
+    if($("copyStatus")) $("copyStatus").textContent = "Bericht kopiert.";
+  }catch(error){
+    const range = document.createRange();
+    range.selectNodeContents(report);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand("copy");
+    selection.removeAllRanges();
+    if($("copyStatus")) $("copyStatus").textContent = "Bericht kopiert.";
+  }
+}
+
+
 function recalcAll(){
   
   updatePalliativeGeburtOptions();enforceTwoDigitBirthAge();
@@ -2193,15 +2358,31 @@ function recalcAll(){
   updateAktuellesAlterVisibility();
   updateLebendbilderPrognoseOptions();
   updatePalliativeGeburtOptions();
+
+  // MASTER_2026-06-14_FIX04:
+  // Mehrlingsmatrix nach Palliativ-Rendering erneut anwenden.
+  updateSituationByMehrlingsRegel();
   updateWasser();
   updateGeburtssituationRouting();
   updateZeitlogikHinweis();
   updateAbschlussfragenOptions();
   updateInfektBesonderheiten();
   updateKommunikationVisibility();
+  updateInfektValidation();
   clearSituationSpecificValues();
+
+  // MASTER_2026-06-14_FIX04:
+  // Mehrlingsmatrix nach Reset erneut absichern.
+  updateSituationByMehrlingsRegel();
   adminRevealDynamicFields();
   updateReport();
+
+  if($("report")){
+    let cleanedReport = ensureInfektFreitextInReportText($("report").innerText || $("report").textContent || "");
+    cleanedReport = ensureVorLosfahrtAnrufHinweis(cleanedReport);
+    $("report").innerHTML = renderReportHtml(cleanedReport);
+  }
+  updateInfektValidation();
   setOpenStates();
 }
 
@@ -2352,7 +2533,7 @@ function baueFamiliensatz(){
   }
 
   const handText = handMap[hand];
-  if(handText){
+  if(handText && !(base === 1 && hand === "keine Kinder an der Hand")){
     return `${satz} Sie haben ${handText}.`;
   }
 
@@ -3194,7 +3375,7 @@ const MedizinReportController = {
     }else if(infektStatus === "Ja" && infekte.length){
       lines.push("Bekannte Infekte:\n- " + infekte.join("\n- "));
     }else if(infektStatus === "Ja"){
-      lines.push("Bekannte Infekte:\nInfekte sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+      lines.push("Bekannte Infekte:\n");
     }else if(infektStatus === "Unklar"){
       lines.push("Bekannte Infekte:\nOb Infekte vorliegen, ist aktuell nicht bekannt.");
     }
@@ -3336,6 +3517,77 @@ const ReportController = {
   }
 };
 
+
+function cleanInfektPlaceholderFromReportText(text){
+  if(!text) return "";
+  return String(text)
+    .replace(/Infekte sind vorhanden, die genaue Art ist noch nicht ausgewählt\./g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function ensureInfektFreitextInReportText(text){
+  let output = cleanInfektPlaceholderFromReportText(text);
+  const status = val("infektStatus");
+  const freitext = normalisiereZusatz(val("infektErgaenzung"));
+  const infekte = checkedValues("infektCheck");
+  const meldung = infektFehlermeldung();
+
+  // Bei fehlender/ungültiger Infektangabe muss der Hinweis im Bericht stehen.
+  if(meldung){
+    if(output.includes(meldung)) return output;
+
+    const marker = "Vielen Dank und liebe Grüße";
+    if(output.includes(marker)){
+      return output.replace(marker, meldung + "\n\n" + marker);
+    }
+    return (output + "\n\n" + meldung).trim();
+  }
+
+  if(status !== "Ja" || !freitext) return output;
+  if(output.includes(freitext)) return output;
+
+  const lines = output.split("\n");
+  const idx = lines.findIndex(line => line.trim() === "Bekannte Infekte:");
+
+  if(idx >= 0){
+    // Direkt nach der Überschrift einfügen, ohne Leerzeile dazwischen.
+    lines.splice(idx + 1, 0, freitext);
+    return cleanInfektPlaceholderFromReportText(
+      lines.join("\n").replace(/Bekannte Infekte:\n\s*\n/g, "Bekannte Infekte:\n")
+    );
+  }
+
+  const block = "Bekannte Infekte:\n" + freitext;
+  const marker = "Vielen Dank und liebe Grüße";
+
+  if(output.includes(marker)){
+    return output.replace(marker, block + "\n\n" + marker);
+  }
+
+  return output + "\n\n" + block;
+}
+
+function ensureVorLosfahrtAnrufHinweis(text){
+  let output = text || "";
+  const notice = "Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.";
+  const hasNotice = output.includes(notice);
+
+  // Der Anrufsatz ist situationsunabhängig und gehört zur Abschlussfrage.
+  const hasAbschlussfrage = !!val("abschlussfrage") || /Wer kann.*\?/.test(output);
+  const active = hasAbschlussfrage || !!$("vorLosfahrtAnrufen")?.checked;
+
+  if(!active || hasNotice) return output;
+
+  const marker = "Vielen Dank und liebe Grüße";
+
+  if(output.includes(marker)){
+    return output.replace(marker, notice + "\n\n" + marker);
+  }
+
+  return output + "\n\n" + notice;
+}
+
 function updateReport(){
   ReportController.update();
 }
@@ -3433,6 +3685,12 @@ document.addEventListener("change", event => {
    - Keine ReportSections.* Direktaufrufe vorhanden.
    - Keine Fachlogik geändert. Keine UI geändert.
 */
+
+document.addEventListener("change", function(e){
+  if(e.target && (e.target.id==="mehrlinge" || e.target.id==="aktuelleSituation")){
+    updateSituationByMehrlingsRegel();
+  }
+}, true);
 </script>
 </body>
 </html>

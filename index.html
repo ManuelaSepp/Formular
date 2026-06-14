@@ -2316,16 +2316,13 @@ function baueMehrlingssatz(){
 function baueFamiliensatz(){
   const kind = val("kindFamilie");
   const hand = val("kinderHand");
-  const mehrlinge = val("mehrlinge");
 
-  const ord = {
-    1: "erste",
-    2: "zweite",
-    3: "dritte",
-    4: "vierte",
-    5: "fünfte",
-    6: "sechste",
-    7: "siebte"
+  const kindMap = {
+    "1. Kind":"erste",
+    "2. Kind":"zweite",
+    "3. Kind":"dritte",
+    "4. Kind":"vierte",
+    "5. Kind":"fünfte"
   };
 
   const handMap = {
@@ -2336,25 +2333,14 @@ function baueFamiliensatz(){
     "4 Kinder an der Hand":"vier Kinder an der Hand"
   };
 
-  const base = parseInt((kind || "").match(/\d+/)?.[0] || "0", 10);
-  if(!base) return "";
-
-  let satz = "";
-
-  if(mehrlinge.startsWith("Zwillinge")){
-    satz = `Für die Eltern wären die Zwillinge das ${ord[base]} und ${ord[base + 1]} Kind der Familie.`;
-  }else if(mehrlinge.startsWith("Drillinge")){
-    satz = `Für die Eltern wären die Drillinge das ${ord[base]}, ${ord[base + 1]} und ${ord[base + 2]} Kind der Familie.`;
-  }else{
-    satz = `Für die Eltern wäre es das ${ord[base]} Kind der Familie.`;
-  }
+  if(!kindMap[kind]) return "";
 
   const handText = handMap[hand];
   if(handText){
-    return `${satz} Sie haben ${handText}.`;
+    return `Für die Eltern wäre es das ${kindMap[kind]} Kind, sie haben ${handText}.`;
   }
 
-  return satz;
+  return `Für die Eltern wäre es das ${kindMap[kind]} Kind.`;
 }
 
 function formatPersonName(name){

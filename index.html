@@ -27,11 +27,11 @@ body{
 }
 .wrap{max-width:1200px;margin:0 auto}
 h1{margin:0 0 8px;font-size:34px;font-weight:700}
-h2{margin:0 0 18px;font-size:23px;font-weight:700}
+h2{margin:0 0 12px;font-size:23px;font-weight:700}
 p{margin:6px 0;color:var(--muted)}
 .step{
   display:none;
-  padding:24px 0;
+  padding:16px 0;
   border-bottom:1px solid var(--line);
 }
 .step.open{display:block}
@@ -82,7 +82,7 @@ input[type="radio"]:checked{
 .nav{
   display:flex;
   gap:12px;
-  margin-top:22px;
+  margin-top:14px;
 }
 button{
   border:0;
@@ -132,7 +132,7 @@ button{
 .field-wrap{
   display:flex;
   flex-direction:column;
-  gap:5px;
+  gap:3px;
 }
 .field-label{
   font-size:13px;
@@ -490,7 +490,7 @@ body.admin-mode #abschlussfrageWrapField select{
 #wasserErgaenzungWrapField{
   margin-top:0!important;
   padding-top:0!important;
-  gap:5px;
+  gap:3px;
 }
 #wasserMethodeHinweise{
   margin-top:7px;
@@ -533,7 +533,7 @@ body.admin-mode #abschlussfrageWrapField select{
   padding:0!important;
   display:flex;
   flex-direction:column;
-  gap:5px;
+  gap:3px;
 }
 #wasserErgaenzungWrapField.wasser-zusatz-direkt.hidden{
   display:none!important;
@@ -620,6 +620,196 @@ section.step[data-title="Einverständnis"]{
 .btn-copy{background:var(--green);color:white}
 .btn-copy:disabled{background:#9ca3af;cursor:not-allowed}
 .copy-status{font-size:13px;color:var(--muted)}
+
+/* Master_v2: Small Laptop Modus */
+@media (min-width:950px) and (max-width:1400px){
+  body{padding:18px;}
+  .step{padding:10px 0!important;}
+  .grid2,.grid3{gap:10px!important;}
+  input,select,textarea{min-height:36px;padding:8px;font-size:13px;}
+  .nav{margin-top:8px!important;}
+}
+
+
+/* Master_v3: aggressiver Kompaktmodus für kleine Laptops */
+@media (min-width:950px) and (max-width:1400px){
+  body{padding:12px!important;}
+  h1{font-size:28px!important;margin-bottom:2px!important;}
+  h2{font-size:18px!important;margin-bottom:6px!important;}
+  .step{padding:4px 0!important;}
+  .grid2,.grid3{gap:8px!important;}
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea{
+    min-height:32px!important;
+    padding:6px 8px!important;
+    font-size:13px!important;
+  }
+  input[type="checkbox"],
+  input[type="radio"]{
+    width:17px!important;
+    height:17px!important;
+    min-height:17px!important;
+    padding:0!important;
+    flex:0 0 17px!important;
+  }
+  button{
+    padding:8px 13px!important;
+    font-size:13px!important;
+  }
+  .nav{margin-top:4px!important;}
+  .field-wrap{gap:2px!important;}
+  .field-label{font-size:12px!important;}
+  .lf-hint{
+    font-size:11px!important;
+    line-height:1.25!important;
+    margin-top:2px!important;
+  }
+  .report{padding:14px!important;}
+  .reportbox{
+    padding:10px!important;
+    font-size:13px!important;
+    line-height:1.35!important;
+  }
+  .copy-row{gap:6px!important;margin-top:8px!important;}
+}
+
+
+/* Master_v4: Einverständnis nach Ja kompakt halten */
+body.consent-ok section.step[data-title="Einverständnis"]{
+  padding:2px 0!important;
+}
+body.consent-ok section.step[data-title="Einverständnis"] > *:not(h2){
+  display:none!important;
+}
+body.consent-ok section.step[data-title="Einverständnis"] h2{
+  cursor:pointer;
+  padding:7px 12px!important;
+  margin:0!important;
+  border:1px solid #9fc8b2;
+  border-radius:8px;
+  background:#e5f3ec;
+}
+
+
+/* Master_v5: Abstand geschlossene Header + Abstand zum geöffneten Abschnitt reduzieren */
+@media (min-width:950px) and (max-width:1400px){
+  .step.done:not(.open) h2,
+  .step.todo:not(.open) h2,
+  body.consent-ok section.step[data-title="Einverständnis"] h2{
+    padding:5px 10px!important;
+  }
+
+  .step.open{
+    padding-top:1px!important;
+  }
+
+  .step.open h2{
+    margin-bottom:2px!important;
+  }
+
+  .step.done,
+  .step.todo{
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+
+  .step.done + .step.open,
+  .step.todo + .step.open{
+    margin-top:0!important;
+  }
+}
+
+
+/* Master_v6: Feinschliff Abstände */
+@media (min-width:950px) and (max-width:1400px){
+  .step.done:not(.open) h2,
+  .step.todo:not(.open) h2,
+  body.consent-ok section.step[data-title="Einverständnis"] h2{
+    padding:3px 10px!important;
+    min-height:auto!important;
+  }
+
+  .step.open{
+    padding-top:0!important;
+  }
+
+  .step.open h2{
+    margin-bottom:0!important;
+  }
+
+  .step.done + .step.open,
+  .step.todo + .step.open{
+    margin-top:-2px!important;
+  }
+}
+
+
+/* Master_v7: sichtbar kompaktere Header-Abstände kleine Laptops */
+@media (min-width:950px) and (max-width:1400px){
+  .step.done,
+  .step.todo{
+    padding:0!important;
+    margin:0!important;
+  }
+
+  .step.done:not(.open) h2,
+  .step.todo:not(.open) h2,
+  body.consent-ok section.step[data-title="Einverständnis"] h2{
+    padding:2px 8px!important;
+    line-height:1.05!important;
+    font-size:17px!important;
+  }
+
+  .step.open{
+    padding-top:0!important;
+    margin-top:-8px!important;
+  }
+
+  .step.open h2{
+    margin-top:0!important;
+    margin-bottom:0!important;
+    line-height:1.05!important;
+  }
+
+  .step.open > .grid2,
+  .step.open > .grid3,
+  .step.open > .field-wrap{
+    margin-top:2px!important;
+  }
+
+  .step.open .nav{
+    margin-top:4px!important;
+  }
+}
+
+
+/* MASTER_V8: Nur Header-Abstände kleiner */
+@media (min-width:950px) and (max-width:1400px){
+  .step.done,
+  .step.todo{
+    padding:0 !important;
+    margin:0 !important;
+  }
+
+  .step.done + .step.done,
+  .step.done + .step.todo,
+  .step.todo + .step.done,
+  .step.todo + .step.todo{
+    margin-top:-4px !important;
+  }
+
+  .step.done:not(.open) h2,
+  .step.todo:not(.open) h2{
+    margin:0 !important;
+  }
+
+  .step.done + .step.open,
+  .step.todo + .step.open{
+    margin-top:-6px !important;
+  }
+}
+
 </style>
 </head>
 
@@ -713,7 +903,8 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 </section>
 <section class="step" data-title="Eltern/Familie">
 <h2>Eltern und Familie</h2>
-<div class="grid2">
+<div class="grid3">
+<div class="field-wrap" id="familienSituationWrapField"><label class="field-label" for="familienSituation">Familiensituation</label><select id="familienSituation"><option value=""></option><option value="Mutter">Mutter</option><option value="Vater">Vater</option></select></div>
 <div class="field-wrap" id="kindFamilieWrapField"><label class="field-label" for="kindFamilie">Wievieltes Kind der Familie?</label><select id="kindFamilie"><option value=""></option><option value="1. Kind">1. Kind</option><option value="2. Kind">2. Kind</option><option value="3. Kind">3. Kind</option><option value="4. Kind">4. Kind</option><option value="5. Kind">5. Kind</option></select></div>
 <div class="field-wrap" id="kinderHandWrapField"><label class="field-label" for="kinderHand">Wieviele Kinder an der Hand?</label><select id="kinderHand"><option value=""></option><option value="keine Kinder an der Hand">keine Kinder an der Hand</option><option value="1 Kind an der Hand">1 Kind an der Hand</option><option value="2 Kinder an der Hand">2 Kinder an der Hand</option><option value="3 Kinder an der Hand">3 Kinder an der Hand</option><option value="4 Kinder an der Hand">4 Kinder an der Hand</option></select></div>
 </div>
@@ -886,6 +1077,7 @@ function enforceAdminLogicGuards(){
 function toggleAdminMode(){
   document.body.classList.toggle("admin-mode");
   recalcAll();
+  syncConsentCompactClass();
 }
 
 function val(id){
@@ -1167,6 +1359,16 @@ function setOpenStates(){
     }
   });
 }
+
+
+function syncConsentCompactClass(){
+  document.body.classList.toggle("consent-ok", consentValue() === "ja" && !isAdminMode());
+}
+document.addEventListener("change", function(e){
+  if(e.target && e.target.name === "consent"){
+    syncConsentCompactClass();
+  }
+}, true);
 
 function updateConsentFlow(){
   const consent = consentValue();
@@ -2838,10 +3040,68 @@ function baueMehrlingssatz(){
 
 
 
+function getFamilienBezug(){
+  const familienSituation = val("familienSituation") || "Eltern";
+
+  const bezugMap = {
+    "Mutter": {
+      nominativ: "die Mutter",
+      nominativGross: "Die Mutter",
+      dativ: "der Mutter",
+      fuer: "Für die Mutter",
+      handPraedikat: "Sie hat",
+      bringt: "Die Mutter bringt",
+      bringtUnklar: "Ob die Mutter eigene Erinnerungsstücke mitbringen wird, ist aktuell nicht bekannt.",
+      bilderJa: "Die Mutter möchte bei den Bildern dabei sein.",
+      bilderNein: "Die Mutter möchte bei den Bildern nicht dabei sein.",
+      bilderUnklar: "Ob die Mutter mit auf die Bilder möchte, ist aktuell nicht bekannt.",
+      mitGeschwisterSingular: "Die Mutter und das Geschwisterkind werden bei den Bildern dabei sein.",
+      mitGeschwisterPlural: "Die Mutter und die Geschwister werden bei den Bildern dabei sein.",
+      sprichtWenigDeutsch: "Die Mutter spricht wenig Deutsch.",
+      sprichtKeinDeutsch: "Die Mutter spricht kein Deutsch."
+    },
+    "Vater": {
+      nominativ: "der Vater",
+      nominativGross: "Der Vater",
+      dativ: "dem Vater",
+      fuer: "Für den Vater",
+      handPraedikat: "Er hat",
+      bringt: "Der Vater bringt",
+      bringtUnklar: "Ob der Vater eigene Erinnerungsstücke mitbringen wird, ist aktuell nicht bekannt.",
+      bilderJa: "Der Vater möchte bei den Bildern dabei sein.",
+      bilderNein: "Der Vater möchte bei den Bildern nicht dabei sein.",
+      bilderUnklar: "Ob der Vater mit auf die Bilder möchte, ist aktuell nicht bekannt.",
+      mitGeschwisterSingular: "Der Vater und das Geschwisterkind werden bei den Bildern dabei sein.",
+      mitGeschwisterPlural: "Der Vater und die Geschwister werden bei den Bildern dabei sein.",
+      sprichtWenigDeutsch: "Der Vater spricht wenig Deutsch.",
+      sprichtKeinDeutsch: "Der Vater spricht kein Deutsch."
+    },
+    "Eltern": {
+      nominativ: "die Eltern",
+      nominativGross: "Die Eltern",
+      dativ: "den Eltern",
+      fuer: "Für die Eltern",
+      handPraedikat: "Sie haben",
+      bringt: "Die Eltern bringen",
+      bringtUnklar: "Ob die Eltern eigene Erinnerungsstücke mitbringen werden, ist aktuell nicht bekannt.",
+      bilderJa: "Die Eltern möchten bei den Bildern dabei sein.",
+      bilderNein: "Die Eltern möchten bei den Bildern nicht dabei sein.",
+      bilderUnklar: "Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.",
+      mitGeschwisterSingular: "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein.",
+      mitGeschwisterPlural: "Die Eltern und die Geschwister werden bei den Bildern dabei sein.",
+      sprichtWenigDeutsch: "Die Eltern sprechen wenig Deutsch.",
+      sprichtKeinDeutsch: "Die Eltern sprechen kein Deutsch."
+    }
+  };
+
+  return bezugMap[familienSituation] || bezugMap["Eltern"];
+}
+
 function baueFamiliensatz(){
   const kind = val("kindFamilie");
   const hand = val("kinderHand");
   const mehrlinge = val("mehrlinge");
+  const bezug = getFamilienBezug();
 
   const ord = {
     1: "erste",
@@ -2867,16 +3127,16 @@ function baueFamiliensatz(){
   let satz = "";
 
   if(mehrlinge.startsWith("Zwillinge")){
-    satz = `Für die Eltern wären die Zwillinge das ${ord[base]} und ${ord[base + 1]} Kind der Familie.`;
+    satz = `${bezug.fuer} wären die Zwillinge das ${ord[base]} und ${ord[base + 1]}${(val("familienSituation")||"Eltern")==="Eltern" ? " Kind der Familie." : " Kind."}`;
   }else if(mehrlinge.startsWith("Drillinge")){
-    satz = `Für die Eltern wären die Drillinge das ${ord[base]}, ${ord[base + 1]} und ${ord[base + 2]} Kind der Familie.`;
+    satz = `${bezug.fuer} wären die Drillinge das ${ord[base]}, ${ord[base + 1]} und ${ord[base + 2]}${(val("familienSituation")||"Eltern")==="Eltern" ? " Kind der Familie." : " Kind."}`;
   }else{
-    satz = `Für die Eltern wäre es das ${ord[base]} Kind der Familie.`;
+    satz = `${bezug.fuer} wäre es das ${ord[base]}${(val("familienSituation")||"Eltern")==="Eltern" ? " Kind der Familie." : " Kind."}`;
   }
 
   const handText = handMap[hand];
   if(handText && !(base === 1 && hand === "keine Kinder an der Hand")){
-    return `${satz} Sie haben ${handText}.`;
+    return `${satz} ${bezug.handPraedikat} ${handText}.`;
   }
 
   return satz;
@@ -3341,9 +3601,9 @@ function baueKleidungSatz(){
   }
 
   if(erinnerung === "Ja"){
-    teile.push("Die Eltern bringen eigene Erinnerungsstücke mit.");
+    teile.push(`${getFamilienBezug().bringt} eigene Erinnerungsstücke mit.`);
   }else if(erinnerung === "Unklar"){
-    teile.push("Ob die Eltern eigene Erinnerungsstücke mitbringen werden, ist aktuell nicht bekannt.");
+    teile.push(getFamilienBezug().bringtUnklar);
   }
 
   return teile.join(" ");
@@ -3596,15 +3856,16 @@ const BilderReportController = {
     const elternBilder = val("elternDabei");
     const geschwisterBilder = val("geschwisterDabei");
     const geschwisterAktiv = $("geschwisterDabei") && !$("geschwisterDabei").disabled;
+    const bezug = getFamilienBezug();
 
     if(elternBilder === "Ja" && geschwisterAktiv && geschwisterBilder === "Ja"){
       bilder.push(geschwisterSingular
-        ? "Die Eltern und das Geschwisterkind werden bei den Bildern dabei sein."
-        : "Die Eltern und die Geschwister werden bei den Bildern dabei sein.");
+        ? bezug.mitGeschwisterSingular
+        : bezug.mitGeschwisterPlural);
     }else{
-      if(elternBilder === "Ja") bilder.push("Die Eltern möchten bei den Bildern dabei sein.");
-      if(elternBilder === "Nein") bilder.push("Die Eltern möchten bei den Bildern nicht dabei sein.");
-      if(elternBilder === "Unklar") bilder.push("Ob die Eltern mit auf die Bilder möchten, ist aktuell nicht bekannt.");
+      if(elternBilder === "Ja") bilder.push(bezug.bilderJa);
+      if(elternBilder === "Nein") bilder.push(bezug.bilderNein);
+      if(elternBilder === "Unklar") bilder.push(bezug.bilderUnklar);
 
       if(elternBilder === "Ja" && geschwisterAktiv){
         if(geschwisterBilder === "Ja"){
@@ -3719,8 +3980,8 @@ const KommunikationReportController = {
     const lines = [];
     const kommunikation = checkedValues("kommunikationCheck");
 
-    if(kommunikation.includes("Wenig Deutsch")) lines.push("Die Eltern sprechen wenig Deutsch.");
-    if(kommunikation.includes("Kein Deutsch")) lines.push("Die Eltern sprechen kein Deutsch.");
+    if(kommunikation.includes("Wenig Deutsch")) lines.push(getFamilienBezug().sprichtWenigDeutsch);
+    if(kommunikation.includes("Kein Deutsch")) lines.push(getFamilienBezug().sprichtKeinDeutsch);
     if(kommunikation.includes("Englisch möglich")) lines.push("Die Kommunikation auf Englisch ist möglich.");
     if(kommunikation.includes("Kommunikation schwierig")) lines.push("Die Kommunikation ist aktuell schwierig.");
     if(kommunikation.includes("Übersetzungsprogramm funktioniert gut")) lines.push("Die Kommunikation über ein Übersetzungsprogramm funktioniert gut.");
@@ -4071,6 +4332,19 @@ document.addEventListener("change", function(e){
     updateSituationByMehrlingsRegel();
   }
 }, true);
+
+document.addEventListener('change', function(e){
+  if(e.target && e.target.name === 'consent' && e.target.value === 'ja'){
+    const step = document.querySelector('section.step[data-title="Einverständnis"]');
+    if(step){
+      setTimeout(()=>{
+        step.classList.remove('open');
+        step.classList.add('done');
+      },150);
+    }
+  }
+});
+
 </script>
 </body>
 </html>

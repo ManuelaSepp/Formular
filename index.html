@@ -588,6 +588,29 @@ section.step[data-title="Einverständnis"] label.option{
   margin:6px 0!important;
 }
 
+
+/* FIX55: Feinschliff Kopfabstand + Resetbutton */
+h1{
+  margin-bottom:2px!important;
+}
+.wrap > p{
+  display:none!important;
+  margin:0!important;
+}
+section.step[data-title="Einverständnis"]{
+  padding-top:6px!important;
+}
+.btn-reset{
+  background:#ffffff;
+  color:#111827;
+  border:1px solid #ccd5dc;
+}
+.btn-reset:disabled{
+  background:#e5e7eb;
+  color:#9ca3af;
+  cursor:not-allowed;
+}
+
 /* MASTER_2026-06-14_FIX05: Infektvalidierung + Kopieren */
 .validation-error{border:2px solid #b91c1c!important;background:#fff1f2!important;border-radius:8px;padding:10px}
 .validation-ok{border:2px solid #2f7d5b!important;background:#e5f3ec!important;border-radius:8px;padding:10px}
@@ -661,7 +684,7 @@ section.step[data-title="Einverständnis"] label.option{
 <option>SSW</option>
 <option>Monat(e)</option>
 <option>Jahr(e)</option>
-</select></div></div><div id="sternenkindGrundBlock"><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div class="field-wrap" id="sternenkindErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="sternenkindErgaenzung">Weitere Informationen hier eintragen</label><input id="sternenkindErgaenzung" placeholder=""/></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge</label><select id="mehrlinge"><option value=""></option><optgroup label="Zwillinge"><option value="Zwillinge – beide Kinder verstorben">beide Kinder verstorben</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt">ein Kind verstorben, ein Kind lebt</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht">ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht</option><option value="Zwillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Zwillinge – kritischer Zustand beider Kinder">kritischer Zustand beider Kinder</option></optgroup><optgroup label="Drillinge"><option value="Drillinge – drei Kinder verstorben">drei Kinder verstorben</option><option value="Drillinge – ein Kind verstorben, zwei Kinder leben">ein Kind verstorben, zwei Kinder leben</option><option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei Kinder verstorben, ein Kind lebt</option><option value="Drillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Drillinge – kritischer Zustand zweier Kinder">kritischer Zustand zweier Kinder</option><option value="Drillinge – kritischer Zustand aller Kinder">kritischer Zustand aller Kinder</option></optgroup></select></div><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
+</select></div><div class="field-wrap" id="grundWrapField"><label class="field-label" for="grund">Grund (DSK-Liste)</label><select id="grund"><option value=""></option></select></div></div><div class="field-wrap" id="sternenkindErgaenzungWrapField" style="margin-top:15px"><label class="field-label" for="sternenkindErgaenzung">Weitere Informationen hier eintragen</label><input id="sternenkindErgaenzung" placeholder=""/></div><div id="sternenkindDynamicGrid"><div class="field-wrap hidden" id="mehrlingeWrapField"><label class="field-label" for="mehrlinge">Zwillinge / Drillinge</label><select id="mehrlinge"><option value=""></option><optgroup label="Zwillinge"><option value="Zwillinge – beide Kinder verstorben">beide Kinder verstorben</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt">ein Kind verstorben, ein Kind lebt</option><option value="Zwillinge – ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht">ein Kind verstorben, ein Kind lebt, Prognose sehr schlecht</option><option value="Zwillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Zwillinge – kritischer Zustand beider Kinder">kritischer Zustand beider Kinder</option></optgroup><optgroup label="Drillinge"><option value="Drillinge – drei Kinder verstorben">drei Kinder verstorben</option><option value="Drillinge – ein Kind verstorben, zwei Kinder leben">ein Kind verstorben, zwei Kinder leben</option><option value="Drillinge – zwei Kinder verstorben, ein Kind lebt">zwei Kinder verstorben, ein Kind lebt</option><option value="Drillinge – kritischer Zustand eines Kindes">kritischer Zustand eines Kindes</option><option value="Drillinge – kritischer Zustand zweier Kinder">kritischer Zustand zweier Kinder</option><option value="Drillinge – kritischer Zustand aller Kinder">kritischer Zustand aller Kinder</option></optgroup></select></div><div class="field-wrap hidden" id="lebendbilderPrognoseWrapField"><label class="field-label" for="lebendbilderPrognose">Lebendbilder – Prognose / Situation</label><select id="lebendbilderPrognose"><option value=""></option><option value="Zustand sehr kritisch">Zustand sehr kritisch</option><option value="Überleben nach Einschätzung nicht möglich">Überleben nach Einschätzung nicht möglich</option><option value="Lebenserhaltende Maßnahmen sollen beendet werden">Lebenserhaltende Maßnahmen sollen beendet werden</option><option value="Nur noch palliative Maßnahmen">Nur noch palliative Maßnahmen</option></select></div><div class="field-wrap hidden" id="aktuellesAlterWrapField"><label class="field-label" for="aktuellesAlter">Aktuelles Alter</label><input id="aktuellesAlter" placeholder=""/></div><div class="field-wrap hidden" id="ksElDetailWrapField"><label class="field-label" for="ksElDetail">Details</label><select class="" id="ksElDetail">
 <option value=""></option>
 </select></div><div class="field-wrap hidden" id="ksElZeitWrapField"><label class="field-label" for="ksElZeit">Seit wann / ab wann?</label><input id="ksElZeit" placeholder=""/><div class="lf-hint hidden" id="ksElZeitHinweis"></div></div><div class="field-wrap hidden" id="einleitungZusatzWrapField">
 <label class="field-label">Zusatzinfos Einleitung</label>
@@ -775,6 +798,7 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <div class="reportbox" id="report">Berichtsausgabe</div>
 <div class="copy-row">
   <button class="btn-copy" id="copyReportBtn" type="button" onclick="copyReport()">Bericht kopieren</button>
+  <button class="btn-reset" id="resetInputsBtn" type="button" onclick="resetInputsAfterCopy()" disabled>Eingaben zurücksetzen</button>
   <span class="copy-status" id="copyStatus"></span>
 </div>
 </div>
@@ -2619,6 +2643,7 @@ async function copyReport(){
   try{
     await navigator.clipboard.writeText(text);
     if($("copyStatus")) $("copyStatus").textContent = "Bericht kopiert.";
+    if($("resetInputsBtn")) $("resetInputsBtn").disabled = false;
   }catch(error){
     const range = document.createRange();
     range.selectNodeContents(report);
@@ -2628,9 +2653,39 @@ async function copyReport(){
     document.execCommand("copy");
     selection.removeAllRanges();
     if($("copyStatus")) $("copyStatus").textContent = "Bericht kopiert.";
+    if($("resetInputsBtn")) $("resetInputsBtn").disabled = false;
   }
 }
 
+
+
+function resetInputsAfterCopy(){
+  if($("resetInputsBtn") && $("resetInputsBtn").disabled) return;
+
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    if(el.type === "radio" || el.type === "checkbox"){
+      el.checked = false;
+    }else{
+      el.value = "";
+    }
+    el.disabled = false;
+  });
+
+  currentWorkIndex = -1;
+
+  if($("copyStatus")) $("copyStatus").textContent = "";
+  if($("resetInputsBtn")) $("resetInputsBtn").disabled = true;
+
+  recalcAll();
+
+  const wrap = document.querySelector(".wrap");
+  if(wrap){
+    window.scrollTo({
+      top: Math.max(0, wrap.getBoundingClientRect().top + window.pageYOffset - 10),
+      behavior:"auto"
+    });
+  }
+}
 
 function recalcAll(){
   

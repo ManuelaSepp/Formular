@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>MASTER_2026-06-14_FIX10_ANRUFSATZ_ABSCHLUSSFRAGE – DSK Einsatzanforderung</title>
+<title>Leitfaden</title>
 <style>
 :root{
   --bg:#eaf0f4;
@@ -864,7 +864,6 @@ body.consent-ok section.step[data-title="Einverständnis"] h2{
 <div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation">
 <option value=""></option>
 <option value="verstorben">verstorben</option>
-<option value="noch lebend">noch lebend</option>
 <option value="Lebendbilder">Lebendbilder</option>
 <option value="noch lebend – Bilder erst nach Versterben">noch lebend – Bilder erst nach Versterben</option>
 <option value="Einleitung">Einleitung</option>
@@ -937,16 +936,16 @@ Die Wassermethode kann helfen, die Haut zu stabilisieren.</p>
 <label class="field-label" for="schutzkleidung">Schutzkleidung vorhanden?</label>
 <select id="schutzkleidung"><option value=""></option><option value="Ja">Ja</option><option value="Nein">Nein</option><option value="Unklar">Unklar</option></select>
 </div>
-<div class="field-wrap hidden" id="infektErgaenzungWrapField" style="margin-top:10px">
+<div class="field-wrap" id="infektErgaenzungWrapField" style="margin-top:10px">
 <label class="field-label" for="infektErgaenzung">Weitere Informationen zu Infekten</label>
 <input id="infektErgaenzung" placeholder=""/>
 </div>
-<div class="validation-message" id="infektPflichtHinweis">Bitte mindestens einen Infekt auswählen oder Informationen zu den Infekten eintragen.</div>
+<div class="validation-message" id="infektPflichtHinweis">Beim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.</div>
 </div>
 <div>
-<div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind äußerliche Besonderheiten vorhanden?</label><select id="besonderheitStatus"><option value=""></option><option value="Nein">Nein</option><option value="Ja">Ja</option><option value="Unklar">Unklar</option></select></div>
-<div class="hidden" id="besonderheitenListe"><div class="block-title">Äußerliche Besonderheiten</div><label class="option"><input class="besonderheitCheck" type="checkbox" value="Allgemeine äußerliche Fehlbildungen"/><span>Allgemeine äußerliche Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Anenzephalie"/><span>Anenzephalie</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hautablösungen erwartet"/><span>Hautablösungen erwartet</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrops fetalis"/><span>Hydrops fetalis</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Innere Fehlbildungen"/><span>Innere Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Omphalozele"/><span>Omphalozele</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Spina bifida"/><span>Spina bifida</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Turner-Syndrom"/><span>Turner-Syndrom</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Verkürzte Gliedmaßen"/><span>Verkürzte Gliedmaßen</span></label></div>
-<div class="field-wrap hidden" id="besonderheitErgaenzungWrapField" style="margin-top:10px">
+<div class="field-wrap" id="besonderheitStatusWrapField"><label class="field-label" for="besonderheitStatus">Sind Besonderheiten vorhanden?</label><select id="besonderheitStatus"><option value=""></option><option value="Nein">Nein</option><option value="Ja">Ja</option><option value="Unklar">Unklar</option></select></div>
+<div class="hidden" id="besonderheitenListe"><div class="block-title">Besonderheiten</div><label class="option"><input class="besonderheitCheck" type="checkbox" value="Allgemeine äußerliche Fehlbildungen"/><span>Allgemeine äußerliche Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Anenzephalie"/><span>Anenzephalie</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hautablösungen erwartet"/><span>Hautablösungen erwartet</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrocephalus"/><span>Hydrocephalus</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Hydrops fetalis"/><span>Hydrops fetalis</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Innere Fehlbildungen"/><span>Innere Fehlbildungen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Klumpfüßchen"/><span>Klumpfüßchen</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Lippen-Kiefer-Gaumenspalte"/><span>Lippen-Kiefer-Gaumenspalte</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Omphalozele"/><span>Omphalozele</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Spina bifida"/><span>Spina bifida</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Turner-Syndrom"/><span>Turner-Syndrom</span></label><label class="option"><input class="besonderheitCheck" type="checkbox" value="Verkürzte Gliedmaßen"/><span>Verkürzte Gliedmaßen</span></label></div>
+<div class="field-wrap" id="besonderheitErgaenzungWrapField" style="margin-top:10px">
 <label class="field-label" for="besonderheitErgaenzung">Weitere Informationen zu Besonderheiten</label>
 <input id="besonderheitErgaenzung" placeholder=""/>
 </div>
@@ -1045,7 +1044,8 @@ function enforceAdminLogicGuards(){
   const wasserErlaubt =
     !$("palliativeGeburt")?.checked &&
     val("aktuelleSituation") !== "Lebendbilder" &&
-    val("aktuelleSituation") !== "noch lebend";
+    val("aktuelleSituation") !== "noch lebend" &&
+    val("aktuelleSituation") !== "noch lebend – Bilder erst nach Versterben";
 
   if(wasser){
     if(!wasserErlaubt) wasser.value = "";
@@ -1208,7 +1208,7 @@ const IB_VIEW = {
 
   renderIB(){
     this.renderCheckboxGroup("infektListe", "Infekte", "infektCheck", IB_MODEL.infekte);
-    this.renderCheckboxGroup("besonderheitenListe", "Äußerliche Besonderheiten", "besonderheitCheck", IB_MODEL.besonderheiten);
+    this.renderCheckboxGroup("besonderheitenListe", "Besonderheiten", "besonderheitCheck", IB_MODEL.besonderheiten);
   }
 };
 
@@ -1239,7 +1239,7 @@ const IB_CONTROLLER = {
     }
 
     if($("infektErgaenzungWrapField")){
-      $("infektErgaenzungWrapField").classList.toggle("hidden", !infektJa);
+      $("infektErgaenzungWrapField").classList.remove("hidden");
     }
 
     if($("besonderheitenListe")){
@@ -1247,18 +1247,16 @@ const IB_CONTROLLER = {
     }
 
     if($("besonderheitErgaenzungWrapField")){
-      $("besonderheitErgaenzungWrapField").classList.toggle("hidden", !besonderheitenJa);
+      $("besonderheitErgaenzungWrapField").classList.remove("hidden");
     }
 
     if(!infektJa){
       document.querySelectorAll(".infektCheck").forEach(cb => cb.checked = false);
       if($("schutzkleidung")) $("schutzkleidung").value = "";
-      if($("infektErgaenzung")) $("infektErgaenzung").value = "";
     }
 
     if(!besonderheitenJa){
       document.querySelectorAll(".besonderheitCheck").forEach(cb => cb.checked = false);
-      if($("besonderheitErgaenzung")) $("besonderheitErgaenzung").value = "";
     }
   },
 
@@ -1281,7 +1279,8 @@ const IB_CONTROLLER = {
       const infektErgaenzung = normalisiereZusatz(val("infektErgaenzung"));
       const infektMeldung = infektFehlermeldung();
 
-      if(!infektStatus) medizinBlock.push(infektMeldung);
+      if(!infektStatus && infektErgaenzung) medizinBlock.push("Bekannte Infekte:\n" + infektErgaenzung);
+      else if(!infektStatus && infektMeldung) medizinBlock.push(infektMeldung);
       else if(infektStatus === "Nein") medizinBlock.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
       else if(infektStatus === "Ja"){
         const infektLines = [];
@@ -1783,7 +1782,6 @@ const PALLIATIVE_GEBURT_MODEL = Object.freeze({
   normalSituationen: Object.freeze([
     { value:"", label:"" },
     { value:"verstorben", label:"verstorben" },
-    { value:"noch lebend", label:"noch lebend" },
     { value:"Lebendbilder", label:"Lebendbilder" },
     { value:"noch lebend – Bilder erst nach Versterben", label:"noch lebend – Bilder erst nach Versterben" },
     { value:"Einleitung", label:"Einleitung" },
@@ -2042,10 +2040,11 @@ if($("palliativeGeburt")?.checked){
   }
 
   if(situation === "noch lebend – Bilder erst nach Versterben"){
-    setWasserOptions("nachVersterben");
-    $("wasser").disabled = false;
-    if(wasserField) wasserField.classList.remove("hidden");
-    if(wasserInfo) wasserInfo.classList.remove("hidden");
+    $("wasser").value = "";
+    $("wasser").disabled = true;
+    if(wasserField) wasserField.classList.add("hidden");
+    if(wasserInfo) wasserInfo.classList.add("hidden");
+    if(wasserInfoField) wasserInfoField.value = "";
   }else if(situation === "verstorben" || (situation === "Kaiserschnitt" && val("ksElDetail") === "Der Kaiserschnitt hat stattgefunden.")){
     setWasserOptions("all");
     $("wasser").disabled = false;
@@ -2100,7 +2099,6 @@ function updatePalliativeGeburtOptions(){
     : [
         ["", ""],
         ["verstorben", "verstorben"],
-        ["noch lebend", "noch lebend"],
         ["Lebendbilder", "Lebendbilder"],
         ["noch lebend – Bilder erst nach Versterben", "noch lebend – Bilder erst nach Versterben"],
         ["Einleitung", "Einleitung"],
@@ -2779,18 +2777,10 @@ function updateKommunikationExklusiv(){
 
 function infektFehlermeldung(){
   const status = val("infektStatus");
+  const hatText = val("infektErgaenzung").length > 0;
 
-  if(!status){
-    return "⚠ BITTE ERGÄNZEN:\n\nBeim Punkt Infekte muss Ja, Nein oder Unklar ausgewählt werden.";
-  }
-
-  if(status === "Ja"){
-    const hatCheckbox = checkedValues("infektCheck").length > 0;
-    const hatText = val("infektErgaenzung").length > 0;
-
-    if(!hatCheckbox && !hatText){
-      return "⚠ BITTE ERGÄNZEN:\n\nZum Punkt Infekte bitte mindestens einen bekannten Infekt auswählen\noder weitere Informationen eintragen.";
-    }
+  if(!status && !hatText){
+    return "⚠ BITTE ERGÄNZEN:\n\nBeim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.";
   }
 
   return "";
@@ -2874,6 +2864,8 @@ function resetInputsAfterCopy(){
   });
 
   currentWorkIndex = -1;
+  document.body.classList.remove("consent-ok");
+  if(consentStep) consentStep.classList.add("open");
 
   if($("copyStatus")) $("copyStatus").textContent = "";
   if($("resetInputsBtn")) $("resetInputsBtn").disabled = true;
@@ -2889,9 +2881,44 @@ function resetInputsAfterCopy(){
   }
 }
 
+
+function updatePalliativeNochLebendOption(){
+  const sel=document.getElementById("aktuelleSituation");
+  const pall=document.getElementById("palliativeGeburt");
+  if(!sel||!pall) return;
+  let opt=[...sel.options].find(o=>o.value==="noch lebend");
+  if(pall.checked){
+    if(!opt){
+      opt=document.createElement("option");
+      opt.value="noch lebend";
+      opt.textContent="noch lebend";
+      sel.insertBefore(opt, [...sel.options].find(o=>o.value==="Einleitung")||null);
+    }
+  }else{
+    if(sel.value==="noch lebend") sel.value="";
+    if(opt) opt.remove();
+  }
+}
+document.addEventListener("change",e=>{
+ if(e.target&& (e.target.id==="palliativeGeburt")) updatePalliativeNochLebendOption();
+});
+function enforceNochLebendOnlyForPalliative(){
+  const sel = document.getElementById("aktuelleSituation");
+  const pall = document.getElementById("palliativeGeburt");
+  if(!sel || !pall) return;
+  if(!pall.checked){
+    if(sel.value === "noch lebend") sel.value = "";
+    Array.from(sel.options).forEach(option => {
+      if(option.value === "noch lebend") option.remove();
+    });
+  }
+}
+
 function recalcAll(){
   
-  updatePalliativeGeburtOptions();enforceTwoDigitBirthAge();
+  updatePalliativeGeburtOptions();
+  enforceNochLebendOnlyForPalliative();
+  enforceTwoDigitBirthAge();
   updateMehrlingsSituationOptions();
   MehrlingsLebendbilderGuardController.enforce();
   MehrlingsLebendbilderGuardView.updateSituationOptions();
@@ -2901,10 +2928,12 @@ function recalcAll(){
   updateAktuellesAlterVisibility();
   updateLebendbilderPrognoseOptions();
   updatePalliativeGeburtOptions();
+  enforceNochLebendOnlyForPalliative();
 
   // MASTER_2026-06-14_FIX04:
   // Mehrlingsmatrix nach Palliativ-Rendering erneut anwenden.
   updateSituationByMehrlingsRegel();
+  enforceNochLebendOnlyForPalliative();
   updateWasser();
   updateGeburtssituationRouting();
   updateZeitlogikHinweis();
@@ -3199,7 +3228,7 @@ const APRoleModel = Object.freeze({
       articleWithSituation:"der",
       noSituationPattern:"Hebamme {name}",
       situationPattern:"{article} {adj}Hebamme {name}",
-      noNamePattern:"{article} {adj}Hebamme"
+      noNamePattern:"einer der Hebammen"
     }),
     "Schwester": Object.freeze({
       usesSituation:true,
@@ -3997,33 +4026,29 @@ const MedizinReportController = {
     const besonderheiten = checkedValues("besonderheitCheck");
     const infekte = checkedValues("infektCheck");
     const besonderheitErgaenzung = normalisiereZusatz(val("besonderheitErgaenzung"));
+    const infektErgaenzung = normalisiereZusatz(val("infektErgaenzung"));
     const lines = [];
 
-    if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
-      return "Es sind weder äußerliche Besonderheiten noch Infekte bekannt.";
-    }
-
-    if(besonderheitStatus === "Unklar" && infektStatus === "Unklar"){
-      return "Ob Infekte oder äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.";
-    }
-
-    if(besonderheitStatus === "Ja"){
-      const besonderheitLines = [];
-      if(besonderheiten.length) besonderheitLines.push("- " + besonderheiten.join("\n- "));
-      if(besonderheitErgaenzung) besonderheitLines.push(besonderheitErgaenzung);
-
-      if(besonderheitLines.length){
-        lines.push("Äußerliche Besonderheiten:\n" + besonderheitLines.join("\n"));
+    if(besonderheitErgaenzung){
+      lines.push("Besonderheiten:\n" + besonderheitErgaenzung);
+    }else if(besonderheitStatus === "Ja"){
+      if(besonderheiten.length){
+        lines.push("Besonderheiten:\n- " + besonderheiten.join("\n- "));
       }else{
-        lines.push("Äußerliche Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
+        lines.push("Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
       }
     }else if(besonderheitStatus === "Nein"){
-      lines.push("Es sind keine äußerlichen Besonderheiten bekannt.");
+      lines.push("Besonderheiten:\nEs sind keine äußerlichen Besonderheiten bekannt.");
     }else if(besonderheitStatus === "Unklar"){
-      lines.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+      lines.push("Besonderheiten:\nOb äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
     }
 
-    if(infektStatus === "Nein"){
+    if(infektErgaenzung){
+      const infektLines = [];
+      if(infektStatus === "Ja" && infekte.length) infektLines.push("- " + infekte.join("\n- "));
+      infektLines.push(infektErgaenzung);
+      lines.push("Bekannte Infekte:\n" + infektLines.join("\n"));
+    }else if(infektStatus === "Nein"){
       lines.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
     }else if(infektStatus === "Ja" && infekte.length){
       lines.push("Bekannte Infekte:\n- " + infekte.join("\n- "));
@@ -4081,9 +4106,9 @@ const ReportBuilder = {
       HeaderFooterReportController.greeting(),
       ContactReportController.ansprechpartner(),
       SternenkindReportController.build(),
-      WaterMethodReportController.build(),
       FamilyImagesReportController.build(),
       KleidungReportController.build(),
+      WaterMethodReportController.build(),
       KommunikationReportController.build(),
       MedizinReportController.build(),
       AbschlussfrageReportController.build(),
@@ -4113,7 +4138,7 @@ function renderReportHtml(value){
   return escapeReportHtml(value)
     .replaceAll("Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.", '<span class="report-call-notice">Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.</span>')
     .replaceAll("HIER GEHT ES UM LEBENDBILDER, ES EILT.", '<span class="report-urgent">HIER GEHT ES UM LEBENDBILDER, ES EILT.</span>')
-    .replaceAll("Äußerliche Besonderheiten:", '<span class="report-heading">Äußerliche Besonderheiten:</span>')
+    .replaceAll("Besonderheiten:", '<span class="report-heading">Besonderheiten:</span>')
     .replaceAll("Bekannte Infekte:", '<span class="report-heading">Bekannte Infekte:</span>')
     .replaceAll("\n", "<br>");
 }
@@ -4185,7 +4210,8 @@ function ensureInfektFreitextInReportText(text){
     return (output + "\n\n" + meldung).trim();
   }
 
-  if(status !== "Ja" || !freitext) return output;
+  if(!freitext) return output;
+  if(status && status !== "Ja") return output;
   if(output.includes(freitext)) return output;
 
   const lines = output.split("\n");

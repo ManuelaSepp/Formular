@@ -432,6 +432,7 @@ body.admin-mode #abschlussfrageWrapField select{
 .report-heading{font-weight:700;}
 .report-call-notice{font-weight:700;font-style:italic;display:block;margin-top:0;}
 .report-urgent{font-weight:700;}
+.report-warning{font-weight:700;}
 
 
 /* FIX17: Bericht rechts sticky ab Tablet quer / Desktop */
@@ -861,7 +862,23 @@ body.consent-ok section.step[data-title="Einverständnis"] h2{
 </section>
 <section class="step" data-title="Sternenkind">
 <h2>Angaben zum Sternenkind</h2>
-<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht"><option value=""></option><optgroup label="Einling"><option value="Mädchen">Mädchen</option><option value="Junge">Junge</option><option value="Unbekannt">Unbekannt</option></optgroup><optgroup label="Zwillinge"><option value="MM">Zwillinge (MM)</option><option value="JJ">Zwillinge (JJ)</option><option value="MJ">Zwillinge (MJ)</option><option value="JM">Zwillinge (JM)</option><option value="Unbekannt">Zwillinge (unbekannt)</option></optgroup><optgroup label="Drillinge"><option value="MMM">Drillinge (MMM)</option><option value="JJJ">Drillinge (JJJ)</option><option value="MMJ">Drillinge (MMJ)</option><option value="MJM">Drillinge (MJM)</option><option value="JMM">Drillinge (JMM)</option><option value="JJM">Drillinge (JJM)</option><option value="JMJ">Drillinge (JMJ)</option><option value="MJJ">Drillinge (MJJ)</option><option value="Unbekannt">Drillinge (unbekannt)</option></optgroup></select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation">
+<div class="grid3"><div class="field-wrap" id="elternWrapField"><label class="field-label" for="eltern">Namen der Eltern</label><input id="eltern" placeholder="Namen der Eltern"/></div><div class="field-wrap" id="kindNameWrapField"><label class="field-label" for="kindName">Vorname des Kindes / der Kinder (optional)</label><input id="kindName" placeholder="Vorname des Kindes / der Kinder (optional)"/></div><div class="field-wrap" id="geschlechtWrapField"><label class="field-label" for="geschlecht">Geschlecht des Kindes</label><select id="geschlecht">
+<option value=""></option>
+<option value="Mädchen">Mädchen</option>
+<option value="Junge">Junge</option>
+<option value="Unbekannt">Unbekannt</option>
+<optgroup label="Zwillinge">
+<option value="MM">Zwillinge (MM)</option>
+<option value="JJ">Zwillinge (JJ)</option>
+<option value="MJ">Zwillinge (MJ)</option>
+</optgroup>
+<optgroup label="Drillinge">
+<option value="MMM">Drillinge (MMM)</option>
+<option value="JJJ">Drillinge (JJJ)</option>
+<option value="MMJ">Drillinge (MMJ)</option>
+<option value="JJM">Drillinge (JJM)</option>
+</optgroup>
+</select></div><div class="field-wrap" id="aktuelleSituationWrapField"><label class="field-label" for="aktuelleSituation">Aktuelle Situation des Kindes</label><select id="aktuelleSituation">
 <option value=""></option>
 <option value="verstorben">verstorben</option>
 <option value="Lebendbilder">Lebendbilder</option>
@@ -1545,9 +1562,7 @@ function updateGeschlechtOptions(){
       {label:"Zwillinge", options:[
         ["MM","Zwillinge (MM)"],
         ["JJ","Zwillinge (JJ)"],
-        ["MJ","Zwillinge (MJ)"],
-        ["JM","Zwillinge (JM)"],
-        ["Unbekannt","Zwillinge (unbekannt)"]
+        ["MJ","Zwillinge (MJ)"]
       ]}
     ];
   }else if(count >= 3){
@@ -1556,17 +1571,12 @@ function updateGeschlechtOptions(){
         ["MMM","Drillinge (MMM)"],
         ["JJJ","Drillinge (JJJ)"],
         ["MMJ","Drillinge (MMJ)"],
-        ["MJM","Drillinge (MJM)"],
-        ["JMM","Drillinge (JMM)"],
-        ["JJM","Drillinge (JJM)"],
-        ["JMJ","Drillinge (JMJ)"],
-        ["MJJ","Drillinge (MJJ)"],
-        ["Unbekannt","Drillinge (unbekannt)"]
+        ["JJM","Drillinge (JJM)"]
       ]}
     ];
   }else{
     groups = [
-      {label:"Einling", options:[
+      {label:"", options:[
         ["Mädchen","Mädchen"],
         ["Junge","Junge"],
         ["Unbekannt","Unbekannt"]
@@ -2780,7 +2790,7 @@ function infektFehlermeldung(){
   const hatText = val("infektErgaenzung").length > 0;
 
   if(!status && !hatText){
-    return "⚠ BITTE ERGÄNZEN:\n\nBeim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.";
+    return "Beim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.";
   }
 
   return "";
@@ -2826,14 +2836,29 @@ async function copyReport(){
     if($("copyStatus")) $("copyStatus").textContent = "Kopieren gesperrt: Bitte Infektangaben ergänzen.";
     return;
   }
+
   const report = $("report");
   const text = report ? (report.innerText || report.textContent || "").trim() : "";
+  const html = report ? (report.innerHTML || "").trim() : "";
+
   if(!text || text === "Berichtsausgabe"){
     if($("copyStatus")) $("copyStatus").textContent = "Kein Bericht zum Kopieren vorhanden.";
     return;
   }
+
   try{
-    await navigator.clipboard.writeText(text);
+    if(navigator.clipboard && window.ClipboardItem && html){
+      const htmlDoc = '<!DOCTYPE html><html><body style="font-family:Arial, Helvetica, sans-serif; white-space:normal; line-height:1.46;">' + html + '</body></html>';
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "text/html": new Blob([htmlDoc], { type:"text/html" }),
+          "text/plain": new Blob([text], { type:"text/plain" })
+        })
+      ]);
+    }else{
+      await navigator.clipboard.writeText(text);
+    }
+
     if($("copyStatus")) $("copyStatus").textContent = "Bericht kopiert.";
     if($("resetInputsBtn")) $("resetInputsBtn").disabled = false;
   }catch(error){
@@ -3772,7 +3797,7 @@ const LBAgeFormatterController = {
 
     if(/^\d+$/.test(raw)){
       if(raw === "1"){
-        return { text:unit.article, isSingular:true };
+        return { text:"1", isSingular:true };
       }
 
       const mapped = LBAgeFormatterModel.numberWords[raw];
@@ -3839,11 +3864,13 @@ const LebendbilderController = {
       return "Das lebende Kind ist " + age + " alt.";
     }
 
-    const name = this.getSingleName();
-    if(name){
-      return formatChildNameForReport(name) + " ist jetzt " + age + " alt.";
+    if(this.isMehrling()){
+      return "Die Kinder sind jetzt " + age + " alt.";
     }
 
+    if(age === "1 Tag") return "Das Kind ist jetzt einen Tag alt.";
+    if(age === "1 Woche") return "Das Kind ist jetzt eine Woche alt.";
+    if(age === "1 Monat") return "Das Kind ist jetzt einen Monat alt.";
     return "Das Kind ist jetzt " + age + " alt.";
   },
 
@@ -4038,9 +4065,9 @@ const MedizinReportController = {
         lines.push("Besonderheiten sind vorhanden, die genaue Art ist noch nicht ausgewählt.");
       }
     }else if(besonderheitStatus === "Nein"){
-      lines.push("Besonderheiten:\nEs sind keine äußerlichen Besonderheiten bekannt.");
+      lines.push("Es sind keine äußerlichen Besonderheiten bekannt.");
     }else if(besonderheitStatus === "Unklar"){
-      lines.push("Besonderheiten:\nOb äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
+      lines.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
     }
 
     if(infektErgaenzung){
@@ -4049,13 +4076,15 @@ const MedizinReportController = {
       infektLines.push(infektErgaenzung);
       lines.push("Bekannte Infekte:\n" + infektLines.join("\n"));
     }else if(infektStatus === "Nein"){
-      lines.push("Bekannte Infekte:\nEs sind keine Infekte bekannt.");
+      lines.push("Es sind keine Infekte bekannt.");
     }else if(infektStatus === "Ja" && infekte.length){
       lines.push("Bekannte Infekte:\n- " + infekte.join("\n- "));
     }else if(infektStatus === "Ja"){
       lines.push("Bekannte Infekte:\n");
     }else if(infektStatus === "Unklar"){
-      lines.push("Bekannte Infekte:\nOb Infekte vorliegen, ist aktuell nicht bekannt.");
+      lines.push("Ob Infekte vorliegen, ist aktuell nicht bekannt.");
+    }else{
+      lines.push(infektFehlermeldung());
     }
 
     if(val("schutzkleidung") === "Ja"){
@@ -4136,10 +4165,15 @@ function escapeReportHtml(value){
 
 function renderReportHtml(value){
   return escapeReportHtml(value)
-    .replaceAll("Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.", '<span class="report-call-notice">Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.</span>')
-    .replaceAll("HIER GEHT ES UM LEBENDBILDER, ES EILT.", '<span class="report-urgent">HIER GEHT ES UM LEBENDBILDER, ES EILT.</span>')
-    .replaceAll("Besonderheiten:", '<span class="report-heading">Besonderheiten:</span>')
-    .replaceAll("Bekannte Infekte:", '<span class="report-heading">Bekannte Infekte:</span>')
+    .replaceAll("Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.", '<strong><em>Ruft bitte nochmal an, bevor ihr losfahrt, ob die Bilder noch immer gewünscht werden.</em></strong>')
+    .replaceAll("HIER GEHT ES UM LEBENDBILDER, ES EILT.", '<strong>HIER GEHT ES UM LEBENDBILDER, ES EILT.</strong>')
+    .replaceAll("Es sind keine äußerlichen Besonderheiten bekannt.", '<strong>Es sind keine äußerlichen Besonderheiten bekannt.</strong>')
+    .replaceAll("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.", '<strong>Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.</strong>')
+    .replaceAll("Es sind keine Infekte bekannt.", '<strong>Es sind keine Infekte bekannt.</strong>')
+    .replaceAll("Ob Infekte vorliegen, ist aktuell nicht bekannt.", '<strong>Ob Infekte vorliegen, ist aktuell nicht bekannt.</strong>')
+    .replaceAll("Beim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.", '<strong>Beim Punkt Infekte muss Ja, Nein, Unklar oder ein freier Texteintrag vorhanden sein.</strong>')
+    .replaceAll("Besonderheiten:", '<strong>Besonderheiten:</strong>')
+    .replaceAll("Bekannte Infekte:", '<strong>Bekannte Infekte:</strong>')
     .replaceAll("\n", "<br>");
 }
 
@@ -4372,5 +4406,178 @@ document.addEventListener('change', function(e){
 });
 
 </script>
+
+<script>
+/* FIX11_GESCHLECHT_SAUBER:
+   Einling ohne Überschrift.
+   Zwillinge nur MM/JJ/MJ.
+   Drillinge nur MMM/JJJ/MMJ/JJM.
+*/
+(function(){
+  function syncGeschlechtDropdown(){
+    const select = document.getElementById("geschlecht");
+    if(!select) return;
+
+    const current = select.value;
+    select.innerHTML = "";
+
+    const blank = document.createElement("option");
+    blank.value = "";
+    blank.textContent = "";
+    select.appendChild(blank);
+
+    [
+      ["Mädchen", "Mädchen"],
+      ["Junge", "Junge"],
+      ["Unbekannt", "Unbekannt"]
+    ].forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      select.appendChild(option);
+    });
+
+    const zwillinge = document.createElement("optgroup");
+    zwillinge.label = "Zwillinge";
+    [
+      ["MM", "Zwillinge (MM)"],
+      ["JJ", "Zwillinge (JJ)"],
+      ["MJ", "Zwillinge (MJ)"]
+    ].forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      zwillinge.appendChild(option);
+    });
+    select.appendChild(zwillinge);
+
+    const drillinge = document.createElement("optgroup");
+    drillinge.label = "Drillinge";
+    [
+      ["MMM", "Drillinge (MMM)"],
+      ["JJJ", "Drillinge (JJJ)"],
+      ["MMJ", "Drillinge (MMJ)"],
+      ["JJM", "Drillinge (JJM)"]
+    ].forEach(([value, text]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      drillinge.appendChild(option);
+    });
+    select.appendChild(drillinge);
+
+    const allowed = new Set(["", "Mädchen", "Junge", "Unbekannt", "MM", "JJ", "MJ", "MMM", "JJJ", "MMJ", "JJM"]);
+    select.value = allowed.has(current) ? current : "";
+  }
+
+  document.addEventListener("DOMContentLoaded", syncGeschlechtDropdown);
+  window.addEventListener("load", syncGeschlechtDropdown);
+  syncGeschlechtDropdown();
+})();
+</script>
+
+
+<script>
+/* FIX_WM_VERSTORBEN */
+(function(){
+  function updateWasserOptionen(){
+    const situation = document.getElementById('aktuelleSituation')?.value || '';
+    const wasser = document.getElementById('wasser');
+    if(!wasser) return;
+
+    const current = wasser.value;
+
+    let options = [];
+    if(situation === 'verstorben'){
+      options = ['', 'Ja', 'Nein', 'Unklar'];
+    } else if(situation === 'Einleitung' || situation === 'Kaiserschnitt'){
+      options = ['', 'Nach Geburt', 'Nach Geburt unklar'];
+    } else {
+      return;
+    }
+
+    wasser.innerHTML = '';
+    options.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      wasser.appendChild(o);
+    });
+
+    wasser.value = options.includes(current) ? current : '';
+  }
+
+  document.addEventListener('change', function(e){
+    if(e.target && e.target.id === 'aktuelleSituation'){
+      updateWasserOptionen();
+    }
+  });
+
+  window.addEventListener('load', updateWasserOptionen);
+})();
+</script>
+
+
+<script>
+document.addEventListener('change',function(e){
+ if(e.target && e.target.id==='palliativeGeburt'){
+   const wrap=document.getElementById('aktuellesAlterWrapField');
+   const feld=document.getElementById('aktuellesAlter');
+   if(!wrap||!feld) return;
+   if(e.target.checked){ feld.value=''; wrap.classList.add('hidden'); }
+ }
+});
+document.addEventListener('DOMContentLoaded',function(){
+ const cb=document.getElementById('palliativeGeburt');
+ const wrap=document.getElementById('aktuellesAlterWrapField');
+ const feld=document.getElementById('aktuellesAlter');
+ if(cb&&wrap&&feld&&cb.checked){ feld.value=''; wrap.classList.add('hidden');}
+});
+</script>
+
+
+<script>
+/* FIX14_PALLIATIVE_AKTUELLES_ALTER_DIREKT */
+(function(){
+  function apply(){
+    const palliative = document.getElementById('palliativeGeburt');
+    const wrap = document.getElementById('aktuellesAlterWrapField');
+    const input = document.getElementById('aktuellesAlter');
+
+    if(!palliative || !wrap || !input) return;
+
+    if(palliative.checked){
+      input.value = '';
+      input.disabled = true;
+      wrap.classList.add('hidden');
+      wrap.style.display = 'none';
+    }
+  }
+
+  const oldRecalcAll = window.recalcAll;
+  if(typeof oldRecalcAll === 'function'){
+    window.recalcAll = function(){
+      oldRecalcAll.apply(this, arguments);
+      apply();
+    };
+  }
+
+  document.addEventListener('change', function(e){
+    if(e.target && (e.target.id === 'palliativeGeburt' || e.target.id === 'aktuelleSituation')){
+      setTimeout(apply, 0);
+    }
+  }, true);
+
+  document.addEventListener('input', function(e){
+    if(e.target && e.target.id === 'aktuellesAlter' && document.getElementById('palliativeGeburt')?.checked){
+      e.target.value = '';
+    }
+  }, true);
+
+  window.addEventListener('load', apply);
+  setTimeout(apply, 0);
+})();
+</script>
+
 </body>
 </html>

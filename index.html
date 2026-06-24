@@ -3646,8 +3646,12 @@ function baueKleidungSatz(){
   }else if(kleidung === "Unklar" && deckchen === "Unklar"){
     teile.push("Ob Kleidung oder Deckchen vorhanden sind, ist aktuell unklar. Bringt gerne etwas Schönes mit, wenn ihr etwas habt.");
   }else{
-    if(kleidung === "Ja") teile.push("Kleidung ist vorhanden.");
-    if(deckchen === "Ja") teile.push("Deckchen sind vorhanden.");
+    if(kleidung === "Ja" && deckchen === "Ja"){
+      teile.push("Kleidung und Deckchen sind vorhanden.");
+    }else{
+      if(kleidung === "Ja") teile.push("Kleidung ist vorhanden.");
+      if(deckchen === "Ja") teile.push("Deckchen sind vorhanden.");
+    }
     if(kleidung === "Nein") teile.push("Es ist keine Kleidung vorhanden. Bringt gerne etwas Schönes mit, wenn ihr etwas habt.");
     if(deckchen === "Nein") teile.push("Es sind keine Deckchen vorhanden. Bringt gerne etwas Schönes mit, wenn ihr etwas habt.");
     if(kleidung === "Unklar") teile.push("Ob Kleidung vorhanden ist, ist aktuell unklar.");
@@ -4072,13 +4076,17 @@ const MedizinReportController = {
       }
     }else if(besonderheitErgaenzung){
       lines.push("Besonderheiten:\n" + besonderheitErgaenzung);
+    }else if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
+      lines.push("Es sind keine äußerlichen Besonderheiten bekannt.\nEs sind keine Infekte bekannt.");
     }else if(besonderheitStatus === "Nein"){
       lines.push("Es sind keine äußerlichen Besonderheiten bekannt.");
     }else if(besonderheitStatus === "Unklar"){
       lines.push("Ob äußerliche Besonderheiten vorliegen, ist aktuell nicht bekannt.");
     }
 
-    if(infektErgaenzung){
+    if(besonderheitStatus === "Nein" && infektStatus === "Nein"){
+      // Infekt-Nein ist im gemeinsamen Block oben bereits enthalten.
+    }else if(infektErgaenzung){
       const infektLines = [];
       if(infektStatus === "Ja" && infekte.length) infektLines.push("- " + infekte.join("\n- "));
       infektLines.push(infektErgaenzung);
@@ -4144,8 +4152,10 @@ const ReportBuilder = {
       ContactReportController.ansprechpartner(),
       SternenkindReportController.build(),
       FamilyImagesReportController.build(),
-      KleidungReportController.build(),
-      WaterMethodReportController.build(),
+      [
+        KleidungReportController.build(),
+        WaterMethodReportController.build()
+      ].map(normalisiereAbsatz).filter(Boolean).join("\n"),
       KommunikationReportController.build(),
       MedizinReportController.build(),
       AbschlussfrageReportController.build(),
